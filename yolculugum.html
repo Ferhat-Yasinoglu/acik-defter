@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="tr" dir="ltr" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Yolculuğum — Farhad Yaqoobi</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body data-page="journey">
+
+  <header class="navbar">
+    <div class="container navbar-inner">
+      <a href="index.html" class="logo">FY<span>.</span></a>
+
+      <nav class="nav-links">
+        <a href="index.html" data-page-link="home" data-i18n="nav_home">Ana Sayfa</a>
+        <a href="yolculugum.html" data-page-link="journey" data-i18n="nav_journey">Yolculuğum</a>
+        <a href="projeler.html" data-page-link="projects" data-i18n="nav_projects">Projeler</a>
+        <a href="notlar.html" data-page-link="notes" data-i18n="nav_notes">Notlar</a>
+        <a href="hakkimda.html" data-page-link="about" data-i18n="nav_about">Hakkımda</a>
+      </nav>
+
+      <div class="nav-actions">
+        <div class="status-pill">
+          <span class="status-dot"></span>
+          <span class="label">10:14 gece</span>
+        </div>
+
+        <button class="icon-btn theme-toggle" aria-label="Temayı değiştir">
+          <svg class="icon-moon" data-lucide="moon"></svg>
+          <svg class="icon-sun" data-lucide="sun" style="display:none"></svg>
+        </button>
+
+        <div class="lang-switch">
+          <button class="lang-trigger">
+            <span class="flag">🇹🇷</span>
+            <span class="name">TR</span>
+            <svg data-lucide="chevron-down"></svg>
+          </button>
+          <div class="lang-menu">
+            <button class="lang-option" data-lang="tr">
+              <span class="flag">🇹🇷</span><span class="name" data-i18n="lang_tr">Türkçe</span>
+              <svg class="check" data-lucide="check"></svg>
+            </button>
+            <button class="lang-option" data-lang="fa">
+              <span class="flag">🇮🇷</span><span class="name" data-i18n="lang_fa">فارسی</span>
+              <svg class="check" data-lucide="check"></svg>
+            </button>
+            <button class="lang-option" data-lang="de">
+              <span class="flag">🇩🇪</span><span class="name" data-i18n="lang_de">Deutsch</span>
+              <svg class="check" data-lucide="check"></svg>
+            </button>
+            <button class="lang-option" data-lang="en">
+              <span class="flag">🇬🇧</span><span class="name" data-i18n="lang_en">English</span>
+              <svg class="check" data-lucide="check"></svg>
+            </button>
+          </div>
+        </div>
+
+        <button class="menu-toggle" aria-label="Menüyü aç">
+          <svg data-lucide="menu"></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <p class="eyebrow">
+          <span class="rule"></span>
+          <svg data-lucide="compass"></svg>
+          <span data-i18n="eyebrow">Bir IT Öğrencisinin Açık Defteri</span>
+        </p>
+        <h1 data-i18n="page_journey_title">Yolculuğum</h1>
+        <p data-i18n="page_journey_desc">Yazılım öğrenme yolculuğumdaki dönüm noktaları ve adımlar.</p>
+      </div>
+    </section>
+
+    <div class="container">
+      <div class="timeline">
+
+        <div class="timeline-item">
+          <div class="timeline-marker"><svg data-lucide="flag"></svg></div>
+          <div class="timeline-card">
+            <span class="timeline-date" data-i18n="journey_tl1_date">Ağustos 2025</span>
+            <h3 data-i18n="journey_tl1_title">Yolun Başlangıcı</h3>
+            <p data-i18n="journey_tl1_desc">Kod yazmaya karar verdim ve ilk "Merhaba Dünya" programımı çalıştırdım. İşte o an bu yolculuk başladı.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-marker"><svg data-lucide="code"></svg></div>
+          <div class="timeline-card">
+            <span class="timeline-date" data-i18n="journey_tl2_date">Eylül 2025</span>
+            <h3 data-i18n="journey_tl2_title">HTML & CSS ile Temeller</h3>
+            <p data-i18n="journey_tl2_desc">Web sayfalarının nasıl inşa edildiğini öğrendim; ilk statik sayfalarımı sıfırdan kodladım.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-marker"><svg data-lucide="braces"></svg></div>
+          <div class="timeline-card">
+            <span class="timeline-date" data-i18n="journey_tl3_date">Kasım 2025</span>
+            <h3 data-i18n="journey_tl3_title">JavaScript'e İlk Adım</h3>
+            <p data-i18n="journey_tl3_desc">Değişkenler, fonksiyonlar ve döngülerle tanıştım. Sayfalara hayat vermenin keyfini keşfettim.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-marker"><svg data-lucide="rocket"></svg></div>
+          <div class="timeline-card">
+            <span class="timeline-date" data-i18n="journey_tl4_date">Ocak 2026</span>
+            <h3 data-i18n="journey_tl4_title">İlk Projem: Kişisel Web Sitesi</h3>
+            <p data-i18n="journey_tl4_desc">Öğrendiklerimi bir araya getirip ilk gerçek projemi yayınladım — şu an üzerinde çalıştığım bu site.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item">
+          <div class="timeline-marker"><svg data-lucide="cloud-sun"></svg></div>
+          <div class="timeline-card">
+            <span class="timeline-date" data-i18n="journey_tl5_date">Nisan 2026</span>
+            <h3 data-i18n="journey_tl5_title">API'lerle Tanışma: Hava Durumu Uygulaması</h3>
+            <p data-i18n="journey_tl5_desc">Harici bir API'den veri çekmeyi ve JavaScript ile dinamik olarak göstermeyi öğrendim.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item active">
+          <div class="timeline-marker"><svg data-lucide="layout-grid"></svg></div>
+          <div class="timeline-card">
+            <span class="timeline-date" data-i18n="journey_tl6_date">Ağustos 2026</span>
+            <h3 data-i18n="journey_tl6_title">DOM ve CSS Grid ile Derinleşiyorum</h3>
+            <p data-i18n="journey_tl6_desc">DOM manipülasyonu ve modern grid düzenleriyle daha esnek, etkileşimli arayüzler kuruyorum. Şu anda buradayım.</p>
+          </div>
+        </div>
+
+        <div class="timeline-item upcoming">
+          <div class="timeline-marker"><svg data-lucide="target"></svg></div>
+          <div class="timeline-card">
+            <span class="timeline-date" data-i18n="journey_tl7_date">Sıradaki Hedef</span>
+            <h3 data-i18n="journey_tl7_title">Backend & Veritabanlarına Giriş</h3>
+            <p data-i18n="journey_tl7_desc">Node.js ve veritabanlarını öğrenerek tam yığın (full-stack) bir geliştirici olma yolunda ilerlemek istiyorum.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p class="footer-copy">© 2026 Farhad Yaqoobi. <span data-i18n="footer_rights">Tüm hakları saklıdır.</span></p>
+      <p class="footer-quote">"<span data-i18n="footer_quote">Büyük hedefler, küçük adımlarla başlar.</span>"</p>
+      <div class="footer-social">
+        <a class="icon-btn" href="https://github.com/" target="_blank" rel="noopener"><svg data-lucide="github"></svg></a>
+        <a class="icon-btn" href="https://linkedin.com/" target="_blank" rel="noopener"><svg data-lucide="linkedin"></svg></a>
+        <a class="icon-btn" href="mailto:hello@example.com"><svg data-lucide="mail"></svg></a>
+        <a class="icon-btn up" href="#top"><svg data-lucide="arrow-up"></svg></a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="mobile-overlay">
+    <div class="mobile-overlay-head">
+      <a href="index.html" class="logo">FY<span>.</span></a>
+      <button class="mobile-close" aria-label="Menüyü kapat"><svg data-lucide="x"></svg></button>
+    </div>
+    <nav class="mobile-nav">
+      <a href="index.html" data-page-link="home"><svg data-lucide="home"></svg><span data-i18n="nav_home">Ana Sayfa</span></a>
+      <a href="yolculugum.html" data-page-link="journey"><svg data-lucide="compass"></svg><span data-i18n="nav_journey">Yolculuğum</span></a>
+      <a href="projeler.html" data-page-link="projects"><svg data-lucide="folder"></svg><span data-i18n="nav_projects">Projeler</span></a>
+      <a href="notlar.html" data-page-link="notes"><svg data-lucide="notebook-pen"></svg><span data-i18n="nav_notes">Notlar</span></a>
+      <a href="hakkimda.html" data-page-link="about"><svg data-lucide="user-round"></svg><span data-i18n="nav_about">Hakkımda</span></a>
+    </nav>
+    <div class="mobile-divider"></div>
+    <div class="mobile-social">
+      <a href="https://github.com/" target="_blank" rel="noopener"><svg data-lucide="github"></svg><span>GitHub</span></a>
+      <a href="https://linkedin.com/" target="_blank" rel="noopener"><svg data-lucide="linkedin"></svg><span>LinkedIn</span></a>
+      <a href="mailto:hello@example.com"><svg data-lucide="mail"></svg><span>E-posta</span></a>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

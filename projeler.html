@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="tr" dir="ltr" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Projeler — Farhad Yaqoobi</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body data-page="projects">
+
+  <header class="navbar">
+    <div class="container navbar-inner">
+      <a href="index.html" class="logo">FY<span>.</span></a>
+
+      <nav class="nav-links">
+        <a href="index.html" data-page-link="home" data-i18n="nav_home">Ana Sayfa</a>
+        <a href="yolculugum.html" data-page-link="journey" data-i18n="nav_journey">Yolculuğum</a>
+        <a href="projeler.html" data-page-link="projects" data-i18n="nav_projects">Projeler</a>
+        <a href="notlar.html" data-page-link="notes" data-i18n="nav_notes">Notlar</a>
+        <a href="hakkimda.html" data-page-link="about" data-i18n="nav_about">Hakkımda</a>
+      </nav>
+
+      <div class="nav-actions">
+        <div class="status-pill">
+          <span class="status-dot"></span>
+          <span class="label">10:14 gece</span>
+        </div>
+
+        <button class="icon-btn theme-toggle" aria-label="Temayı değiştir">
+          <svg class="icon-moon" data-lucide="moon"></svg>
+          <svg class="icon-sun" data-lucide="sun" style="display:none"></svg>
+        </button>
+
+        <div class="lang-switch">
+          <button class="lang-trigger">
+            <span class="flag">🇹🇷</span>
+            <span class="name">TR</span>
+            <svg data-lucide="chevron-down"></svg>
+          </button>
+          <div class="lang-menu">
+            <button class="lang-option" data-lang="tr">
+              <span class="flag">🇹🇷</span><span class="name" data-i18n="lang_tr">Türkçe</span>
+              <svg class="check" data-lucide="check"></svg>
+            </button>
+            <button class="lang-option" data-lang="fa">
+              <span class="flag">🇮🇷</span><span class="name" data-i18n="lang_fa">فارسی</span>
+              <svg class="check" data-lucide="check"></svg>
+            </button>
+            <button class="lang-option" data-lang="de">
+              <span class="flag">🇩🇪</span><span class="name" data-i18n="lang_de">Deutsch</span>
+              <svg class="check" data-lucide="check"></svg>
+            </button>
+            <button class="lang-option" data-lang="en">
+              <span class="flag">🇬🇧</span><span class="name" data-i18n="lang_en">English</span>
+              <svg class="check" data-lucide="check"></svg>
+            </button>
+          </div>
+        </div>
+
+        <button class="menu-toggle" aria-label="Menüyü aç">
+          <svg data-lucide="menu"></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <p class="eyebrow">
+          <span class="rule"></span>
+          <svg data-lucide="folder"></svg>
+          <span data-i18n="eyebrow">Bir IT Öğrencisinin Açık Defteri</span>
+        </p>
+        <h1 data-i18n="page_projects_title">Projeler</h1>
+        <p data-i18n="page_projects_desc">Üzerinde çalıştığım ve öğrenirken geliştirdiğim projeler.</p>
+      </div>
+    </section>
+
+    <div class="container projects-page">
+      <div class="projects-page-grid">
+
+        <div class="project-card">
+          <div class="project-thumb">
+            <span class="num">01</span>
+            <div class="mock-ui"><div class="bar"></div></div>
+          </div>
+          <div class="project-info">
+            <h3 data-i18n="proj1_title">Kişisel Web Sitesi</h3>
+            <p class="project-desc" data-i18n="proj1_full_desc">Öğrendiklerimi paylaştığım bu kişisel web sitesi; çoklu dil desteği, açık/koyu tema ve duyarlı tasarımla sıfırdan kodlandı.</p>
+            <div class="project-tags">
+              <span>HTML</span><span>CSS</span><span>JavaScript</span>
+            </div>
+            <div class="project-links">
+              <a href="index.html">
+                <svg data-lucide="external-link"></svg>
+                <span data-i18n="proj_live">Siteyi Görüntüle</span>
+              </a>
+              <a href="https://github.com/" target="_blank" rel="noopener">
+                <svg data-lucide="github"></svg>
+                <span data-i18n="proj_source">Kaynak Kodu</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-thumb">
+            <span class="num">02</span>
+            <svg data-lucide="cloud-sun" style="position:absolute; inset-inline-end:12px; top:12px; width:24px; height:24px; color:#f0c583;"></svg>
+            <span class="weather-temp">24°</span>
+          </div>
+          <div class="project-info">
+            <h3 data-i18n="proj2_title">Hava Durumu Uygulaması</h3>
+            <p class="project-desc" data-i18n="proj2_full_desc">Girilen şehir için gerçek zamanlı hava durumu verisini bir API'den çekip ekranda gösteren basit bir uygulama.</p>
+            <div class="project-tags">
+              <span>JavaScript</span><span>API</span><span>Fetch</span>
+            </div>
+            <div class="project-links">
+              <a href="https://github.com/" target="_blank" rel="noopener">
+                <svg data-lucide="github"></svg>
+                <span data-i18n="proj_source">Kaynak Kodu</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="project-card">
+          <div class="project-thumb coming">
+            <svg data-lucide="moon"></svg>
+            <span class="tag">COMING SOON</span>
+          </div>
+          <div class="project-info">
+            <h3 data-i18n="proj3_title">Yakında</h3>
+            <p class="project-desc" data-i18n="proj3_full_desc">Backend ve veritabanlarını öğrenirken üçüncü projemi burada paylaşacağım.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p class="footer-copy">© 2026 Farhad Yaqoobi. <span data-i18n="footer_rights">Tüm hakları saklıdır.</span></p>
+      <p class="footer-quote">"<span data-i18n="footer_quote">Büyük hedefler, küçük adımlarla başlar.</span>"</p>
+      <div class="footer-social">
+        <a class="icon-btn" href="https://github.com/" target="_blank" rel="noopener"><svg data-lucide="github"></svg></a>
+        <a class="icon-btn" href="https://linkedin.com/" target="_blank" rel="noopener"><svg data-lucide="linkedin"></svg></a>
+        <a class="icon-btn" href="mailto:hello@example.com"><svg data-lucide="mail"></svg></a>
+        <a class="icon-btn up" href="#top"><svg data-lucide="arrow-up"></svg></a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="mobile-overlay">
+    <div class="mobile-overlay-head">
+      <a href="index.html" class="logo">FY<span>.</span></a>
+      <button class="mobile-close" aria-label="Menüyü kapat"><svg data-lucide="x"></svg></button>
+    </div>
+    <nav class="mobile-nav">
+      <a href="index.html" data-page-link="home"><svg data-lucide="home"></svg><span data-i18n="nav_home">Ana Sayfa</span></a>
+      <a href="yolculugum.html" data-page-link="journey"><svg data-lucide="compass"></svg><span data-i18n="nav_journey">Yolculuğum</span></a>
+      <a href="projeler.html" data-page-link="projects"><svg data-lucide="folder"></svg><span data-i18n="nav_projects">Projeler</span></a>
+      <a href="notlar.html" data-page-link="notes"><svg data-lucide="notebook-pen"></svg><span data-i18n="nav_notes">Notlar</span></a>
+      <a href="hakkimda.html" data-page-link="about"><svg data-lucide="user-round"></svg><span data-i18n="nav_about">Hakkımda</span></a>
+    </nav>
+    <div class="mobile-divider"></div>
+    <div class="mobile-social">
+      <a href="https://github.com/" target="_blank" rel="noopener"><svg data-lucide="github"></svg><span>GitHub</span></a>
+      <a href="https://linkedin.com/" target="_blank" rel="noopener"><svg data-lucide="linkedin"></svg><span>LinkedIn</span></a>
+      <a href="mailto:hello@example.com"><svg data-lucide="mail"></svg><span>E-posta</span></a>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

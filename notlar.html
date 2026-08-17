@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="tr" dir="ltr" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notlar — Farhad Yaqoobi</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body data-page="notes">
+
+  <header class="navbar">
+    <div class="container navbar-inner">
+      <a href="index.html" class="logo">FY<span>.</span></a>
+
+      <nav class="nav-links">
+        <a href="index.html" data-page-link="home" data-i18n="nav_home">Ana Sayfa</a>
+        <a href="yolculugum.html" data-page-link="journey" data-i18n="nav_journey">Yolculuğum</a>
+        <a href="projeler.html" data-page-link="projects" data-i18n="nav_projects">Projeler</a>
+        <a href="notlar.html" data-page-link="notes" data-i18n="nav_notes">Notlar</a>
+        <a href="hakkimda.html" data-page-link="about" data-i18n="nav_about">Hakkımda</a>
+      </nav>
+
+      <div class="nav-actions">
+        <div class="status-pill">
+          <span class="status-dot"></span>
+          <span class="label">10:14 gece</span>
+        </div>
+
+        <button class="icon-btn theme-toggle" aria-label="Temayı değiştir">
+          <svg class="icon-moon" data-lucide="moon"></svg>
+          <svg class="icon-sun" data-lucide="sun" style="display:none"></svg>
+        </button>
+
+        <div class="lang-switch">
+          <button class="lang-trigger">
+            <span class="flag">🇹🇷</span>
+            <span class="name">TR</span>
+            <svg data-lucide="chevron-down"></svg>
+          </button>
+          <div class="lang-menu">
+            <button class="lang-option" data-lang="tr">
+              <span class="flag">🇹🇷</span><span class="name" data-i18n="lang_tr">Türkçe</span>
+              <svg class="check" data-lucide="check"></svg>
+            </button>
+            <button class="lang-option" data-lang="fa">
+              <span class="flag">🇮🇷</span><span class="name" data-i18n="lang_fa">فارسی</span>
+              <svg class="check" data-lucide="check"></svg>
+            </button>
+            <button class="lang-option" data-lang="de">
+              <span class="flag">🇩🇪</span><span class="name" data-i18n="lang_de">Deutsch</span>
+              <svg class="check" data-lucide="check"></svg>
+            </button>
+            <button class="lang-option" data-lang="en">
+              <span class="flag">🇬🇧</span><span class="name" data-i18n="lang_en">English</span>
+              <svg class="check" data-lucide="check"></svg>
+            </button>
+          </div>
+        </div>
+
+        <button class="menu-toggle" aria-label="Menüyü aç">
+          <svg data-lucide="menu"></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <p class="eyebrow">
+          <span class="rule"></span>
+          <svg data-lucide="notebook-pen"></svg>
+          <span data-i18n="eyebrow">Bir IT Öğrencisinin Açık Defteri</span>
+        </p>
+        <h1 data-i18n="page_notes_title">Notlar</h1>
+        <p data-i18n="page_notes_desc">Öğrendiklerimi kayıt altına aldığım günlük notlarım.</p>
+      </div>
+    </section>
+
+    <div class="container notes-page">
+      <div class="panel">
+
+        <div class="note-row">
+          <div class="note-date"><div class="d">14</div><div class="m" data-i18n="month_aug">Ağu</div></div>
+          <div class="note-body">
+            <h3><span class="dot"></span><span data-i18n="note1_title">JavaScript Döngüler</span></h3>
+            <p data-i18n="note1_desc">For, while ve do while döngülerini anladım ve örneklerle pekiştirdim.</p>
+          </div>
+          <svg data-lucide="chevron-right" class="icon-flip"></svg>
+        </div>
+
+        <div class="note-row">
+          <div class="note-date"><div class="d">13</div><div class="m" data-i18n="month_aug">Ağu</div></div>
+          <div class="note-body">
+            <h3><span class="dot"></span><span data-i18n="note2_title">CSS Grid Öğreniyorum</span></h3>
+            <p data-i18n="note2_desc">Grid sistemi ile modern ve esnek tasarım yapmayı öğrendim.</p>
+          </div>
+          <svg data-lucide="chevron-right" class="icon-flip"></svg>
+        </div>
+
+        <div class="note-row">
+          <div class="note-date"><div class="d">12</div><div class="m" data-i18n="month_aug">Ağu</div></div>
+          <div class="note-body">
+            <h3><span class="dot"></span><span data-i18n="note3_title">DOM Manipülasyonu</span></h3>
+            <p data-i18n="note3_desc">Javascript ile sayfa içeriğini değiştirmeyi öğrendim.</p>
+          </div>
+          <svg data-lucide="chevron-right" class="icon-flip"></svg>
+        </div>
+
+        <div class="note-row">
+          <div class="note-date"><div class="d">05</div><div class="m" data-i18n="month_aug">Ağu</div></div>
+          <div class="note-body">
+            <h3><span class="dot"></span><span data-i18n="note4_title">Git ve GitHub'a Giriş</span></h3>
+            <p data-i18n="note4_desc">Versiyon kontrolünün ne işe yaradığını öğrendim; ilk commit'imi attım ve GitHub'a bir repo yükledim.</p>
+          </div>
+          <svg data-lucide="chevron-right" class="icon-flip"></svg>
+        </div>
+
+        <div class="note-row">
+          <div class="note-date"><div class="d">28</div><div class="m" data-i18n="month_jul">Tem</div></div>
+          <div class="note-body">
+            <h3><span class="dot"></span><span data-i18n="note5_title">Fetch API ile Veri Çekmek</span></h3>
+            <p data-i18n="note5_desc">JavaScript'in fetch fonksiyonuyla dış kaynaklardan veri çekmeyi ve Promise'leri anladım.</p>
+          </div>
+          <svg data-lucide="chevron-right" class="icon-flip"></svg>
+        </div>
+
+        <div class="note-row">
+          <div class="note-date"><div class="d">20</div><div class="m" data-i18n="month_jul">Tem</div></div>
+          <div class="note-body">
+            <h3><span class="dot"></span><span data-i18n="note6_title">Duyarlı Tasarım Temelleri</span></h3>
+            <p data-i18n="note6_desc">Medya sorguları ve esnek birimlerle farklı ekran boyutlarına uyum sağlayan sayfalar tasarlamayı öğrendim.</p>
+          </div>
+          <svg data-lucide="chevron-right" class="icon-flip"></svg>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p class="footer-copy">© 2026 Farhad Yaqoobi. <span data-i18n="footer_rights">Tüm hakları saklıdır.</span></p>
+      <p class="footer-quote">"<span data-i18n="footer_quote">Büyük hedefler, küçük adımlarla başlar.</span>"</p>
+      <div class="footer-social">
+        <a class="icon-btn" href="https://github.com/" target="_blank" rel="noopener"><svg data-lucide="github"></svg></a>
+        <a class="icon-btn" href="https://linkedin.com/" target="_blank" rel="noopener"><svg data-lucide="linkedin"></svg></a>
+        <a class="icon-btn" href="mailto:hello@example.com"><svg data-lucide="mail"></svg></a>
+        <a class="icon-btn up" href="#top"><svg data-lucide="arrow-up"></svg></a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="mobile-overlay">
+    <div class="mobile-overlay-head">
+      <a href="index.html" class="logo">FY<span>.</span></a>
+      <button class="mobile-close" aria-label="Menüyü kapat"><svg data-lucide="x"></svg></button>
+    </div>
+    <nav class="mobile-nav">
+      <a href="index.html" data-page-link="home"><svg data-lucide="home"></svg><span data-i18n="nav_home">Ana Sayfa</span></a>
+      <a href="yolculugum.html" data-page-link="journey"><svg data-lucide="compass"></svg><span data-i18n="nav_journey">Yolculuğum</span></a>
+      <a href="projeler.html" data-page-link="projects"><svg data-lucide="folder"></svg><span data-i18n="nav_projects">Projeler</span></a>
+      <a href="notlar.html" data-page-link="notes"><svg data-lucide="notebook-pen"></svg><span data-i18n="nav_notes">Notlar</span></a>
+      <a href="hakkimda.html" data-page-link="about"><svg data-lucide="user-round"></svg><span data-i18n="nav_about">Hakkımda</span></a>
+    </nav>
+    <div class="mobile-divider"></div>
+    <div class="mobile-social">
+      <a href="https://github.com/" target="_blank" rel="noopener"><svg data-lucide="github"></svg><span>GitHub</span></a>
+      <a href="https://linkedin.com/" target="_blank" rel="noopener"><svg data-lucide="linkedin"></svg><span>LinkedIn</span></a>
+      <a href="mailto:hello@example.com"><svg data-lucide="mail"></svg><span>E-posta</span></a>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
