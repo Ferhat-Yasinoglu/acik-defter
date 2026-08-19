@@ -1580,6 +1580,5 @@ html.has-custom-cursor textarea { cursor: text; }
   .stat-item:nth-child(n+3) { border-top: 1px solid var(--border); }
   .projects-grid { grid-template-columns: 1fr; }
   .footer-inner { flex-direction: column; text-align: center; }
-  .lang-trigger .name { display: none; }
   .page-hero h1 { font-size: 2rem; }
 }
