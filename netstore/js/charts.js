@@ -101,7 +101,8 @@ function lineChart(host, opts) {
   data.forEach((d, i) => {
     if (i % skip !== 0 && i !== data.length - 1) return;
     xLabels += '<text x="' + x(i).toFixed(1) + '" y="' + (H - 9) +
-               '" text-anchor="middle" font-size="10.5" fill="' + AXIS_INK + '">' + esc(d.label) + '</text>';
+               '" text-anchor="middle" font-size="10.5" fill="' + AXIS_INK + '">' +
+               esc(d.m !== undefined ? monthShort(d.m) : d.label) + '</text>';
   });
 
   let paths = '', dots = '';
@@ -136,7 +137,7 @@ function lineChart(host, opts) {
   hover += '</g>';
 
   host.innerHTML =
-    '<div class="chart-wrap">' +
+    '<div class="chart-wrap ltr">' +
       '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" preserveAspectRatio="none" ' +
         'style="height:250px" aria-label="' + esc(opts.aria || 'Aylık satış ve kâr grafiği') + '">' +
         grid + yLabels + xLabels + paths + dots + hover +
@@ -181,7 +182,9 @@ function lineChart(host, opts) {
               '<span class="tip-name">' + esc(s.name) + '</span>' +
               '<span class="tip-val">' + money(d[s.key]) + '</span></div>';
     });
-    tip.innerHTML = '<div class="tip-title">' + esc(d.label) + ' ' + (d.year || '') + '</div>' + rows;
+    tip.innerHTML = '<div class="tip-title">' +
+      esc((d.m !== undefined ? monthShort(d.m) : d.label) + ' ' + (d.year ? num(d.year) : '')) +
+      '</div>' + rows;
     tip.classList.add('on');
 
     const wr = wrap.getBoundingClientRect();

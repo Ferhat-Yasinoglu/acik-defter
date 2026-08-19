@@ -4,7 +4,7 @@
    Renk bütçesi: ~%80 nötr yüzey / ~%20 anlamlı vurgu
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Vazirmatn:wght@400;500;600;700;800&display=swap');
 
 /* --------------------------------------------------------------------------
    1. Tokenlar
@@ -126,10 +126,11 @@ svg { flex: none; }
 
 .sidebar {
   position: fixed;
-  inset: 0 auto 0 0;
+  inset-block: 0;
+  inset-inline-start: 0;
   width: var(--sidebar-w);
   background: var(--surface);
-  border-right: 1px solid var(--border);
+  border-inline-end: 1px solid var(--border);
   display: flex;
   flex-direction: column;
   z-index: 60;
@@ -160,7 +161,7 @@ svg { flex: none; }
 
 /* çekmece kapatma düğmesi: yalnızca mobil/tablette görünür.
    .icon-btn sonra tanımlandığı için burada özgüllük gerekiyor. */
-.sidebar .nav-close { display: none; margin-left: auto; }
+.sidebar .nav-close { display: none; margin-inline-start: auto; }
 
 .sidebar-nav {
   flex: 1;
@@ -202,7 +203,7 @@ svg { flex: none; }
 .nav-item.active svg { opacity: 1; }
 
 .nav-badge {
-  margin-left: auto;
+  margin-inline-start: auto;
   font-size: 11px;
   font-weight: 700;
   min-width: 20px;
@@ -242,7 +243,7 @@ svg { flex: none; }
 
 /* --- ana alan --- */
 
-.main { margin-left: var(--sidebar-w); min-width: 0; }
+.main { margin-inline-start: var(--sidebar-w); min-width: 0; }
 
 .topbar {
   position: sticky; top: 0; z-index: 40;
@@ -257,23 +258,32 @@ svg { flex: none; }
 
 .hamburger { display: none; }
 
+/* Başlık daralabilsin: dar ekranda dil seçici + ikonlar sabit genişlikte
+   kaldığı için taşmayı başlık üstlenir, kesip üç nokta koyar. */
+.topbar-title { min-width: 0; flex: 1; }
+.topbar-title h1,
+.topbar-title .crumb {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 .topbar-title h1 { font-size: 18px; }
 .topbar-title .crumb { font-size: 12px; color: var(--text-3); font-weight: 500; }
 
-.topbar-actions { margin-left: auto; display: flex; align-items: center; gap: 9px; }
+.topbar-actions { margin-inline-start: auto; flex: none; display: flex; align-items: center; gap: 9px; }
 
 .search {
   position: relative;
   width: 260px;
 }
 .search svg {
-  position: absolute; left: 11px; top: 50%; transform: translateY(-50%);
+  position: absolute; inset-inline-start: 11px; top: 50%; transform: translateY(-50%);
   width: 15px; height: 15px; color: var(--text-3); pointer-events: none;
 }
 .search input {
   width: 100%;
   height: 38px;
-  padding: 0 12px 0 34px;
+  padding-inline: 34px 12px;
   border-radius: var(--r-md);
   background: var(--surface-2);
   border: 1px solid var(--border);
@@ -299,7 +309,7 @@ svg { flex: none; }
 .icon-btn:hover { background: var(--surface-3); color: var(--text); border-color: var(--border-strong); }
 
 .icon-btn .dot {
-  position: absolute; top: 8px; right: 9px;
+  position: absolute; top: 8px; inset-inline-end: 9px;
   width: 7px; height: 7px; border-radius: 99px;
   background: var(--danger);
   border: 2px solid var(--surface-2);
@@ -336,7 +346,7 @@ body.nav-open .scrim { opacity: 1; visibility: visible; }
 }
 .card-head h3 { font-size: 14.5px; }
 .card-head .sub { font-size: 12px; color: var(--text-3); margin-top: 1px; }
-.card-head .head-actions { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+.card-head .head-actions { margin-inline-start: auto; display: flex; align-items: center; gap: 8px; }
 
 .card-body { padding: 20px; }
 .card-body.tight { padding: 14px 20px; }
@@ -540,7 +550,7 @@ table.data .invoice-no,
 table.data .badge { white-space: nowrap; }
 
 table.data thead th {
-  text-align: left;
+  text-align: start;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.06em;
@@ -551,8 +561,8 @@ table.data thead th {
   border-bottom: 1px solid var(--border);
   white-space: nowrap;
 }
-table.data thead th:first-child { padding-left: 20px; }
-table.data thead th:last-child  { padding-right: 20px; }
+table.data thead th:first-child { padding-inline-start: 20px; }
+table.data thead th:last-child  { padding-inline-end: 20px; }
 
 table.data tbody td {
   padding: 13px 16px;
@@ -560,14 +570,14 @@ table.data tbody td {
   color: var(--text-2);
   vertical-align: middle;
 }
-table.data tbody td:first-child { padding-left: 20px; }
-table.data tbody td:last-child  { padding-right: 20px; }
+table.data tbody td:first-child { padding-inline-start: 20px; }
+table.data tbody td:last-child  { padding-inline-end: 20px; }
 table.data tbody tr:last-child td { border-bottom: 0; }
 table.data tbody tr { transition: background var(--t); }
 table.data tbody tr:hover { background: var(--surface-2); }
 
 table.data td.strong, table.data td .strong { color: var(--text); font-weight: 600; }
-table.data .right, table.data th.right { text-align: right; }
+table.data .right, table.data th.right { text-align: end; }
 table.data .actions { display: flex; gap: 6px; justify-content: flex-end; }
 
 .cell-main { display: flex; align-items: center; gap: 11px; }
@@ -633,7 +643,7 @@ table.data .actions { display: flex; gap: 6px; justify-content: flex-end; }
 .tl-body { flex: 1; min-width: 0; }
 .tl-row { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
 .tl-title { font-size: 13.5px; font-weight: 600; color: var(--text); }
-.tl-amount { margin-left: auto; font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.tl-amount { margin-inline-start: auto; font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .tl-meta { font-size: 11.5px; color: var(--text-3); margin-top: 2px; }
 
 /* --------------------------------------------------------------------------
@@ -770,7 +780,7 @@ table.data .actions { display: flex; gap: 6px; justify-content: flex-end; }
 }
 .page-head h2 { font-size: 21px; letter-spacing: -0.026em; }
 .page-head .sub { font-size: 13px; color: var(--text-2); margin-top: 3px; }
-.page-head .head-actions { margin-left: auto; display: flex; gap: 8px; flex-wrap: wrap; }
+.page-head .head-actions { margin-inline-start: auto; display: flex; gap: 8px; flex-wrap: wrap; }
 
 .empty {
   padding: 46px 20px; text-align: center; color: var(--text-3);
@@ -792,14 +802,15 @@ table.data .actions { display: flex; gap: 6px; justify-content: flex-end; }
 .alert strong { color: var(--text); display: block; margin-bottom: 1px; }
 .alert .alert-text { color: var(--text-2); }
 
-.stock-bar { width: 84px; height: 5px; border-radius: 99px; background: var(--surface-3); overflow: hidden; margin-top: 5px; }
+.stock-bar { width: 84px; height: 5px; border-radius: 99px; background: var(--surface-3);
+  overflow: hidden; margin-top: 5px; margin-inline-start: auto; }
 .stock-bar span { display: block; height: 100%; border-radius: 99px; }
 
 .chip-row { display: flex; gap: 7px; flex-wrap: wrap; }
 
 /* toast */
 .toast-host {
-  position: fixed; right: 20px; bottom: 20px; z-index: 90;
+  position: fixed; inset-inline-end: 20px; bottom: 20px; z-index: 90;
   display: flex; flex-direction: column; gap: 9px;
   pointer-events: none;
 }
@@ -888,7 +899,7 @@ table.data .actions { display: flex; gap: 6px; justify-content: flex-end; }
   }
   body.nav-open .sidebar { transform: none; }
 
-  .main { margin-left: 0; }
+  .main { margin-inline-start: 0; }   /* margin-left RTL'de sıfırlamıyordu */
   .hamburger { display: grid; }
   .sidebar .nav-close { display: grid; }
   .page { padding: 20px; }
@@ -956,30 +967,30 @@ table.data .actions { display: flex; gap: 6px; justify-content: flex-end; }
     gap: 14px;
     padding: 6px 0;
     border-bottom: 0;
-    text-align: right;
+    text-align: end;
   }
   table.data.as-cards tbody td:first-child,
-  table.data.as-cards tbody td:last-child { padding-left: 0; padding-right: 0; }
+  table.data.as-cards tbody td:last-child { padding-inline: 0; }
 
-  table.data.as-cards tbody td > span[style*="display:block"] { text-align: right; }
+  table.data.as-cards tbody td > span[style*="display:block"] { text-align: end; }
 
   table.data.as-cards tbody td::before {
     content: attr(data-label);
     font-size: 11px; font-weight: 700;
     letter-spacing: 0.05em; text-transform: uppercase;
     color: var(--text-3);
-    text-align: left;
+    text-align: start;
     flex: none;
   }
   /* ilk hücre kartın başlığı olur */
   table.data.as-cards tbody td.card-title-cell {
-    display: block; text-align: left;
+    display: block; text-align: start;
     padding-bottom: 10px; margin-bottom: 6px;
     border-bottom: 1px solid var(--border);
   }
   table.data.as-cards tbody td.card-title-cell::before { display: none; }
   table.data.as-cards tbody td.actions-cell { justify-content: flex-end; padding-top: 10px; }
-  table.data.as-cards tbody td.actions-cell::before { margin-right: auto; }
+  table.data.as-cards tbody td.actions-cell::before { margin-inline-end: auto; }
   table.data.as-cards .actions { justify-content: flex-end; }
 
   .tl-item { padding: 12px 16px; }
@@ -987,6 +998,13 @@ table.data .actions { display: flex; gap: 6px; justify-content: flex-end; }
 
   .info-row { padding: 11px 16px; }
   .profile-card { padding: 20px 16px 16px; }
+}
+
+@media (max-width: 430px) {
+  /* dar ekranda üst barda dil seçici önceliklidir */
+  #btnHelp { display: none; }
+  .topbar { gap: 10px; padding: 0 14px; }
+  .topbar-actions { gap: 7px; }
 }
 
 @media (max-width: 400px) {
@@ -1002,8 +1020,279 @@ table.data .actions { display: flex; gap: 6px; justify-content: flex-end; }
   }
 }
 
-@media print {
-  .sidebar, .topbar, .scrim, .toast-host { display: none !important; }
-  .main { margin-left: 0; }
-  body { background: #fff; color: #000; }
+
+
+/* ==========================================================================
+   14. Sağdan sola (فارسی / دری)
+   Düzenin çoğu mantıksal özelliklerle çalışır; burada yalnızca yön
+   mantıksal karşılığı olmayan birkaç kural düzeltilir.
+   ========================================================================== */
+
+html[dir='rtl'] body {
+  font-family: 'Vazirmatn', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  line-height: 1.72;               /* Fars alfabesi daha yüksek satır ister */
 }
+
+/* Sıkı harf aralığı Arap alfabesinde bağlantıları bozar */
+html[dir='rtl'] h1, html[dir='rtl'] h2, html[dir='rtl'] h3, html[dir='rtl'] h4,
+html[dir='rtl'] .stat-value, html[dir='rtl'] .balance-value,
+html[dir='rtl'] .brand-name, html[dir='rtl'] .invoice-no {
+  letter-spacing: normal;
+}
+
+/* Çekmece ters yönden girer. */
+@media (max-width: 1024px) {
+  html[dir='rtl'] .sidebar { transform: translateX(100%); }
+  html[dir='rtl'] body.nav-open .sidebar { transform: none; }
+}
+
+/* Geri oku ve menü karesi yön değiştirir */
+html[dir='rtl'] .nav-back svg,
+html[dir='rtl'] .chip-caret svg { transform: scaleX(-1); }
+
+/* Zaman serisi grafiği aynalanmaz: zaman daima soldan sağa akar */
+.chart-wrap.ltr { direction: ltr; }
+
+/* Para ve tarih gibi karışık yönlü metinler yalıtılır */
+.num, .money, .invoice-no, .tl-amount, .balance-value, .stat-value { unicode-bidi: isolate; }
+
+/* ==========================================================================
+   15. Belge: fatura ve tahsilat fişi
+   Ekranda koyu arayüz üzerinde beyaz kâğıt; yazdırıldığında yalnızca kâğıt.
+   ========================================================================== */
+
+.doc-host {
+  position: fixed; inset: 0; z-index: 85;
+  display: none;
+  flex-direction: column;
+  background: rgba(2, 6, 16, 0.80);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+.doc-host.on { display: flex; }
+body.doc-open { overflow: hidden; }
+
+.doc-bar {
+  flex: none;
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 18px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+.doc-bar .spacer { flex: 1; }
+
+.doc-scroll {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 24px 16px 48px;
+  display: flex; justify-content: center;
+  align-items: flex-start;
+}
+
+/* --- kâğıt --- */
+.sheet {
+  width: 100%;
+  max-width: 820px;
+  background: #FFFFFF;
+  color: #0F172A;
+  border-radius: 6px;
+  box-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.6);
+  padding: 42px 46px 34px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+html[dir='rtl'] .sheet { line-height: 1.8; }
+
+.sheet .ink-success { color: #15803D; }
+.sheet .ink-danger  { color: #B91C1C; }
+.sheet .ink-warning { color: #B45309; }
+.sheet .mono { font-variant-numeric: tabular-nums; letter-spacing: 0.01em; }
+.sheet .c { text-align: center; }
+.sheet .e { text-align: end; }
+
+/* başlık */
+.sheet-head {
+  display: flex; justify-content: space-between; gap: 28px; flex-wrap: wrap;
+  padding-bottom: 22px;
+  border-bottom: 2px solid #0F172A;
+}
+.sheet-brand { display: flex; gap: 12px; align-items: flex-start; }
+.sheet-mark {
+  width: 38px; height: 38px; border-radius: 9px; flex: none;
+  display: grid; place-items: center;
+  background: #7C3AED; color: #fff;
+}
+.sheet-biz { font-size: 16px; font-weight: 700; }
+.sheet-biz-sub { font-size: 11.5px; color: #64748B; }
+
+.sheet-meta { text-align: end; min-width: 210px; }
+.sheet-doctype {
+  font-size: 21px; font-weight: 800; letter-spacing: 0.06em;
+  color: #7C3AED; margin-bottom: 8px;
+}
+html[dir='rtl'] .sheet-doctype { letter-spacing: normal; }
+.sheet-meta-row {
+  display: flex; justify-content: space-between; gap: 14px;
+  font-size: 12px; padding: 2px 0;
+}
+.sheet-meta-row span { color: #64748B; }
+.sheet-meta-row b { font-variant-numeric: tabular-nums; }
+
+/* taraflar */
+.sheet-parties {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px; padding: 22px 0 24px;
+}
+.sheet-party-label {
+  font-size: 10.5px; font-weight: 800; letter-spacing: 0.1em;
+  color: #7C3AED; margin-bottom: 6px;
+}
+html[dir='rtl'] .sheet-party-label { letter-spacing: normal; }
+.sheet-party-name { font-size: 14px; font-weight: 700; }
+.sheet-party-line { font-size: 12px; color: #475569; }
+
+/* kalem tablosu */
+.sheet-table { width: 100%; border-collapse: collapse; margin-bottom: 22px; }
+.sheet-table thead th {
+  text-align: start;
+  font-size: 10.5px; font-weight: 800; letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: #475569;
+  background: #F1F5F9;
+  padding: 9px 11px;
+  border-bottom: 1px solid #CBD5E1;
+}
+html[dir='rtl'] .sheet-table thead th { letter-spacing: normal; text-transform: none; }
+.sheet-table thead th.e { text-align: end; }
+.sheet-table thead th.c { text-align: center; }
+.sheet-table tbody td {
+  padding: 10px 11px;
+  border-bottom: 1px solid #E2E8F0;
+  vertical-align: top;
+  font-variant-numeric: tabular-nums;
+}
+.sheet-table tbody tr:last-child td { border-bottom: 0; }
+.sheet-table tbody td.e { text-align: end; }
+.sheet-table tbody td.c { text-align: center; color: #94A3B8; }
+.sheet-sku { display: block; font-size: 11px; color: #94A3B8; font-weight: 400; }
+
+/* özet */
+.sheet-summary {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 300px);
+  gap: 26px; align-items: start;
+}
+.sheet-sub-h {
+  font-size: 10.5px; font-weight: 800; letter-spacing: 0.08em;
+  color: #475569; margin-bottom: 7px; text-transform: uppercase;
+}
+html[dir='rtl'] .sheet-sub-h { letter-spacing: normal; text-transform: none; }
+.sheet-mini { width: 100%; border-collapse: collapse; font-size: 12px; }
+.sheet-mini td {
+  padding: 6px 0; border-bottom: 1px solid #E2E8F0;
+  font-variant-numeric: tabular-nums; color: #475569;
+}
+.sheet-mini td.e { text-align: end; color: #0F172A; }
+.sheet-empty { color: #94A3B8; font-style: italic; }
+
+.sheet-totals { border: 1px solid #E2E8F0; border-radius: 8px; overflow: hidden; }
+.stot {
+  display: flex; justify-content: space-between; gap: 16px;
+  padding: 9px 14px; font-size: 12.5px;
+  border-bottom: 1px solid #E2E8F0;
+}
+.stot span { color: #64748B; }
+.stot b { font-variant-numeric: tabular-nums; }
+.stot.grand { background: #F1F5F9; font-size: 14px; }
+.stot.grand span, .stot.grand b { color: #0F172A; font-weight: 800; }
+.stot.balance { background: #FEF2F2; font-size: 14px; border-bottom: 0; }
+.stot.balance span { color: #7F1D1D; font-weight: 700; }
+.stot.balance b { font-weight: 800; }
+
+.sheet-status {
+  padding: 8px 14px; font-size: 12px; font-weight: 700; text-align: center;
+  border-top: 1px solid #E2E8F0;
+}
+.sheet-status.success { background: #F0FDF4; color: #15803D; }
+.sheet-status.warning { background: #FFFBEB; color: #B45309; }
+.sheet-status.danger  { background: #FEF2F2; color: #B91C1C; }
+
+/* fiş tutarı */
+.receipt-amount {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 20px;
+  background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 10px;
+  padding: 18px 22px; margin-bottom: 22px;
+}
+.receipt-amount span { font-size: 12.5px; font-weight: 700; color: #15803D; }
+.receipt-amount strong { font-size: 26px; font-weight: 800; color: #15803D; font-variant-numeric: tabular-nums; }
+
+/* alt bilgi */
+.sheet-foot { margin-top: 30px; padding-top: 22px; border-top: 1px solid #E2E8F0; }
+.sheet-signs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 40px; margin-bottom: 22px; }
+.sign { font-size: 11.5px; color: #64748B; }
+.sign-line { display: block; height: 34px; border-bottom: 1px solid #94A3B8; margin-bottom: 7px; }
+.sign em { display: block; font-style: normal; color: #0F172A; font-weight: 600; font-size: 12px; }
+.sheet-thanks { font-size: 12.5px; color: #0F172A; font-weight: 600; }
+.sheet-legal { font-size: 11px; color: #94A3B8; margin-top: 4px; }
+
+/* --- dil seçici --- */
+#langSwitch .seg { padding: 3px; }
+#langSwitch .seg button { padding: 0 10px; font-size: 12px; min-width: 34px; }
+
+/* --- belge: küçük ekran --- */
+@media (max-width: 720px) {
+  .doc-scroll { padding: 14px 10px 40px; }
+  .sheet { padding: 24px 20px 22px; font-size: 12.5px; }
+  .sheet-head { gap: 16px; }
+  .sheet-meta { text-align: start; min-width: 0; width: 100%; }
+  .sheet-parties { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .sheet-summary { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .sheet-signs { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .sheet-table { display: block; overflow-x: auto; }
+  #langSwitch .seg button { padding: 0 8px; min-width: 30px; }
+}
+
+/* ==========================================================================
+   16. Yazdırma — yalnızca belge basılır
+   ========================================================================== */
+
+@media print {
+  @page { margin: 12mm; }
+
+  body { background: #fff; }
+
+  /* belge açıkken arayüz basılmaz */
+  body.doc-open .app,
+  body.doc-open .scrim,
+  body.doc-open .modal-host,
+  body.doc-open .toast-host { display: none !important; }
+
+  body.doc-open .doc-host {
+    position: static; display: block;
+    background: none; backdrop-filter: none;
+  }
+  body.doc-open .doc-bar { display: none !important; }
+  body.doc-open .doc-scroll { padding: 0; overflow: visible; display: block; }
+  body.doc-open .sheet {
+    max-width: none; box-shadow: none; border-radius: 0; padding: 0;
+  }
+
+  /* belge kapalıyken sayfanın kendisi basılır */
+  body:not(.doc-open) .sidebar,
+  body:not(.doc-open) .topbar,
+  body:not(.doc-open) .scrim,
+  body:not(.doc-open) .toast-host,
+  body:not(.doc-open) .head-actions { display: none !important; }
+  body:not(.doc-open) .main { margin-inline-start: 0; }
+  body:not(.doc-open) .card { break-inside: avoid; }
+}
+
+/* Latin rakamlı teknik diziler (telefon, vergi no, e-posta) RTL bağlamda
+   sırası bozulmadan gösterilsin. */
+.ltr {
+  direction: ltr;
+  unicode-bidi: isolate;
+  display: inline-block;
+}
+html[dir='rtl'] .sheet .mono,
+html[dir='rtl'] .invoice-no { direction: ltr; unicode-bidi: isolate; }

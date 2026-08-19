@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="fa" dir="rtl">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#0B1120" />
   <meta name="description" content="NetStore — stok, satış, müşteri, borç ve tahsilat yönetim paneli" />
-  <title>NetStore — Dashboard</title>
+  <title>NetStore</title>
   <link rel="stylesheet" href="css/netstore.css" />
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%237C3AED'/><path d='M9 22V10l14 12V10' stroke='white' stroke-width='2.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>" />
 </head>
@@ -23,24 +23,24 @@
           </svg>
         </span>
         <div style="min-width:0">
-          <div class="brand-name">NetStore</div>
-          <div class="brand-sub">Yönetim Paneli</div>
+          <div class="brand-name" id="brandName">NetStore</div>
+          <div class="brand-sub" id="brandSub">Panel</div>
         </div>
-        <button class="icon-btn nav-close" data-nav="close" aria-label="Menüyü kapat">
+        <button class="icon-btn nav-close" id="btnNavClose" data-nav="close">
           <span data-icon="x"></span>
         </button>
       </div>
 
-      <nav class="sidebar-nav" id="sidebarNav" aria-label="Ana menü"></nav>
+      <nav class="sidebar-nav" id="sidebarNav"></nav>
 
       <div class="sidebar-foot">
         <a class="user-chip" href="#/ayarlar">
-          <span class="avatar">FY</span>
+          <span class="avatar" id="meAvatar">FY</span>
           <span style="min-width:0">
-            <span class="name" style="display:block">Ferhat Yaqoobi</span>
-            <span class="role">Mağaza Müdürü</span>
+            <span class="name" id="meName" style="display:block"></span>
+            <span class="role" id="meRole"></span>
           </span>
-          <span style="margin-left:auto;color:var(--text-3)" data-icon="chevronRight"></span>
+          <span class="chip-caret" data-icon="chevronRight"></span>
         </a>
       </div>
     </aside>
@@ -49,25 +49,26 @@
     <div class="main">
 
       <header class="topbar">
-        <button class="icon-btn hamburger" data-nav="open" aria-label="Menüyü aç">
+        <button class="icon-btn hamburger" id="btnBurger" data-nav="open">
           <span data-icon="menu"></span>
         </button>
 
         <div class="topbar-title">
-          <h1 id="pageTitle">Dashboard</h1>
-          <div class="crumb" id="pageCrumb">Genel bakış</div>
+          <h1 id="pageTitle"></h1>
+          <div class="crumb" id="pageCrumb"></div>
         </div>
 
         <div class="topbar-actions">
           <div class="search">
             <span data-icon="search"></span>
-            <input type="search" placeholder="Ürün, müşteri veya fatura ara…" aria-label="Ara" />
+            <input type="search" id="searchInput" />
           </div>
-          <button class="icon-btn" aria-label="Bildirimler">
+          <div id="langSwitch"></div>
+          <button class="icon-btn" id="btnNotif">
             <span data-icon="bell"></span>
             <span class="dot"></span>
           </button>
-          <button class="icon-btn" aria-label="Yardım">
+          <button class="icon-btn" id="btnHelp">
             <span data-icon="info"></span>
           </button>
         </div>
@@ -79,12 +80,15 @@
   </div>
 
   <div class="scrim" data-nav="close" aria-hidden="true"></div>
+  <div class="doc-host" id="docHost" role="dialog" aria-modal="true"></div>
   <div class="modal-host" id="modalHost" role="dialog" aria-modal="true"></div>
   <div class="toast-host" id="toastHost" aria-live="polite"></div>
 
+  <script src="js/i18n.js"></script>
   <script src="js/icons.js"></script>
   <script src="js/data.js"></script>
   <script src="js/charts.js"></script>
+  <script src="js/invoice.js"></script>
   <script src="js/app.js"></script>
 </body>
 </html>

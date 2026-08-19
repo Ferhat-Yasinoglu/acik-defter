@@ -1,75 +1,62 @@
 /* ==========================================================================
    NetStore — uygulama kabuğu, yönlendirme ve sayfalar
+   Tüm metinler i18n üzerinden gelir; dil değişince sayfa yeniden çizilir.
    ========================================================================== */
 
-/* --------------------------------------------------------------------------
-   Menü tanımı — sıra brifingteki sırayla birebir
-   -------------------------------------------------------------------------- */
 const NAV = [
-  { group: null, items: [
-    { id:'dashboard', label:'Dashboard', icon:'dashboard' }
-  ]},
-  { group: 'Envanter', items: [
-    { id:'urunler', label:'Ürünler', icon:'package' },
-    { id:'stok',    label:'Stok',    icon:'boxes' }
-  ]},
-  { group: 'İşlemler', items: [
-    { id:'satislar',  label:'Satışlar',  icon:'cart' },
-    { id:'alislar',   label:'Alışlar',   icon:'truck' },
-    { id:'musteriler',label:'Müşteriler',icon:'users' },
-    { id:'faturalar', label:'Faturalar', icon:'invoice' }
-  ]},
-  { group: 'Finans', items: [
-    { id:'tahsilatlar', label:'Tahsilatlar',   icon:'wallet' },
-    { id:'borc',        label:'Borç / Alacak', icon:'scale' },
-    { id:'raporlar',    label:'Raporlar',      icon:'chart' }
-  ]},
-  { group: 'Yönetim', items: [
-    { id:'personel', label:'Personel', icon:'staff' },
-    { id:'ayarlar',  label:'Ayarlar',  icon:'settings' }
-  ]}
+  { group:null, items:[ { id:'dashboard', key:'nav_dashboard', icon:'dashboard' } ] },
+  { group:'grp_inventory', items:[
+    { id:'urunler', key:'nav_products', icon:'package' },
+    { id:'stok',    key:'nav_stock',    icon:'boxes' } ] },
+  { group:'grp_operations', items:[
+    { id:'satislar',   key:'nav_sales',     icon:'cart' },
+    { id:'alislar',    key:'nav_purchases', icon:'truck' },
+    { id:'musteriler', key:'nav_customers', icon:'users' },
+    { id:'faturalar',  key:'nav_invoices',  icon:'invoice' } ] },
+  { group:'grp_finance', items:[
+    { id:'tahsilatlar', key:'nav_payments', icon:'wallet' },
+    { id:'borc',        key:'nav_debt',     icon:'scale' },
+    { id:'raporlar',    key:'nav_reports',  icon:'chart' } ] },
+  { group:'grp_management', items:[
+    { id:'personel', key:'nav_staff',    icon:'staff' },
+    { id:'ayarlar',  key:'nav_settings', icon:'settings' } ] }
 ];
 
 const PAGE_META = {
-  dashboard:  { title:'Dashboard',     crumb:'Genel bakış' },
-  urunler:    { title:'Ürünler',       crumb:'Envanter' },
-  stok:       { title:'Stok',          crumb:'Envanter' },
-  satislar:   { title:'Satışlar',      crumb:'İşlemler' },
-  alislar:    { title:'Alışlar',       crumb:'İşlemler' },
-  musteriler: { title:'Müşteriler',    crumb:'İşlemler' },
-  musteri:    { title:'Müşteri Detayı',crumb:'İşlemler · Müşteriler' },
-  faturalar:  { title:'Faturalar',     crumb:'İşlemler' },
-  tahsilatlar:{ title:'Tahsilatlar',   crumb:'Finans' },
-  borc:       { title:'Borç / Alacak', crumb:'Finans' },
-  raporlar:   { title:'Raporlar',      crumb:'Finans' },
-  personel:   { title:'Personel',      crumb:'Yönetim' },
-  ayarlar:    { title:'Ayarlar',       crumb:'Yönetim' }
+  dashboard:  { title:'nav_dashboard', crumb:'crumb_overview' },
+  urunler:    { title:'nav_products',  crumb:'grp_inventory' },
+  stok:       { title:'nav_stock',     crumb:'grp_inventory' },
+  satislar:   { title:'nav_sales',     crumb:'grp_operations' },
+  alislar:    { title:'nav_purchases', crumb:'grp_operations' },
+  musteriler: { title:'nav_customers', crumb:'grp_operations' },
+  musteri:    { title:'page_customer', crumb:'nav_customers' },
+  faturalar:  { title:'nav_invoices',  crumb:'grp_operations' },
+  tahsilatlar:{ title:'nav_payments',  crumb:'grp_finance' },
+  borc:       { title:'nav_debt',      crumb:'grp_finance' },
+  raporlar:   { title:'nav_reports',   crumb:'grp_finance' },
+  personel:   { title:'nav_staff',     crumb:'grp_management' },
+  ayarlar:    { title:'nav_settings',  crumb:'grp_management' }
 };
 
 /* --------------------------------------------------------------------------
-   Küçük görünüm yardımcıları
+   Görünüm yardımcıları
    -------------------------------------------------------------------------- */
 
 function badge(tone, label, ic) {
   return '<span class="badge badge-' + tone + '">' +
     (ic ? icon(ic) : '<span class="bullet"></span>') + esc(label) + '</span>';
 }
-
-function statusBadge(st) {
-  return badge(st.tone, st.label, st.icon);
-}
+function statusBadge(st) { return badge(st.tone, st.label, st.icon); }
 
 /**
- * Tablo üretici.
- * cols: [{key,label,align,render,cls}]  — ilk sütun mobilde kart başlığı olur.
- * Her hücre data-label taşır: 720px altında tablo kart görünümüne döner.
+ * Tablo üretici. İlk sütun mobilde kart başlığı olur; her hücre data-label
+ * taşır, 720px altında tablo kart görünümüne döner.
  */
 function table(cols, rows, opts) {
   opts = opts || {};
   if (!rows.length) {
-    return '<div class="empty">' + icon('archive') + '<p>' + (opts.empty || 'Kayıt bulunamadı.') + '</p></div>';
+    return '<div class="empty">' + icon('archive') + '<p>' + esc(opts.empty || t('e_no_record')) + '</p></div>';
   }
-
   const head = cols.map((c) =>
     '<th class="' + (c.align === 'right' ? 'right' : '') + '">' + esc(c.label) + '</th>').join('');
 
@@ -79,24 +66,19 @@ function table(cols, rows, opts) {
       if (c.align === 'right') cls.push('right');
       if (ci === 0) cls.push('card-title-cell');
       if (c.key === '_actions') cls.push('actions-cell');
-      if (c.cls) cls.push(c.cls);
-      return '<td class="' + cls.join(' ') + '" data-label="' + esc(c.label) + '">' +
-             c.render(r, ri) + '</td>';
+      return '<td class="' + cls.join(' ') + '" data-label="' + esc(c.label) + '">' + c.render(r, ri) + '</td>';
     }).join('');
-    return '<tr' + (opts.rowAttr ? ' ' + opts.rowAttr(r) : '') + '>' + tds + '</tr>';
+    return '<tr>' + tds + '</tr>';
   }).join('');
 
   return '<div class="table-wrap"><table class="data as-cards' + (opts.wide ? ' wide' : '') +
-         '"><thead><tr>' + head +
-         '</tr></thead><tbody>' + body + '</tbody></table></div>';
+         '"><thead><tr>' + head + '</tr></thead><tbody>' + body + '</tbody></table></div>';
 }
 
 function statCard(o) {
   const trend = o.trend
-    ? '<span class="trend ' + o.trend.tone + '">' +
-      (o.trend.icon ? icon(o.trend.icon) : '') + esc(o.trend.text) + '</span>'
-    : '';
-  const right = o.spark || '';
+    ? '<span class="trend ' + o.trend.tone + '">' + (o.trend.icon ? icon(o.trend.icon) : '') +
+      o.trend.text + '</span>' : '';
   return '<article class="stat">' +
     '<div class="stat-top">' +
       '<span class="stat-icon ' + (o.tone || '') + '">' + icon(o.icon) + '</span>' +
@@ -107,20 +89,17 @@ function statCard(o) {
     '</div>' +
     (o.meter ? o.meter :
       '<div class="stat-foot">' +
-        '<div style="min-width:0">' + trend +
-          '<div class="stat-desc">' + o.desc + '</div>' +
-        '</div>' + right +
+        '<div style="min-width:0">' + trend + '<div class="stat-desc">' + o.desc + '</div></div>' +
+        (o.spark || '') +
       '</div>') +
   '</article>';
 }
 
-/** Ödenen / kalan oranını gösteren mini ölçek (grafik yerine oran göstergesi). */
-function meter(paidRatio, leftLabel, rightLabel, tone) {
-  const p = Math.max(0, Math.min(1, paidRatio));
+function meter(ratio, leftLabel, rightLabel, tone) {
+  const p = Math.max(0, Math.min(1, ratio));
   return '<div class="stat-foot"><div class="meter">' +
-    '<div class="meter-track">' +
-      '<div class="meter-fill" style="width:' + (p * 100).toFixed(1) + '%;background:var(--' + (tone || 'success') + ')"></div>' +
-    '</div>' +
+    '<div class="meter-track"><div class="meter-fill" style="width:' + (p * 100).toFixed(1) +
+      '%;background:var(--' + (tone || 'success') + ')"></div></div>' +
     '<div class="meter-legend"><span>' + leftLabel + '</span><span>' + rightLabel + '</span></div>' +
   '</div></div>';
 }
@@ -129,7 +108,7 @@ function customerLink(c) {
   return '<a href="#/musteri/' + c.id + '" class="cell-main">' +
     '<span class="avatar">' + esc(initials(c)) + '</span>' +
     '<span style="min-width:0"><span class="cell-title">' + esc(customerName(c)) + '</span>' +
-    '<span class="cell-sub" style="display:block">' + esc(c.type) + '</span></span></a>';
+    '<span class="cell-sub" style="display:block">' + esc(typeLabel(c.type)) + '</span></span></a>';
 }
 
 function actionBtn(ic, title, attrs) {
@@ -138,17 +117,67 @@ function actionBtn(ic, title, attrs) {
 }
 
 /* --------------------------------------------------------------------------
-   Sayfalar
+   Ortak satış tablosu
    -------------------------------------------------------------------------- */
+function salesTable(rows, compact) {
+  if (compact) {
+    return table([
+      { key:'no', label:t('c_invoice'), render:(s) =>
+        '<span class="invoice-no">' + esc(s.no) + '</span>' +
+        '<span class="cell-sub" style="display:block;white-space:normal">' +
+        esc(customerName(customerById(s.customerId))) + '</span>' },
+      { key:'date', label:t('c_date'), render:(s) => '<span class="num">' + fmtDate(s.date) + '</span>' },
+      { key:'total', label:t('c_total'), align:'right', render:(s) =>
+        '<span class="num strong">' + money(saleTotals(s).total) + '</span>' },
+      { key:'rem', label:t('c_remaining'), align:'right', render:(s) => {
+          const x = saleTotals(s);
+          return '<span class="num ' + (x.remaining > 0 ? 'text-danger' : 'text-dim') + '">' +
+                 money(x.remaining) + '</span>'; } },
+      { key:'st', label:t('c_status'), render:(s) => statusBadge(saleStatus(s)) }
+    ], rows, { empty:t('e_no_sales') });
+  }
+
+  return table([
+    { key:'no', label:t('c_invoice_no'), render:(s) =>
+      '<a href="#/musteri/' + s.customerId + '"><span class="invoice-no">' + esc(s.no) + '</span>' +
+      '<span class="cell-sub" style="display:block">' + esc(customerName(customerById(s.customerId))) +
+      '</span></a>' },
+    { key:'date', label:t('c_date'), render:(s) => '<span class="num">' + fmtDate(s.date) + '</span>' },
+    { key:'prod', label:t('c_product'), render:(s) => {
+        const first = productById(s.items[0].pid);
+        return '<span style="display:block">' +
+          '<span class="cell-title" style="font-weight:500">' + esc(first ? first.name : '—') + '</span>' +
+          (s.items.length > 1 ? '<span class="cell-sub" style="display:block">+' +
+            num(s.items.length - 1) + ' ' + esc(t('c_lines')) + '</span>' : '') + '</span>'; } },
+    { key:'qty', label:t('c_qty'), align:'right', render:(s) =>
+      '<span class="num">' + num(s.items.reduce((a, i) => a + i.qty, 0)) + '</span>' },
+    { key:'total', label:t('c_total'), align:'right', render:(s) =>
+      '<span class="num strong">' + money(saleTotals(s).total) + '</span>' },
+    { key:'paid', label:t('c_paid'), align:'right', render:(s) => {
+        const x = saleTotals(s);
+        return '<span class="num ' + (x.paid > 0 ? 'text-success' : 'text-dim') + '">' + money(x.paid) + '</span>'; } },
+    { key:'rem', label:t('c_remaining'), align:'right', render:(s) => {
+        const x = saleTotals(s);
+        return '<span class="num ' + (x.remaining > 0 ? 'text-danger' : 'text-dim') + '">' +
+               money(x.remaining) + '</span>'; } },
+    { key:'st', label:t('c_status'), render:(s) => statusBadge(saleStatus(s)) },
+    { key:'_actions', label:t('c_action'), align:'right', render:(s) =>
+      '<div class="actions">' +
+        '<button class="btn btn-info btn-sm" data-act="doc-invoice" data-id="' + s.id + '">' +
+        icon('invoice') + t('btn_invoice') + '</button></div>' }
+  ], rows, { empty:t('e_no_sales'), wide:true });
+}
+
+/* ==========================================================================
+   Sayfalar
+   ========================================================================== */
 
 const PAGES = {};
 
 /* --- Dashboard --- */
 PAGES.dashboard = function () {
   const k = kpis();
-  const series12 = monthlySeries(12);
-  const saleTrend = series12.map((m) => m.sale);
-  const profitTrend = series12.map((m) => m.profit);
+  const s12 = monthlySeries(12);
   const investTrend = (function () {
     const out = [];
     for (let back = 11; back >= 0; back--) {
@@ -164,119 +193,115 @@ PAGES.dashboard = function () {
   const openBal = openBalances();
   const lateCount = SALES.filter((s) => saleStatus(s).key === 'late').length;
 
-  /* 6 KPI kartı: küçük ikon + büyük rakam + açıklama + mini gösterge */
   const stats = [
     statCard({
-      icon:'truck', tone:'info', label:'Toplam Yatırım', value: money(k.invest),
-      desc:'Tedarikçi alışlarının toplam maliyeti',
-      trend:{ tone:'flat', text:PURCHASES.length + ' alış', icon:'archive' },
-      spark: sparkline(investTrend, '#3B82F6')
+      icon:'truck', tone:'info', label:t('kpi_invest'), value:money(k.invest),
+      desc:esc(t('kpi_invest_d')),
+      trend:{ tone:'flat', text:esc(t('n_purchases', { n:num(PURCHASES.length) })), icon:'archive' },
+      spark:sparkline(investTrend, '#3B82F6')
     }),
     statCard({
-      icon:'cart', tone:'accent', label:'Toplam Satış', value: money(k.sales),
-      desc:'Son 12 ay · geçen ayın aynı dönemine göre',
+      icon:'cart', tone:'accent', label:t('kpi_sales'), value:money(k.sales),
+      desc:esc(t('kpi_sales_d')),
       trend: saleMoM === null ? null : { tone: saleMoM >= 0 ? 'up' : 'down',
-              text: pct(saleMoM) + ' bu ay', icon: saleMoM >= 0 ? 'trendUp' : 'trendDown' },
-      spark: sparkline(saleTrend, SERIES_1)
+        text: t('this_month', { p: pct(saleMoM) }), icon: saleMoM >= 0 ? 'trendUp' : 'trendDown' },
+      spark:sparkline(s12.map((m) => m.sale), SERIES_1)
     }),
     statCard({
-      icon:'coins', tone:'success', label:'Gerçekleşen Kâr', value: money(k.profit),
-      desc:'Satış − maliyet · marj %' + (k.margin * 100).toFixed(1).replace('.', ','),
+      icon:'coins', tone:'success', label:t('kpi_profit'), value:money(k.profit),
+      desc:esc(t('kpi_profit_d', { n: pctPlain(k.margin * 100, 1) })),
       trend: profitMoM === null ? null : { tone: profitMoM >= 0 ? 'up' : 'down',
-              text: pct(profitMoM) + ' bu ay', icon: profitMoM >= 0 ? 'trendUp' : 'trendDown' },
-      spark: sparkline(profitTrend, SERIES_2)
+        text: t('this_month', { p: pct(profitMoM) }), icon: profitMoM >= 0 ? 'trendUp' : 'trendDown' },
+      spark:sparkline(s12.map((m) => m.profit), SERIES_2)
     }),
     statCard({
-      icon:'boxes', label:'Toplam Stok', value: num(k.stockUnits) + ' <span style="font-size:15px;color:var(--text-3);font-weight:600">adet</span>',
-      desc:'Depo değeri ' + money(k.stockValue),
-      meter: meter(
-        1 - (k.lowCount / PRODUCTS.length),
-        '<span class="text-muted">' + (PRODUCTS.length - k.lowCount) + ' ürün yeterli</span>',
-        '<span class="text-warning">' + k.lowCount + ' kritik</span>',
-        'success'
-      )
+      icon:'boxes', label:t('kpi_stock'),
+      value: num(k.stockUnits) + ' <span style="font-size:15px;color:var(--text-3);font-weight:600">' +
+             esc(t('unit_pcs')) + '</span>',
+      desc:esc(t('kpi_stock_d', { v: money(k.stockValue) })),
+      meter: meter(1 - (k.lowCount / PRODUCTS.length),
+        '<span class="text-muted">' + esc(t('n_products_ok', { n:num(PRODUCTS.length - k.lowCount) })) + '</span>',
+        '<span class="text-warning">' + esc(t('n_critical', { n:num(k.lowCount) })) + '</span>', 'success')
     }),
     statCard({
-      icon:'alert', tone:'warning', label:'Azalan Ürünler', value: String(k.lowCount),
-      desc:'Minimum stok seviyesinin altında',
-      trend:{ tone:'warn', text: k.outOfRisk + ' ürün tükenmek üzere', icon:'alert' },
-      spark:''
+      icon:'alert', tone:'warning', label:t('kpi_low'), value:num(k.lowCount),
+      desc:esc(t('kpi_low_d')),
+      trend:{ tone:'warn', text:esc(t('n_running_out', { n:num(k.outOfRisk) })), icon:'alert' }
     }),
     statCard({
-      icon:'staff', tone:'accent', label:'Aktif Personel', value: String(k.staffCount),
-      desc: k.staffTotal + ' kayıtlı personelin ' + k.staffCount + ' tanesi aktif',
+      icon:'staff', tone:'accent', label:t('kpi_staff'), value:num(k.staffCount),
+      desc:esc(t('kpi_staff_d', { a:num(k.staffCount), t:num(k.staffTotal) })),
       meter: meter(k.staffCount / k.staffTotal,
-        '<span class="text-muted">Aktif ' + k.staffCount + '</span>',
-        '<span class="text-dim">Pasif ' + (k.staffTotal - k.staffCount) + '</span>', 'accent')
+        '<span class="text-muted">' + esc(t('active_n', { n:num(k.staffCount) })) + '</span>',
+        '<span class="text-dim">' + esc(t('passive_n', { n:num(k.staffTotal - k.staffCount) })) + '</span>', 'accent')
     })
   ].join('');
 
-  /* uyarı şeridi — yalnızca gerçekten sorun varsa */
   let alerts = '';
   if (lateCount || k.lowCount) {
     const parts = [];
     if (lateCount) parts.push(
       '<div class="alert alert-danger">' + icon('alert') +
-      '<div><strong>' + lateCount + ' fatura gecikmiş durumda</strong>' +
-      '<span class="alert-text">Vadesi geçen toplam alacak ' +
-      money(openBal.reduce((s, r) => s + r.sum.overdue, 0)) +
-      '. <a href="#/borc" style="color:var(--danger);text-decoration:underline">Borç / Alacak</a> sayfasından takip edin.</span></div></div>');
+      '<div><strong>' + esc(t('al_late_title', { n:num(lateCount) })) + '</strong>' +
+      '<span class="alert-text">' +
+        esc(t('al_late_text', { v: money(openBal.reduce((s, r) => s + r.sum.overdue, 0)) })) + ' ' +
+        t('al_late_link', { l:'<a href="#/borc" style="color:var(--danger);text-decoration:underline">' +
+          esc(t('nav_debt')) + '</a>' }) +
+      '</span></div></div>');
     if (k.lowCount) parts.push(
       '<div class="alert alert-warning">' + icon('alert') +
-      '<div><strong>' + k.lowCount + ' üründe stok kritik seviyede</strong>' +
+      '<div><strong>' + esc(t('al_low_title', { n:num(k.lowCount) })) + '</strong>' +
       '<span class="alert-text">' + k.low.slice(0, 3).map((p) => esc(p.name)).join(', ') +
-      (k.lowCount > 3 ? ' ve ' + (k.lowCount - 3) + ' ürün daha' : '') +
-      '. <a href="#/stok" style="color:var(--warning);text-decoration:underline">Stok</a> sayfasına gidin.</span></div></div>');
+      (k.lowCount > 3 ? ' ' + esc(t('al_low_more', { n:num(k.lowCount - 3) })) : '') + '. ' +
+      t('al_low_link', { l:'<a href="#/stok" style="color:var(--warning);text-decoration:underline">' +
+        esc(t('nav_stock')) + '</a>' }) +
+      '</span></div></div>');
     alerts = '<div class="grid grid-2" style="margin-bottom:16px">' + parts.join('') + '</div>';
   }
-
-  const recent = SALES.slice(0, 6);
 
   return {
     html:
       '<div class="page-head">' +
-        '<div><h2>Genel Bakış</h2>' +
-        '<p class="sub">' + fmtDate(TODAY) + ' · son 12 ayın özeti</p></div>' +
+        '<div><h2>' + esc(t('p_overview')) + '</h2>' +
+        '<p class="sub">' + esc(t('p_overview_sub', { d: fmtDate(TODAY) })) + '</p></div>' +
         '<div class="head-actions">' +
-          '<button class="btn btn-ghost" data-act="export">' + icon('download') + 'Dışa Aktar</button>' +
-          '<button class="btn btn-primary" data-act="new-sale">' + icon('plus') + 'Yeni Satış</button>' +
+          '<button class="btn btn-ghost" data-act="export">' + icon('download') + t('btn_export') + '</button>' +
+          '<button class="btn btn-primary" data-act="new-sale">' + icon('plus') + t('btn_new_sale') + '</button>' +
         '</div>' +
-      '</div>' +
-
-      alerts +
+      '</div>' + alerts +
 
       '<div class="grid grid-stats" style="margin-bottom:16px">' + stats + '</div>' +
 
       '<div class="grid grid-main" style="margin-bottom:16px">' +
         '<section class="card">' +
           '<div class="card-head">' +
-            '<div><h3>Satış ve Kâr Eğilimi</h3><p class="sub">Son 12 ay · aylık toplam</p></div>' +
+            '<div><h3>' + esc(t('h_trend')) + '</h3><p class="sub">' + esc(t('h_trend_sub')) + '</p></div>' +
             '<div class="head-actions chart-legend">' +
-              '<span class="legend-key"><span class="legend-swatch" style="background:' + SERIES_1 + '"></span>Satış</span>' +
-              '<span class="legend-key"><span class="legend-swatch" style="background:' + SERIES_2 + '"></span>Kâr</span>' +
+              '<span class="legend-key"><span class="legend-swatch" style="background:' + SERIES_1 + '"></span>' + esc(t('series_sales')) + '</span>' +
+              '<span class="legend-key"><span class="legend-swatch" style="background:' + SERIES_2 + '"></span>' + esc(t('c_profit')) + '</span>' +
             '</div>' +
           '</div>' +
           '<div class="card-body"><div id="trendChart"></div></div>' +
         '</section>' +
 
         '<section class="card">' +
-          '<div class="card-head"><div><h3>Tahsilat Durumu</h3>' +
-          '<p class="sub">Toplam ciroya göre</p></div></div>' +
+          '<div class="card-head"><div><h3>' + esc(t('h_collection')) + '</h3>' +
+          '<p class="sub">' + esc(t('h_collection_sub')) + '</p></div></div>' +
           '<div class="card-body">' +
-            '<div style="font-size:29px;font-weight:700;letter-spacing:-.03em;font-variant-numeric:tabular-nums">' +
+            '<div style="font-size:26px;font-weight:700;letter-spacing:-.03em;font-variant-numeric:tabular-nums">' +
               money(k.paid) + '</div>' +
-            '<p class="text-dim" style="font-size:12px;margin-top:2px">tahsil edildi · toplam ' + money(k.sales) + '</p>' +
+            '<p class="text-dim" style="font-size:12px;margin-top:2px">' +
+              esc(t('f_collected_of', { v: money(k.sales) })) + '</p>' +
             '<div class="meter" style="margin-top:16px">' +
-              '<div class="meter-track" style="height:8px">' +
-                '<div class="meter-fill" style="width:' + ((k.paid / k.sales) * 100).toFixed(1) + '%;background:var(--success)"></div>' +
-              '</div>' +
+              '<div class="meter-track" style="height:8px"><div class="meter-fill" style="width:' +
+                ((k.paid / k.sales) * 100).toFixed(1) + '%;background:var(--success)"></div></div>' +
               '<div class="meter-legend">' +
-                '<span class="text-success">Ödenen %' + ((k.paid / k.sales) * 100).toFixed(0) + '</span>' +
-                '<span class="text-danger">Kalan ' + money(k.receivable) + '</span>' +
+                '<span class="text-success">' + esc(t('f_paid_pct', { n: pctPlain((k.paid / k.sales) * 100) })) + '</span>' +
+                '<span class="text-danger">' + esc(t('f_remaining_v', { v: money(k.receivable) })) + '</span>' +
               '</div>' +
             '</div>' +
             '<div style="border-top:1px solid var(--border);margin-top:18px;padding-top:16px">' +
-              '<h4 style="font-size:12.5px;color:var(--text-2);margin-bottom:13px">Kategori Bazlı Ciro</h4>' +
+              '<h4 style="font-size:12.5px;color:var(--text-2);margin-bottom:13px">' + esc(t('h_by_category')) + '</h4>' +
               '<div id="catBars"></div>' +
             '</div>' +
           '</div>' +
@@ -285,25 +310,25 @@ PAGES.dashboard = function () {
 
       '<div class="grid grid-main">' +
         '<section class="card">' +
-          '<div class="card-head"><div><h3>Son Satışlar</h3>' +
-          '<p class="sub">En güncel 6 işlem</p></div>' +
-          '<div class="head-actions"><a class="btn btn-ghost btn-sm" href="#/satislar">Tümü' + icon('chevronRight') + '</a></div></div>' +
-          '<div class="card-body flush">' + salesTable(recent, true) + '</div>' +
+          '<div class="card-head"><div><h3>' + esc(t('h_recent_sales')) + '</h3>' +
+          '<p class="sub">' + esc(t('h_recent_sub')) + '</p></div>' +
+          '<div class="head-actions"><a class="btn btn-ghost btn-sm" href="#/satislar">' +
+            esc(t('btn_all')) + icon('chevronRight') + '</a></div></div>' +
+          '<div class="card-body flush">' + salesTable(SALES.slice(0, 6), true) + '</div>' +
         '</section>' +
 
         '<section class="card">' +
-          '<div class="card-head"><div><h3>Son Tahsilatlar</h3>' +
-          '<p class="sub">Kasaya giren son hareketler</p></div></div>' +
+          '<div class="card-head"><div><h3>' + esc(t('h_recent_pay')) + '</h3>' +
+          '<p class="sub">' + esc(t('h_recent_pay_sub')) + '</p></div></div>' +
           '<div class="card-body flush"><div class="timeline">' +
             PAYMENTS.slice(0, 6).map((p) => {
-              const c = customerById(p.customerId);
-              const s = saleById(p.saleId);
+              const c = customerById(p.customerId), s = saleById(p.saleId);
               return '<div class="tl-item">' +
                 '<div class="tl-rail"><span class="tl-dot success">' + icon('handCoins') + '</span></div>' +
                 '<div class="tl-body"><div class="tl-row">' +
                   '<span class="tl-title">' + esc(customerName(c)) + '</span>' +
                   '<span class="tl-amount text-success">' + signedMoney(p.amount) + '</span>' +
-                '</div><p class="tl-meta">' + fmtDate(p.date) + ' · ' + esc(p.method) +
+                '</div><p class="tl-meta">' + fmtDate(p.date) + ' · ' + esc(methodLabel(p.method)) +
                 (s ? ' · ' + esc(s.no) : '') + '</p></div></div>';
             }).join('') +
           '</div></div>' +
@@ -312,63 +337,16 @@ PAGES.dashboard = function () {
 
     mount: function () {
       lineChart(document.getElementById('trendChart'), {
-        data: series12,
-        series: [
-          { key:'sale',   name:'Satış', color: SERIES_1 },
-          { key:'profit', name:'Kâr',   color: SERIES_2 }
-        ],
-        aria:'Son 12 ayın satış ve kâr eğilimi'
+        data: s12,
+        series: [{ key:'sale', name:t('series_sales'), color:SERIES_1 },
+                 { key:'profit', name:t('c_profit'), color:SERIES_2 }],
+        aria: t('h_trend')
       });
-      hBars(document.getElementById('catBars'), categoryTotals().slice(0, 5));
+      hBars(document.getElementById('catBars'),
+        categoryTotals().slice(0, 5).map((r) => ({ name: catLabel(r.key), value: r.value })));
     }
   };
 };
-
-/* --- ortak satış tablosu ---
-   compact: dar sütunlarda (dashboard, müşteri detayı) yalnızca kritik sütunlar. */
-function salesTable(rows, compact) {
-  if (compact) {
-    return table([
-      { key:'no', label:'Fatura', render:(s) =>
-        '<span class="invoice-no">' + esc(s.no) + '</span>' +
-        '<span class="cell-sub" style="display:block;white-space:normal">' +
-        esc(customerName(customerById(s.customerId))) + '</span>' },
-      { key:'date', label:'Tarih', render:(s) => '<span class="num">' + fmtDate(s.date) + '</span>' },
-      { key:'total', label:'Toplam', align:'right', render:(s) =>
-        '<span class="num strong">' + money(saleTotals(s).total) + '</span>' },
-      { key:'rem', label:'Kalan', align:'right', render:(s) => {
-          const t = saleTotals(s);
-          return '<span class="num ' + (t.remaining > 0 ? 'text-danger' : 'text-dim') + '">' +
-                 money(t.remaining) + '</span>'; } },
-      { key:'st', label:'Durum', render:(s) => statusBadge(saleStatus(s)) }
-    ], rows, { empty:'Bu aralıkta satış yok.' });
-  }
-
-  return table([
-    { key:'no',    label:'Fatura No', render:(s) =>
-      '<a href="#/musteri/' + s.customerId + '"><span class="invoice-no">' + esc(s.no) + '</span>' +
-      '<span class="cell-sub" style="display:block">' + esc(customerName(customerById(s.customerId))) + '</span></a>' },
-    { key:'date',  label:'Tarih', render:(s) => '<span class="num">' + fmtDate(s.date) + '</span>' },
-    { key:'prod',  label:'Ürün', render:(s) => {
-        const first = productById(s.items[0].pid);
-        /* iki satır tek sarmalayıcıda: mobil kart görünümünde yan yana kaymasın */
-        return '<span style="display:block;text-align:inherit">' +
-          '<span class="cell-title" style="font-weight:500">' + esc(first ? first.name : '—') + '</span>' +
-          (s.items.length > 1 ? '<span class="cell-sub" style="display:block">+' + (s.items.length - 1) +
-            ' kalem daha</span>' : '') + '</span>'; } },
-    { key:'qty',   label:'Adet', align:'right', render:(s) =>
-      '<span class="num">' + s.items.reduce((a, i) => a + i.qty, 0) + '</span>' },
-    { key:'total', label:'Toplam', align:'right', render:(s) =>
-      '<span class="num strong">' + money(saleTotals(s).total) + '</span>' },
-    { key:'paid',  label:'Ödenen', align:'right', render:(s) => {
-        const t = saleTotals(s);
-        return '<span class="num ' + (t.paid > 0 ? 'text-success' : 'text-dim') + '">' + money(t.paid) + '</span>'; } },
-    { key:'rem',   label:'Kalan', align:'right', render:(s) => {
-        const t = saleTotals(s);
-        return '<span class="num ' + (t.remaining > 0 ? 'text-danger' : 'text-dim') + '">' + money(t.remaining) + '</span>'; } },
-    { key:'st',    label:'Durum', render:(s) => statusBadge(saleStatus(s)) }
-  ], rows, { empty:'Bu aralıkta satış yok.', wide:true });
-}
 
 /* --- Satışlar --- */
 PAGES.satislar = function () {
@@ -378,33 +356,34 @@ PAGES.satislar = function () {
   ['paid','partial','pending','late'].forEach((k) => {
     counts[k] = SALES.filter((s) => saleStatus(s).key === k).length;
   });
-  const totals = rows.reduce((a, s) => {
-    const t = saleTotals(s);
-    a.total += t.total; a.paid += t.paid; a.rem += t.remaining; return a;
+  const tot = rows.reduce((a, s) => {
+    const x = saleTotals(s); a.total += x.total; a.paid += x.paid; a.rem += x.remaining; return a;
   }, { total:0, paid:0, rem:0 });
+
+  const segs = [['all', t('btn_all')], ['paid', t('st_paid')], ['partial', t('st_partial')],
+                ['pending', t('st_pending')], ['late', t('st_late')]];
 
   return {
     html:
-      '<div class="page-head"><div><h2>Satışlar</h2>' +
-      '<p class="sub">' + rows.length + ' işlem · ' + money(totals.total) + ' ciro</p></div>' +
+      '<div class="page-head"><div><h2>' + esc(t('nav_sales')) + '</h2>' +
+      '<p class="sub">' + esc(t('p_sales_sub', { n:num(rows.length), v:money(tot.total) })) + '</p></div>' +
       '<div class="head-actions">' +
-        '<button class="btn btn-ghost" data-act="export">' + icon('download') + 'Dışa Aktar</button>' +
-        '<button class="btn btn-primary" data-act="new-sale">' + icon('plus') + 'Yeni Satış</button>' +
+        '<button class="btn btn-ghost" data-act="export">' + icon('download') + t('btn_export') + '</button>' +
+        '<button class="btn btn-primary" data-act="new-sale">' + icon('plus') + t('btn_new_sale') + '</button>' +
       '</div></div>' +
 
       '<div class="grid grid-3" style="margin-bottom:16px">' +
-        statCard({ icon:'cart', tone:'accent', label:'Seçili Ciro', value: money(totals.total),
-                   desc: rows.length + ' fatura', trend:null, spark:'' }) +
-        statCard({ icon:'handCoins', tone:'success', label:'Tahsil Edilen', value: money(totals.paid),
-                   desc:'Kasaya giren tutar', trend:null, spark:'' }) +
-        statCard({ icon:'scale', tone:'danger', label:'Açık Bakiye', value: money(totals.rem),
-                   desc:'Henüz tahsil edilmedi', trend:null, spark:'' }) +
+        statCard({ icon:'cart', tone:'accent', label:t('k_sel_revenue'), value:money(tot.total),
+                   desc:esc(t('k_n_invoices', { n:num(rows.length) })) }) +
+        statCard({ icon:'handCoins', tone:'success', label:t('k_collected'), value:money(tot.paid),
+                   desc:esc(t('k_collected_d')) }) +
+        statCard({ icon:'scale', tone:'danger', label:t('k_open_balance'), value:money(tot.rem),
+                   desc:esc(t('k_not_collected')) }) +
       '</div>' +
 
       '<div class="toolbar"><div class="seg" data-seg="filter">' +
-        [['all','Tümü'],['paid','Tamamlandı'],['partial','Kısmi'],['pending','Bekliyor'],['late','Gecikti']]
-          .map(([k, l]) => '<button data-val="' + k + '"' + (filter === k ? ' class="on"' : '') + '>' +
-               l + ' <span class="num">(' + counts[k] + ')</span></button>').join('') +
+        segs.map(([k, l]) => '<button data-val="' + k + '"' + (filter === k ? ' class="on"' : '') + '>' +
+             esc(l) + ' <span class="num">(' + num(counts[k]) + ')</span></button>').join('') +
       '</div></div>' +
 
       '<section class="card"><div class="card-body flush">' + salesTable(rows) + '</div></section>'
@@ -413,66 +392,64 @@ PAGES.satislar = function () {
 
 /* --- Faturalar --- */
 PAGES.faturalar = function () {
-  const rows = SALES.slice();
   return {
     html:
-      '<div class="page-head"><div><h2>Faturalar</h2>' +
-      '<p class="sub">' + rows.length + ' fatura kesildi</p></div>' +
+      '<div class="page-head"><div><h2>' + esc(t('nav_invoices')) + '</h2>' +
+      '<p class="sub">' + esc(t('p_invoices_sub', { n:num(SALES.length) })) + '</p></div>' +
       '<div class="head-actions">' +
-        '<button class="btn btn-ghost" data-act="print">' + icon('printer') + 'Yazdır</button>' +
-        '<button class="btn btn-primary" data-act="new-invoice">' + icon('plus') + 'Fatura Oluştur</button>' +
+        '<button class="btn btn-primary" data-act="new-invoice">' + icon('plus') + t('btn_new_invoice') + '</button>' +
       '</div></div>' +
       '<section class="card"><div class="card-body flush">' +
       table([
-        { key:'no', label:'Fatura No', render:(s) => '<span class="invoice-no">' + esc(s.no) + '</span>' },
-        { key:'cust', label:'Müşteri', render:(s) => {
-            const c = customerById(s.customerId);
-            return '<a href="#/musteri/' + s.customerId + '" class="cell-title">' + esc(customerName(c)) + '</a>'; } },
-        { key:'date', label:'Tarih', render:(s) => '<span class="num">' + fmtDate(s.date) + '</span>' },
-        { key:'due', label:'Vade', render:(s) => {
-            const t = saleTotals(s);
-            const tone = dueTone(s.due, t.remaining);
-            return '<span class="num ' + (tone === 'danger' ? 'text-danger' : tone === 'warning' ? 'text-warning' : 'text-muted') + '">' +
-                   fmtDate(s.due) + '</span>'; } },
-        { key:'total', label:'Tutar', align:'right', render:(s) => '<span class="num strong">' + money(saleTotals(s).total) + '</span>' },
-        { key:'st', label:'Durum', render:(s) => statusBadge(saleStatus(s)) },
-        { key:'_actions', label:'İşlem', align:'right', render:(s) =>
+        { key:'no', label:t('c_invoice_no'), render:(s) => '<span class="invoice-no">' + esc(s.no) + '</span>' },
+        { key:'cust', label:t('c_customer'), render:(s) =>
+          '<a href="#/musteri/' + s.customerId + '" class="cell-title">' +
+          esc(customerName(customerById(s.customerId))) + '</a>' },
+        { key:'date', label:t('c_date'), render:(s) => '<span class="num">' + fmtDate(s.date) + '</span>' },
+        { key:'due', label:t('c_due'), render:(s) => {
+            const x = saleTotals(s), tone = dueTone(s.due, x.remaining);
+            return '<span class="num ' + (tone === 'danger' ? 'text-danger' : tone === 'warning' ? 'text-warning' : 'text-muted') +
+                   '">' + fmtDate(s.due) + '</span>'; } },
+        { key:'total', label:t('c_amount'), align:'right', render:(s) =>
+          '<span class="num strong">' + money(saleTotals(s).total) + '</span>' },
+        { key:'st', label:t('c_status'), render:(s) => statusBadge(saleStatus(s)) },
+        { key:'_actions', label:t('c_action'), align:'right', render:(s) =>
           '<div class="actions">' +
-            '<button class="btn btn-info btn-sm" data-act="invoice" data-id="' + s.id + '">' + icon('invoice') + 'Fatura</button>' +
-            actionBtn('printer','Yazdır',' data-act="print"') +
+            '<button class="btn btn-info btn-sm" data-act="doc-invoice" data-id="' + s.id + '">' +
+            icon('invoice') + t('btn_invoice') + '</button>' +
+            actionBtn('printer', t('btn_print'), ' data-act="doc-invoice" data-id="' + s.id + '"') +
           '</div>' }
-      ], rows, { wide:true }) + '</div></section>'
+      ], SALES, { wide:true }) + '</div></section>'
   };
 };
 
 /* --- Ürünler --- */
 PAGES.urunler = function () {
-  const rows = PRODUCTS.slice();
-  const totalValue = rows.reduce((s, p) => s + p.stock * p.buy, 0);
+  const totalValue = PRODUCTS.reduce((s, p) => s + p.stock * p.buy, 0);
   return {
     html:
-      '<div class="page-head"><div><h2>Ürünler</h2>' +
-      '<p class="sub">' + rows.length + ' ürün · envanter değeri ' + money(totalValue) + '</p></div>' +
+      '<div class="page-head"><div><h2>' + esc(t('nav_products')) + '</h2>' +
+      '<p class="sub">' + esc(t('p_products_sub', { n:num(PRODUCTS.length), v:money(totalValue) })) + '</p></div>' +
       '<div class="head-actions">' +
-        '<button class="btn btn-ghost" data-act="export">' + icon('download') + 'Dışa Aktar</button>' +
-        '<button class="btn btn-primary" data-act="new-product">' + icon('plus') + 'Yeni Ürün</button>' +
+        '<button class="btn btn-ghost" data-act="export">' + icon('download') + t('btn_export') + '</button>' +
+        '<button class="btn btn-primary" data-act="new-product">' + icon('plus') + t('btn_new_product') + '</button>' +
       '</div></div>' +
       '<section class="card"><div class="card-body flush">' +
       table([
-        { key:'name', label:'Ürün', render:(p) =>
+        { key:'name', label:t('c_product'), render:(p) =>
           '<span class="cell-main"><span class="thumb">' + icon('package') + '</span>' +
           '<span><span class="cell-title">' + esc(p.name) + '</span>' +
-          '<span class="cell-sub">' + esc(p.sku) + '</span></span></span>' },
-        { key:'cat', label:'Kategori', render:(p) => badge('muted', p.cat) },
-        { key:'buy', label:'Alış', align:'right', render:(p) => '<span class="num">' + money(p.buy) + '</span>' },
-        { key:'sell', label:'Satış', align:'right', render:(p) => '<span class="num strong">' + money(p.sell) + '</span>' },
-        { key:'margin', label:'Marj', align:'right', render:(p) =>
-          '<span class="num text-success">%' + (((p.sell - p.buy) / p.sell) * 100).toFixed(0) + '</span>' },
-        { key:'stock', label:'Stok', align:'right', render:(p) =>
-          '<span class="num ' + (p.stock <= p.min ? 'text-warning strong' : '') + '">' + p.stock + '</span>' },
-        { key:'_actions', label:'İşlem', align:'right', render:(p) =>
-          '<div class="actions">' + actionBtn('edit','Düzenle') + actionBtn('trash','Sil') + '</div>' }
-      ], rows) + '</div></section>'
+          '<span class="cell-sub">' + esc(p.sku) + ' · ' + esc(supplierName(p.sup)) + '</span></span></span>' },
+        { key:'cat', label:t('c_category'), render:(p) => badge('muted', catLabel(p.cat)) },
+        { key:'buy', label:t('c_buy'), align:'right', render:(p) => '<span class="num">' + money(p.buy) + '</span>' },
+        { key:'sell', label:t('c_sell'), align:'right', render:(p) => '<span class="num strong">' + money(p.sell) + '</span>' },
+        { key:'margin', label:t('c_margin'), align:'right', render:(p) =>
+          '<span class="num text-success">' + pctPlain(((p.sell - p.buy) / p.sell) * 100) + (lang() === 'fa' ? '٪' : '%') + '</span>' },
+        { key:'stock', label:t('c_stock'), align:'right', render:(p) =>
+          '<span class="num ' + (p.stock <= p.min ? 'text-warning strong' : '') + '">' + num(p.stock) + '</span>' },
+        { key:'_actions', label:t('c_action'), align:'right', render:() =>
+          '<div class="actions">' + actionBtn('edit', t('btn_edit')) + actionBtn('trash', t('btn_delete')) + '</div>' }
+      ], PRODUCTS, { wide:true }) + '</div></section>'
   };
 };
 
@@ -482,44 +459,43 @@ PAGES.stok = function () {
   const sorted = PRODUCTS.slice().sort((a, b) => (a.stock / a.min) - (b.stock / b.min));
   return {
     html:
-      '<div class="page-head"><div><h2>Stok Durumu</h2>' +
-      '<p class="sub">' + num(k.stockUnits) + ' adet · ' + money(k.stockValue) + ' depo değeri</p></div>' +
-      '<div class="head-actions">' +
-        '<button class="btn btn-primary" data-act="stock-in">' + icon('plus') + 'Stok Girişi</button>' +
-      '</div></div>' +
+      '<div class="page-head"><div><h2>' + esc(t('p_stock')) + '</h2>' +
+      '<p class="sub">' + esc(t('p_stock_sub', { n:num(k.stockUnits), v:money(k.stockValue) })) + '</p></div>' +
+      '<div class="head-actions"><button class="btn btn-primary" data-act="stock-in">' +
+      icon('plus') + t('btn_stock_in') + '</button></div></div>' +
 
       (k.lowCount ? '<div class="alert alert-warning" style="margin-bottom:16px">' + icon('alert') +
-        '<div><strong>' + k.lowCount + ' ürün minimum seviyenin altında</strong>' +
-        '<span class="alert-text">Tedarikçiye sipariş açmanız önerilir.</span></div></div>' : '') +
+        '<div><strong>' + esc(t('al_low_stock', { n:num(k.lowCount) })) + '</strong>' +
+        '<span class="alert-text">' + esc(t('al_low_stock_t')) + '</span></div></div>' : '') +
 
       '<div class="grid grid-3" style="margin-bottom:16px">' +
-        statCard({ icon:'boxes', label:'Toplam Adet', value: num(k.stockUnits), desc:'Tüm ürünlerin toplamı', spark:'' }) +
-        statCard({ icon:'euro', tone:'info', label:'Depo Değeri', value: money(k.stockValue), desc:'Alış maliyeti üzerinden', spark:'' }) +
-        statCard({ icon:'alert', tone:'warning', label:'Kritik Ürün', value: String(k.lowCount), desc:'Minimum stok altında', spark:'' }) +
+        statCard({ icon:'boxes', label:t('k_total_pcs'), value:num(k.stockUnits), desc:esc(t('k_total_pcs_d')) }) +
+        statCard({ icon:'euro', tone:'info', label:t('k_wh_value'), value:money(k.stockValue), desc:esc(t('k_wh_value_d')) }) +
+        statCard({ icon:'alert', tone:'warning', label:t('k_critical'), value:num(k.lowCount), desc:esc(t('k_critical_d')) }) +
       '</div>' +
 
       '<section class="card"><div class="card-body flush">' +
       table([
-        { key:'name', label:'Ürün', render:(p) =>
+        { key:'name', label:t('c_product'), render:(p) =>
           '<span class="cell-main"><span class="thumb">' + icon('package') + '</span>' +
           '<span><span class="cell-title">' + esc(p.name) + '</span>' +
-          '<span class="cell-sub">' + esc(p.sku) + ' · ' + esc(p.sup) + '</span></span></span>' },
-        { key:'stock', label:'Mevcut', align:'right', render:(p) => {
+          '<span class="cell-sub">' + esc(p.sku) + ' · ' + esc(supplierName(p.sup)) + '</span></span></span>' },
+        { key:'stock', label:t('c_current'), align:'right', render:(p) => {
             const ratio = Math.min(1, p.stock / (p.min * 2.5));
             const col = p.stock <= p.min ? 'var(--danger)' : p.stock <= p.min * 1.6 ? 'var(--warning)' : 'var(--success)';
-            return '<span class="num strong">' + p.stock + '</span>' +
-                   '<span class="stock-bar" style="margin-left:auto"><span style="width:' +
-                   (ratio * 100).toFixed(0) + '%;background:' + col + '"></span></span>'; } },
-        { key:'min', label:'Min.', align:'right', render:(p) => '<span class="num text-dim">' + p.min + '</span>' },
-        { key:'value', label:'Değer', align:'right', render:(p) => '<span class="num">' + money(p.stock * p.buy) + '</span>' },
-        { key:'st', label:'Durum', render:(p) =>
-          p.stock <= p.min ? badge('danger','Kritik','alert')
-          : p.stock <= p.min * 1.6 ? badge('warning','Azalıyor','clock')
-          : badge('success','Yeterli','check') },
-        { key:'_actions', label:'İşlem', align:'right', render:(p) =>
+            return '<span class="num strong">' + num(p.stock) + '</span>' +
+                   '<span class="stock-bar"><span style="width:' + (ratio * 100).toFixed(0) +
+                   '%;background:' + col + '"></span></span>'; } },
+        { key:'min', label:t('c_min'), align:'right', render:(p) => '<span class="num text-dim">' + num(p.min) + '</span>' },
+        { key:'value', label:t('c_value'), align:'right', render:(p) => '<span class="num">' + money(p.stock * p.buy) + '</span>' },
+        { key:'st', label:t('c_status'), render:(p) =>
+          p.stock <= p.min ? badge('danger', t('b_critical'), 'alert')
+          : p.stock <= p.min * 1.6 ? badge('warning', t('b_running_low'), 'clock')
+          : badge('success', t('b_sufficient'), 'check') },
+        { key:'_actions', label:t('c_action'), align:'right', render:() =>
           '<div class="actions"><button class="btn btn-ghost btn-sm" data-act="stock-in">' +
-          icon('plus') + 'Giriş</button></div>' }
-      ], sorted) + '</div></section>'
+          icon('plus') + t('btn_entry') + '</button></div>' }
+      ], sorted, { wide:true }) + '</div></section>'
   };
 };
 
@@ -529,66 +505,66 @@ PAGES.alislar = function () {
   const paid = PURCHASES.reduce((s, p) => s + p.paid, 0);
   return {
     html:
-      '<div class="page-head"><div><h2>Alışlar</h2>' +
-      '<p class="sub">' + PURCHASES.length + ' alış · ' + money(total) + ' toplam yatırım</p></div>' +
+      '<div class="page-head"><div><h2>' + esc(t('nav_purchases')) + '</h2>' +
+      '<p class="sub">' + esc(t('p_purchases_sub', { n:num(PURCHASES.length), v:money(total) })) + '</p></div>' +
       '<div class="head-actions"><button class="btn btn-primary" data-act="new-purchase">' +
-      icon('plus') + 'Yeni Alış</button></div></div>' +
+      icon('plus') + t('btn_new_purchase') + '</button></div></div>' +
 
       '<div class="grid grid-3" style="margin-bottom:16px">' +
-        statCard({ icon:'truck', tone:'info', label:'Toplam Yatırım', value: money(total), desc:'Tedarikçilere ödenen mal bedeli', spark:'' }) +
-        statCard({ icon:'check', tone:'success', label:'Ödenen', value: money(paid), desc:'Kapatılan tedarikçi bakiyesi', spark:'' }) +
-        statCard({ icon:'scale', tone:'danger', label:'Tedarikçi Borcu', value: money(total - paid), desc:'Ödenmeyi bekleyen tutar', spark:'' }) +
+        statCard({ icon:'truck', tone:'info', label:t('kpi_invest'), value:money(total), desc:esc(t('kpi_invest_d')) }) +
+        statCard({ icon:'check', tone:'success', label:t('k_paid_sup'), value:money(paid), desc:esc(t('k_paid_sup_d')) }) +
+        statCard({ icon:'scale', tone:'danger', label:t('k_sup_debt'), value:money(total - paid), desc:esc(t('k_sup_debt_d')) }) +
       '</div>' +
 
       '<section class="card"><div class="card-body flush">' +
       table([
-        { key:'no', label:'Alış No', render:(p) => '<span class="invoice-no">' + esc(p.no) + '</span>' },
-        { key:'sup', label:'Tedarikçi', render:(p) =>
+        { key:'no', label:t('c_purchase_no'), render:(p) => '<span class="invoice-no">' + esc(p.no) + '</span>' },
+        { key:'sup', label:t('c_supplier'), render:(p) =>
           '<span class="cell-main"><span class="thumb">' + icon('building') + '</span>' +
-          '<span class="cell-title">' + esc(p.supplier) + '</span></span>' },
-        { key:'date', label:'Tarih', render:(p) => '<span class="num">' + fmtDate(p.date) + '</span>' },
-        { key:'lines', label:'Kalem', align:'right', render:(p) => '<span class="num">' + p.items.length + '</span>' },
-        { key:'total', label:'Tutar', align:'right', render:(p) => '<span class="num strong">' + money(p.total) + '</span>' },
-        { key:'st', label:'Durum', render:(p) => p.paid >= p.total
-          ? badge('success','Ödendi','check') : badge('warning','Kısmi Ödeme','clock') }
-      ], PURCHASES) + '</div></section>'
+          '<span class="cell-title">' + esc(supplierName(p.supplier)) + '</span></span>' },
+        { key:'date', label:t('c_date'), render:(p) => '<span class="num">' + fmtDate(p.date) + '</span>' },
+        { key:'lines', label:t('c_lines'), align:'right', render:(p) => '<span class="num">' + num(p.items.length) + '</span>' },
+        { key:'total', label:t('c_amount'), align:'right', render:(p) => '<span class="num strong">' + money(p.total) + '</span>' },
+        { key:'st', label:t('c_status'), render:(p) => p.paid >= p.total
+          ? badge('success', t('b_settled'), 'check') : badge('warning', t('st_partial'), 'clock') }
+      ], PURCHASES, { wide:true }) + '</div></section>'
   };
 };
 
 /* --- Müşteriler --- */
 PAGES.musteriler = function () {
-  const rows = CUSTOMERS.map((c) => ({ c: c, s: customerSummary(c.id) }))
+  const rows = CUSTOMERS.map((c) => ({ c:c, s:customerSummary(c.id) }))
                         .sort((a, b) => b.s.remaining - a.s.remaining || b.s.total - a.s.total);
   const totalRem = rows.reduce((s, r) => s + r.s.remaining, 0);
 
   return {
     html:
-      '<div class="page-head"><div><h2>Müşteriler</h2>' +
-      '<p class="sub">' + rows.length + ' müşteri · ' + money(totalRem) + ' toplam alacak</p></div>' +
+      '<div class="page-head"><div><h2>' + esc(t('nav_customers')) + '</h2>' +
+      '<p class="sub">' + esc(t('p_customers_sub', { n:num(rows.length), v:money(totalRem) })) + '</p></div>' +
       '<div class="head-actions"><button class="btn btn-primary" data-act="new-customer">' +
-      icon('plus') + 'Yeni Müşteri</button></div></div>' +
+      icon('plus') + t('btn_new_customer') + '</button></div></div>' +
 
       '<section class="card"><div class="card-body flush">' +
       table([
-        { key:'name', label:'Müşteri', render:(r) => customerLink(r.c) },
-        { key:'phone', label:'Telefon', render:(r) => '<span class="num">' + esc(r.c.phone) + '</span>' },
-        { key:'total', label:'Toplam Satış', align:'right', render:(r) => '<span class="num strong">' + money(r.s.total) + '</span>' },
-        { key:'paid', label:'Ödenen', align:'right', render:(r) =>
+        { key:'name', label:t('c_customer'), render:(r) => customerLink(r.c) },
+        { key:'phone', label:t('c_phone'), render:(r) => ltr(r.c.phone) },
+        { key:'total', label:t('c_total_sales'), align:'right', render:(r) => '<span class="num strong">' + money(r.s.total) + '</span>' },
+        { key:'paid', label:t('c_paid'), align:'right', render:(r) =>
           '<span class="num ' + (r.s.paid > 0 ? 'text-success' : 'text-dim') + '">' + money(r.s.paid) + '</span>' },
-        { key:'rem', label:'Kalan Borç', align:'right', render:(r) =>
+        { key:'rem', label:t('c_debt'), align:'right', render:(r) =>
           '<span class="num ' + (r.s.remaining > 0 ? 'text-danger strong' : 'text-dim') + '">' + money(r.s.remaining) + '</span>' },
-        { key:'due', label:'Vade', render:(r) => {
+        { key:'due', label:t('c_due'), render:(r) => {
             if (!r.s.dueDate) return '<span class="text-dim">—</span>';
             const tone = dueTone(r.s.dueDate, r.s.remaining);
             return '<span class="num ' + (tone === 'danger' ? 'text-danger' : tone === 'warning' ? 'text-warning' : 'text-muted') +
                    '">' + fmtDate(r.s.dueDate) + '</span>'; } },
-        { key:'st', label:'Durum', render:(r) =>
-          r.s.remaining <= 0 ? badge('success','Borcu Yok','check')
-          : r.s.isLate ? badge('danger','Gecikti','alert')
-          : badge('warning','Açık Bakiye','clock') },
-        { key:'_actions', label:'İşlem', align:'right', render:(r) =>
+        { key:'st', label:t('c_status'), render:(r) =>
+          r.s.remaining <= 0 ? badge('success', t('b_no_debt'), 'check')
+          : r.s.isLate ? badge('danger', t('st_late'), 'alert')
+          : badge('warning', t('b_open_balance'), 'clock') },
+        { key:'_actions', label:t('c_action'), align:'right', render:(r) =>
           '<div class="actions"><a class="btn btn-ghost btn-sm" href="#/musteri/' + r.c.id + '">' +
-          icon('eye') + 'Detay</a></div>' }
+          icon('eye') + t('btn_detail') + '</a></div>' }
       ], rows, { wide:true }) + '</div></section>'
   };
 };
@@ -596,123 +572,118 @@ PAGES.musteriler = function () {
 /* --- Müşteri detayı --- */
 PAGES.musteri = function (id) {
   const c = customerById(id);
-  if (!c) return { html: '<div class="empty">' + icon('users') + '<p>Müşteri bulunamadı.</p></div>' };
+  if (!c) return { html:'<div class="empty">' + icon('users') + '<p>' + esc(t('e_no_customer')) + '</p></div>' };
 
   const s = customerSummary(id);
   const ledger = customerLedger(id);
   const dTone = dueTone(s.dueDate, s.remaining);
-
   const dueText = s.dueDate ? fmtDate(s.dueDate) : '—';
-  const dueNote = !s.dueDate ? 'Açık vade yok'
-    : s.daysToDue < 0 ? Math.abs(s.daysToDue) + ' gün gecikti'
-    : s.daysToDue === 0 ? 'Bugün son gün'
-    : s.daysToDue + ' gün kaldı';
+  const dueNote = !s.dueDate ? t('f_no_due')
+    : s.daysToDue < 0 ? t('f_days_late', { n:num(Math.abs(s.daysToDue)) })
+    : s.daysToDue === 0 ? t('f_today_last')
+    : t('f_days_left', { n:num(s.daysToDue) });
 
-  const waMsg = encodeURIComponent(
-    'Sayın ' + customerName(c) + ', NetStore hesabınızda ' + money(s.remaining) +
-    ' tutarında açık bakiye görünmektedir. Son ödeme tarihi: ' + dueText + '.');
-  const waLink = 'https://wa.me/' + c.phone.replace(/[^0-9]/g, '') + '?text=' + waMsg;
-  const mailLink = 'mailto:' + c.email + '?subject=' +
-    encodeURIComponent('NetStore — Hesap Ekstresi') + '&body=' + waMsg;
+  const msg = t('msg_balance', { name: customerName(c), v: money(s.remaining), d: dueText });
+  const waLink = 'https://wa.me/' + c.phone.replace(/[^0-9]/g, '') + '?text=' + encodeURIComponent(msg);
+  const mailLink = 'mailto:' + c.email + '?subject=' + encodeURIComponent(t('msg_subject')) +
+                   '&body=' + encodeURIComponent(msg);
 
   return {
     html:
       '<div class="page-head">' +
         '<div style="display:flex;align-items:center;gap:12px">' +
-          '<a class="btn btn-ghost btn-sm btn-icon" href="#/musteriler" aria-label="Geri">' + icon('arrowLeft') + '</a>' +
+          '<a class="btn btn-ghost btn-sm btn-icon nav-back" href="#/musteriler" aria-label="' + esc(t('aria_back')) + '">' +
+            icon('arrowLeft') + '</a>' +
           '<div><h2>' + esc(customerName(c)) + '</h2>' +
-          '<p class="sub">' + esc(c.type) + ' müşteri · ' + s.sales.length + ' fatura · ' +
-          fmtDate(new Date(c.since)) + ' tarihinden beri</p></div>' +
+          '<p class="sub">' + esc(t('p_customer_sub', { type: typeLabel(c.type), n: num(s.sales.length),
+            d: fmtDate(new Date(c.since)) })) + '</p></div>' +
         '</div>' +
         '<div class="head-actions">' +
-          '<button class="btn btn-ghost" data-act="edit-customer">' + icon('edit') + 'Düzenle</button>' +
+          '<button class="btn btn-ghost" data-act="edit-customer">' + icon('edit') + t('btn_edit') + '</button>' +
           '<button class="btn btn-success" data-act="add-payment" data-id="' + c.id + '">' +
-            icon('handCoins') + 'Tahsilat Ekle</button>' +
+            icon('handCoins') + t('btn_add_payment') + '</button>' +
         '</div>' +
       '</div>' +
 
       (s.isLate ? '<div class="alert alert-danger" style="margin-bottom:16px">' + icon('alert') +
-        '<div><strong>Gecikmiş bakiye: ' + money(s.overdue) + '</strong>' +
-        '<span class="alert-text">Vadesi geçmiş fatura(lar) mevcut. Müşteriyi bilgilendirmeniz önerilir.</span></div></div>' : '') +
+        '<div><strong>' + esc(t('al_overdue_bal', { v: money(s.overdue) })) + '</strong>' +
+        '<span class="alert-text">' + esc(t('al_overdue_txt')) + '</span></div></div>' : '') +
 
       '<div class="grid grid-detail">' +
 
-        /* --- sol sütun: kimlik + iletişim + eylemler --- */
         '<div class="grid" style="gap:16px">' +
           '<section class="card">' +
             '<div class="profile-card">' +
               '<div class="profile-avatar">' + esc(initials(c)) + '</div>' +
-              '<div class="profile-name">' + esc(c.first) + ' ' + esc(c.last) + '</div>' +
-              '<div class="profile-tag">' + esc(c.id.toUpperCase()) + ' · ' + esc(c.type) + '</div>' +
+              '<div class="profile-name">' + esc(customerName(c)) + '</div>' +
+              '<div class="profile-tag">' + esc(c.id.toUpperCase()) + ' · ' + esc(typeLabel(c.type)) + '</div>' +
               '<div class="profile-badges">' +
                 (s.remaining > 0
-                  ? (s.isLate ? badge('danger','Gecikmiş Borç','alert') : badge('warning','Açık Bakiye','clock'))
-                  : badge('success','Borcu Yok','check')) +
-                badge('muted', s.sales.length + ' fatura') +
+                  ? (s.isLate ? badge('danger', t('b_late_debt'), 'alert') : badge('warning', t('b_open_balance'), 'clock'))
+                  : badge('success', t('b_no_debt'), 'check')) +
+                badge('muted', t('b_n_invoices', { n:num(s.sales.length) })) +
               '</div>' +
             '</div>' +
             '<div class="info-list">' +
-              infoRow('phone','Telefon', esc(c.phone)) +
-              infoRow('mail','E-posta','<a href="mailto:' + esc(c.email) + '" style="color:var(--info)">' + esc(c.email) + '</a>') +
-              infoRow('mapPin','Adres', esc(c.addr)) +
-              infoRow('calendar','Müşteri Olma Tarihi', fmtDate(new Date(c.since))) +
+              infoRow('phone', t('f_phone'), ltr(c.phone)) +
+              infoRow('mail', t('f_email'), '<a href="mailto:' + esc(c.email) + '" style="color:var(--info)">' + esc(c.email) + '</a>') +
+              infoRow('mapPin', t('f_address'), esc(L(c.addr))) +
+              infoRow('calendar', t('f_since'), fmtDate(new Date(c.since))) +
             '</div>' +
           '</section>' +
 
-          '<section class="card"><div class="card-head"><h3>Hızlı İşlemler</h3></div>' +
+          '<section class="card"><div class="card-head"><h3>' + esc(t('h_quick')) + '</h3></div>' +
             '<div class="card-body"><div class="action-row">' +
               '<button class="btn btn-success" data-act="add-payment" data-id="' + c.id + '">' +
-                icon('handCoins') + 'Tahsilat Ekle</button>' +
-              '<button class="btn btn-info" data-act="invoice">' + icon('invoice') + 'Fatura Oluştur</button>' +
+                icon('handCoins') + t('btn_add_payment') + '</button>' +
+              (s.sales.length ? '<button class="btn btn-info" data-act="doc-invoice" data-id="' + s.sales[0].id + '">' +
+                icon('invoice') + t('btn_invoice') + '</button>' : '') +
               '<a class="btn btn-whatsapp" href="' + waLink + '" target="_blank" rel="noopener">' +
-                icon('whatsapp') + 'WhatsApp Gönder</a>' +
-              '<a class="btn btn-primary" href="' + mailLink + '">' + icon('mail') + 'E-posta Gönder</a>' +
-              '<button class="btn btn-ghost" data-act="print">' + icon('printer') + 'Ekstre Yazdır</button>' +
-              '<button class="btn btn-danger" data-act="delete-customer">' + icon('trash') + 'Müşteriyi Sil</button>' +
+                icon('whatsapp') + t('btn_whatsapp') + '</a>' +
+              '<a class="btn btn-primary" href="' + mailLink + '">' + icon('mail') + t('btn_email') + '</a>' +
+              '<button class="btn btn-ghost" data-act="print">' + icon('printer') + t('btn_statement') + '</button>' +
+              '<button class="btn btn-danger" data-act="delete-customer">' + icon('trash') + t('btn_delete_cust') + '</button>' +
             '</div></div>' +
           '</section>' +
         '</div>' +
 
-        /* --- sağ sütun: bakiye + hareketler --- */
         '<div class="grid" style="gap:16px">' +
 
           '<section class="card">' +
-            '<div class="card-head"><div><h3>Borç ve Tahsilat Özeti</h3>' +
-            '<p class="sub">Tüm faturaların toplamı</p></div></div>' +
+            '<div class="card-head"><div><h3>' + esc(t('h_balance')) + '</h3>' +
+            '<p class="sub">' + esc(t('h_balance_sub')) + '</p></div></div>' +
             '<div class="card-body">' +
               '<div class="balance-grid">' +
-                balanceCell('Toplam Satış', money(s.total), 'var(--text)', s.sales.length + ' fatura') +
-                balanceCell('Toplam Ödenen', money(s.paid), 'var(--success)',
-                  s.pays.length + ' tahsilat · %' + (s.ratio * 100).toFixed(0)) +
-                balanceCell('Kalan Borç', money(s.remaining),
+                balanceCell(t('f_total_sales'), money(s.total), 'var(--text)', t('b_n_invoices', { n:num(s.sales.length) })) +
+                balanceCell(t('f_total_paid'), money(s.paid), 'var(--success)',
+                  t('f_n_payments', { n:num(s.pays.length), p: pctPlain(s.ratio * 100) })) +
+                balanceCell(t('f_remaining'), money(s.remaining),
                   s.remaining > 0 ? 'var(--danger)' : 'var(--text-3)',
-                  s.remaining > 0 ? 'Tahsil edilmeyi bekliyor' : 'Bakiye kapandı') +
-                balanceCell('Son Ödeme Tarihi', dueText,
+                  s.remaining > 0 ? t('f_awaiting') : t('f_closed')) +
+                balanceCell(t('f_due_date'), dueText,
                   dTone === 'danger' ? 'var(--danger)' : dTone === 'warning' ? 'var(--warning)' : 'var(--text-3)',
                   dueNote) +
               '</div>' +
-
               '<div class="meter" style="margin-top:18px">' +
-                '<div class="meter-track" style="height:8px">' +
-                  '<div class="meter-fill" style="width:' + (s.ratio * 100).toFixed(1) + '%;background:var(--success)"></div>' +
-                '</div>' +
+                '<div class="meter-track" style="height:8px"><div class="meter-fill" style="width:' +
+                  (s.ratio * 100).toFixed(1) + '%;background:var(--success)"></div></div>' +
                 '<div class="meter-legend">' +
-                  '<span class="text-success">Ödenen ' + money(s.paid) + '</span>' +
-                  '<span class="' + (s.remaining > 0 ? 'text-danger' : 'text-dim') + '">Kalan ' + money(s.remaining) + '</span>' +
+                  '<span class="text-success">' + esc(t('f_paid_v', { v: money(s.paid) })) + '</span>' +
+                  '<span class="' + (s.remaining > 0 ? 'text-danger' : 'text-dim') + '">' +
+                    esc(t('f_remaining_v', { v: money(s.remaining) })) + '</span>' +
                 '</div>' +
               '</div>' +
-
               (s.lastPayment ? '<p class="text-dim" style="font-size:12px;margin-top:14px">' +
-                'Son tahsilat: ' + fmtDate(s.lastPayment.date) + ' · ' + money(s.lastPayment.amount) +
-                ' · ' + esc(s.lastPayment.method) + '</p>' : '') +
+                esc(t('f_last_payment', { d: fmtDate(s.lastPayment.date), v: money(s.lastPayment.amount),
+                  m: methodLabel(s.lastPayment.method) })) + '</p>' : '') +
             '</div>' +
           '</section>' +
 
           '<section class="card">' +
-            '<div class="card-head"><div><h3>Tahsilat Geçmişi</h3>' +
-            '<p class="sub">Her ödeme ve borç kaydı ayrı hareket</p></div>' +
+            '<div class="card-head"><div><h3>' + esc(t('h_ledger')) + '</h3>' +
+            '<p class="sub">' + esc(t('h_ledger_sub')) + '</p></div>' +
             '<div class="head-actions"><button class="btn btn-success btn-sm" data-act="add-payment" data-id="' + c.id + '">' +
-            icon('plus') + 'Tahsilat</button></div></div>' +
+            icon('plus') + t('btn_payment') + '</button></div></div>' +
             '<div class="card-body flush"><div class="timeline">' +
               (ledger.length ? ledger.map((r) => {
                 const isPay = r.kind === 'payment';
@@ -724,13 +695,13 @@ PAGES.musteri = function (id) {
                     '<span class="tl-amount ' + (isPay ? 'text-success' : 'text-muted') + '">' +
                       (isPay ? signedMoney(r.amount) : money(r.amount)) + '</span>' +
                   '</div><p class="tl-meta">' + fmtDate(r.date) + ' · ' + esc(r.note) + '</p></div></div>';
-              }).join('') : '<div class="empty">' + icon('wallet') + '<p>Henüz hareket yok.</p></div>') +
+              }).join('') : '<div class="empty">' + icon('wallet') + '<p>' + esc(t('e_no_moves')) + '</p></div>') +
             '</div></div>' +
           '</section>' +
 
           '<section class="card">' +
-            '<div class="card-head"><div><h3>Satış Geçmişi</h3>' +
-            '<p class="sub">' + s.sales.length + ' fatura</p></div></div>' +
+            '<div class="card-head"><div><h3>' + esc(t('h_sale_history')) + '</h3>' +
+            '<p class="sub">' + esc(t('b_n_invoices', { n:num(s.sales.length) })) + '</p></div></div>' +
             '<div class="card-body flush">' + salesTable(s.sales, true) + '</div>' +
           '</section>' +
 
@@ -760,43 +731,46 @@ PAGES.tahsilatlar = function () {
 
   return {
     html:
-      '<div class="page-head"><div><h2>Tahsilatlar</h2>' +
-      '<p class="sub">' + PAYMENTS.length + ' hareket · ' + money(total) + ' toplam</p></div>' +
+      '<div class="page-head"><div><h2>' + esc(t('nav_payments')) + '</h2>' +
+      '<p class="sub">' + esc(t('p_payments_sub', { n:num(PAYMENTS.length), v:money(total) })) + '</p></div>' +
       '<div class="head-actions"><button class="btn btn-success" data-act="add-payment">' +
-      icon('handCoins') + 'Tahsilat Ekle</button></div></div>' +
+      icon('handCoins') + t('btn_add_payment') + '</button></div></div>' +
 
       '<div class="grid grid-3" style="margin-bottom:16px">' +
-        statCard({ icon:'handCoins', tone:'success', label:'Toplam Tahsilat', value: money(total),
-                   desc:'Tüm zamanlar', spark:'' }) +
-        statCard({ icon:'calendar', tone:'accent', label:'Bu Ay', value: money(thisMonth.reduce((s, p) => s + p.amount, 0)),
-                   desc: thisMonth.length + ' hareket', spark:'' }) +
-        statCard({ icon:'scale', tone:'danger', label:'Bekleyen Alacak', value: money(kpis().receivable),
-                   desc:'Henüz tahsil edilmedi', spark:'' }) +
+        statCard({ icon:'handCoins', tone:'success', label:t('k_total_pay'), value:money(total), desc:esc(t('k_all_time')) }) +
+        statCard({ icon:'calendar', tone:'accent', label:t('k_this_month'),
+                   value:money(thisMonth.reduce((s, p) => s + p.amount, 0)),
+                   desc:esc(t('k_n_moves', { n:num(thisMonth.length) })) }) +
+        statCard({ icon:'scale', tone:'danger', label:t('k_pending_rec'), value:money(kpis().receivable),
+                   desc:esc(t('k_not_collected')) }) +
       '</div>' +
 
       '<div class="grid grid-main">' +
-        '<section class="card"><div class="card-head"><div><h3>Tahsilat Hareketleri</h3>' +
-        '<p class="sub">En yeniden eskiye</p></div></div>' +
+        '<section class="card"><div class="card-head"><div><h3>' + esc(t('h_pay_moves')) + '</h3>' +
+        '<p class="sub">' + esc(t('h_pay_moves_sub')) + '</p></div></div>' +
         '<div class="card-body flush">' +
         table([
-          { key:'cust', label:'Müşteri', render:(p) => customerLink(customerById(p.customerId)) },
-          { key:'date', label:'Tarih', render:(p) => '<span class="num">' + fmtDate(p.date) + '</span>' },
-          { key:'inv', label:'Fatura', render:(p) => {
+          { key:'cust', label:t('c_customer'), render:(p) => customerLink(customerById(p.customerId)) },
+          { key:'date', label:t('c_date'), render:(p) => '<span class="num">' + fmtDate(p.date) + '</span>' },
+          { key:'inv', label:t('c_invoice'), render:(p) => {
               const s = saleById(p.saleId);
               return '<span class="invoice-no" style="font-weight:500">' + esc(s ? s.no : '—') + '</span>'; } },
-          { key:'method', label:'Yöntem', render:(p) => badge('muted', p.method) },
-          { key:'amount', label:'Tutar', align:'right', render:(p) =>
-            '<span class="num text-success strong">' + signedMoney(p.amount) + '</span>' }
-        ], PAYMENTS.slice(0, 40)) + '</div></section>' +
+          { key:'method', label:t('c_method'), render:(p) => badge('muted', methodLabel(p.method)) },
+          { key:'amount', label:t('c_amount'), align:'right', render:(p) =>
+            '<span class="num text-success strong">' + signedMoney(p.amount) + '</span>' },
+          { key:'_actions', label:t('c_action'), align:'right', render:(p) =>
+            '<div class="actions"><button class="btn btn-ghost btn-sm" data-act="doc-receipt" data-id="' + p.id + '">' +
+            icon('receipt') + t('inv_receipt') + '</button></div>' }
+        ], PAYMENTS.slice(0, 40), { wide:true }) + '</div></section>' +
 
-        '<section class="card"><div class="card-head"><div><h3>Ödeme Yöntemi</h3>' +
-        '<p class="sub">Tahsilatların dağılımı</p></div></div>' +
+        '<section class="card"><div class="card-head"><div><h3>' + esc(t('h_pay_method')) + '</h3>' +
+        '<p class="sub">' + esc(t('h_pay_method_sub')) + '</p></div></div>' +
         '<div class="card-body"><div id="methodBars"></div></div></section>' +
       '</div>',
 
     mount: function () {
       hBars(document.getElementById('methodBars'),
-        Object.keys(byMethod).map((k) => ({ name: k, value: byMethod[k] }))
+        Object.keys(byMethod).map((k) => ({ name: methodLabel(k), value: byMethod[k] }))
               .sort((a, b) => b.value - a.value));
     }
   };
@@ -812,58 +786,55 @@ PAGES.borc = function () {
 
   return {
     html:
-      '<div class="page-head"><div><h2>Borç / Alacak</h2>' +
-      '<p class="sub">' + rows.length + ' müşteride açık bakiye</p></div>' +
+      '<div class="page-head"><div><h2>' + esc(t('nav_debt')) + '</h2>' +
+      '<p class="sub">' + esc(t('p_debt_sub', { n:num(rows.length) })) + '</p></div>' +
       '<div class="head-actions">' +
-        '<button class="btn btn-ghost" data-act="export">' + icon('download') + 'Rapor Al</button>' +
-        '<button class="btn btn-success" data-act="add-payment">' + icon('handCoins') + 'Tahsilat Ekle</button>' +
+        '<button class="btn btn-ghost" data-act="export">' + icon('download') + t('btn_report') + '</button>' +
+        '<button class="btn btn-success" data-act="add-payment">' + icon('handCoins') + t('btn_add_payment') + '</button>' +
       '</div></div>' +
 
       '<div class="grid grid-3" style="margin-bottom:16px">' +
-        statCard({ icon:'scale', tone:'danger', label:'Toplam Alacak', value: money(totalRem),
-                   desc:'Müşterilerden tahsil edilecek', spark:'' }) +
-        statCard({ icon:'alert', tone:'warning', label:'Gecikmiş Alacak', value: money(overdue),
-                   desc:'Vadesi geçmiş tutar',
-                   trend:{ tone:'warn', text:'%' + ((overdue / (totalRem || 1)) * 100).toFixed(0) + ' payı', icon:'alert' }, spark:'' }) +
-        statCard({ icon:'truck', tone:'info', label:'Tedarikçi Borcu', value: money(purchaseDebt),
-                   desc:'İşletmenin ödeyeceği tutar', spark:'' }) +
+        statCard({ icon:'scale', tone:'danger', label:t('k_total_rec'), value:money(totalRem), desc:esc(t('k_total_rec_d')) }) +
+        statCard({ icon:'alert', tone:'warning', label:t('k_overdue_rec'), value:money(overdue),
+                   desc:esc(t('k_overdue_rec_d')),
+                   trend:{ tone:'warn', text:esc(t('k_share', { n: pctPlain((overdue / (totalRem || 1)) * 100) })), icon:'alert' } }) +
+        statCard({ icon:'truck', tone:'info', label:t('k_sup_debt'), value:money(purchaseDebt), desc:esc(t('k_biz_debt_d')) }) +
       '</div>' +
 
       '<section class="card" style="margin-bottom:16px">' +
-        '<div class="card-head"><div><h3>Alacak Yaşlandırma</h3>' +
-        '<p class="sub">Açık bakiyenin vade durumuna göre dağılımı</p></div></div>' +
+        '<div class="card-head"><div><h3>' + esc(t('h_aging')) + '</h3>' +
+        '<p class="sub">' + esc(t('h_aging_sub')) + '</p></div></div>' +
         '<div class="card-body"><div id="agingBar"></div></div></section>' +
 
       '<div class="grid">' +
-        '<section class="card"><div class="card-head"><div><h3>Müşteri Bakiyeleri</h3>' +
-        '<p class="sub">Bakiyesi en yüksekten başlayarak</p></div></div>' +
+        '<section class="card"><div class="card-head"><div><h3>' + esc(t('h_balances')) + '</h3>' +
+        '<p class="sub">' + esc(t('h_balances_sub')) + '</p></div></div>' +
         '<div class="card-body flush">' +
         table([
-          { key:'cust', label:'Müşteri', render:(r) => customerLink(r.customer) },
-          { key:'total', label:'Toplam Satış', align:'right', render:(r) => '<span class="num">' + money(r.sum.total) + '</span>' },
-          { key:'paid', label:'Ödenen', align:'right', render:(r) => '<span class="num text-success">' + money(r.sum.paid) + '</span>' },
-          { key:'rem', label:'Kalan Borç', align:'right', render:(r) => '<span class="num text-danger strong">' + money(r.sum.remaining) + '</span>' },
-          { key:'due', label:'Son Ödeme', render:(r) => {
+          { key:'cust', label:t('c_customer'), render:(r) => customerLink(r.customer) },
+          { key:'total', label:t('c_total_sales'), align:'right', render:(r) => '<span class="num">' + money(r.sum.total) + '</span>' },
+          { key:'paid', label:t('c_paid'), align:'right', render:(r) => '<span class="num text-success">' + money(r.sum.paid) + '</span>' },
+          { key:'rem', label:t('c_debt'), align:'right', render:(r) => '<span class="num text-danger strong">' + money(r.sum.remaining) + '</span>' },
+          { key:'due', label:t('c_last_due'), render:(r) => {
               const tone = dueTone(r.sum.dueDate, r.sum.remaining);
               return '<span class="num ' + (tone === 'danger' ? 'text-danger' : tone === 'warning' ? 'text-warning' : 'text-muted') +
                      '">' + (r.sum.dueDate ? fmtDate(r.sum.dueDate) : '—') + '</span>'; } },
-          { key:'st', label:'Durum', render:(r) => r.sum.isLate
-              ? badge('danger', Math.abs(r.sum.daysToDue) + ' gün gecikti', 'alert')
-              : r.sum.daysToDue <= 7 ? badge('warning','Vade yaklaştı','clock')
-              : badge('muted','Vadesinde','clock') },
-          { key:'_actions', label:'İşlem', align:'right', render:(r) =>
-            '<div class="actions">' +
-            '<button class="btn btn-success btn-sm" data-act="add-payment" data-id="' + r.customer.id + '">' +
-            icon('handCoins') + 'Tahsilat</button></div>' }
-        ], rows, { empty:'Açık bakiyesi olan müşteri yok.', wide:true }) + '</div></section>' +
+          { key:'st', label:t('c_status'), render:(r) => r.sum.isLate
+              ? badge('danger', t('b_days_late', { n:num(Math.abs(r.sum.daysToDue)) }), 'alert')
+              : r.sum.daysToDue <= 7 ? badge('warning', t('b_due_soon'), 'clock')
+              : badge('muted', t('b_on_due'), 'clock') },
+          { key:'_actions', label:t('c_action'), align:'right', render:(r) =>
+            '<div class="actions"><button class="btn btn-success btn-sm" data-act="add-payment" data-id="' +
+            r.customer.id + '">' + icon('handCoins') + t('btn_payment') + '</button></div>' }
+        ], rows, { empty:t('e_no_open_bal'), wide:true }) + '</div></section>' +
       '</div>',
 
     mount: function () {
       stackedBar(document.getElementById('agingBar'), [
-        { name:'Vadesi gelmemiş', value: aging.current, color:'#475569' },
-        { name:'1–30 gün gecikmiş', value: aging.d30, color:'#F59E0B' },
-        { name:'31–60 gün gecikmiş', value: aging.d60, color:'#EA580C' },
-        { name:'60+ gün gecikmiş', value: aging.d90, color:'#EF4444' }
+        { name:t('ag_current'), value:aging.current, color:'#475569' },
+        { name:t('ag_30'),      value:aging.d30,     color:'#F59E0B' },
+        { name:t('ag_60'),      value:aging.d60,     color:'#EA580C' },
+        { name:t('ag_90'),      value:aging.d90,     color:'#EF4444' }
       ]);
     }
   };
@@ -873,105 +844,104 @@ PAGES.borc = function () {
 PAGES.raporlar = function () {
   const k = kpis();
   const s12 = monthlySeries(12);
-  const top = topProducts(6);
 
   return {
     html:
-      '<div class="page-head"><div><h2>Raporlar</h2>' +
-      '<p class="sub">Son 12 ayın performans özeti</p></div>' +
+      '<div class="page-head"><div><h2>' + esc(t('nav_reports')) + '</h2>' +
+      '<p class="sub">' + esc(t('p_reports_sub')) + '</p></div>' +
       '<div class="head-actions">' +
-        '<button class="btn btn-ghost" data-act="print">' + icon('printer') + 'Yazdır</button>' +
-        '<button class="btn btn-primary" data-act="export">' + icon('download') + 'Dışa Aktar</button>' +
+        '<button class="btn btn-ghost" data-act="print">' + icon('printer') + t('btn_print') + '</button>' +
+        '<button class="btn btn-primary" data-act="export">' + icon('download') + t('btn_export') + '</button>' +
       '</div></div>' +
 
       '<div class="grid grid-stats" style="margin-bottom:16px">' +
-        statCard({ icon:'cart', tone:'accent', label:'Ciro', value: money(k.sales), desc:'12 aylık toplam satış',
-                   spark: sparkline(s12.map((m) => m.sale), SERIES_1) }) +
-        statCard({ icon:'coins', tone:'success', label:'Brüt Kâr', value: money(k.profit),
-                   desc:'Ortalama marj %' + (k.margin * 100).toFixed(1).replace('.', ','),
-                   spark: sparkline(s12.map((m) => m.profit), SERIES_2) }) +
-        statCard({ icon:'truck', tone:'info', label:'Yatırım', value: money(k.invest), desc:'Toplam alış maliyeti', spark:'' }) +
+        statCard({ icon:'cart', tone:'accent', label:t('k_revenue'), value:money(k.sales),
+                   desc:esc(t('k_revenue_d')), spark:sparkline(s12.map((m) => m.sale), SERIES_1) }) +
+        statCard({ icon:'coins', tone:'success', label:t('k_gross_profit'), value:money(k.profit),
+                   desc:esc(t('k_avg_margin', { n: pctPlain(k.margin * 100, 1) })),
+                   spark:sparkline(s12.map((m) => m.profit), SERIES_2) }) +
+        statCard({ icon:'truck', tone:'info', label:t('k_investment'), value:money(k.invest), desc:esc(t('k_investment_d')) }) +
       '</div>' +
 
       '<div class="grid grid-main" style="margin-bottom:16px">' +
         '<section class="card">' +
-          '<div class="card-head"><div><h3>Aylık Satış ve Kâr</h3><p class="sub">Son 12 ay</p></div>' +
+          '<div class="card-head"><div><h3>' + esc(t('h_monthly')) + '</h3><p class="sub">' + esc(t('h_last12')) + '</p></div>' +
           '<div class="head-actions chart-legend">' +
-            '<span class="legend-key"><span class="legend-swatch" style="background:' + SERIES_1 + '"></span>Satış</span>' +
-            '<span class="legend-key"><span class="legend-swatch" style="background:' + SERIES_2 + '"></span>Kâr</span>' +
+            '<span class="legend-key"><span class="legend-swatch" style="background:' + SERIES_1 + '"></span>' + esc(t('series_sales')) + '</span>' +
+            '<span class="legend-key"><span class="legend-swatch" style="background:' + SERIES_2 + '"></span>' + esc(t('c_profit')) + '</span>' +
           '</div></div>' +
           '<div class="card-body"><div id="repChart"></div></div>' +
         '</section>' +
-        '<section class="card"><div class="card-head"><div><h3>Kategori Cirosu</h3>' +
-        '<p class="sub">Tüm dönem</p></div></div>' +
+        '<section class="card"><div class="card-head"><div><h3>' + esc(t('h_category_rev')) + '</h3>' +
+        '<p class="sub">' + esc(t('h_all_time')) + '</p></div></div>' +
         '<div class="card-body"><div id="repCat"></div></div></section>' +
       '</div>' +
 
       '<div class="grid grid-2">' +
-        '<section class="card"><div class="card-head"><div><h3>En Çok Satan Ürünler</h3>' +
-        '<p class="sub">Ciroya göre ilk 6</p></div></div>' +
+        '<section class="card"><div class="card-head"><div><h3>' + esc(t('h_top_products')) + '</h3>' +
+        '<p class="sub">' + esc(t('h_top_sub')) + '</p></div></div>' +
         '<div class="card-body flush">' +
         table([
-          { key:'p', label:'Ürün', render:(r) => {
+          { key:'p', label:t('c_product'), render:(r) => {
               const p = productById(r.pid);
               return '<span class="cell-main"><span class="thumb">' + icon('package') + '</span>' +
                 '<span><span class="cell-title">' + esc(p ? p.name : '—') + '</span>' +
-                '<span class="cell-sub">' + esc(p ? p.cat : '') + '</span></span></span>'; } },
-          { key:'qty', label:'Adet', align:'right', render:(r) => '<span class="num">' + r.qty + '</span>' },
-          { key:'rev', label:'Ciro', align:'right', render:(r) => '<span class="num strong">' + money(r.revenue) + '</span>' }
-        ], top) + '</div></section>' +
+                '<span class="cell-sub">' + esc(p ? catLabel(p.cat) : '') + '</span></span></span>'; } },
+          { key:'qty', label:t('c_qty'), align:'right', render:(r) => '<span class="num">' + num(r.qty) + '</span>' },
+          { key:'rev', label:t('c_revenue'), align:'right', render:(r) => '<span class="num strong">' + money(r.revenue) + '</span>' }
+        ], topProducts(6)) + '</div></section>' +
 
-        '<section class="card"><div class="card-head"><div><h3>Aylık Döküm</h3>' +
-        '<p class="sub">Satış, kâr ve marj</p></div></div>' +
+        '<section class="card"><div class="card-head"><div><h3>' + esc(t('h_monthly_break')) + '</h3>' +
+        '<p class="sub">' + esc(t('h_monthly_b_sub')) + '</p></div></div>' +
         '<div class="card-body flush">' +
         table([
-          { key:'m', label:'Ay', render:(m) => '<span class="cell-title">' + esc(m.label + ' ' + m.year) + '</span>' },
-          { key:'s', label:'Satış', align:'right', render:(m) => '<span class="num">' + money(m.sale) + '</span>' },
-          { key:'p', label:'Kâr', align:'right', render:(m) => '<span class="num text-success">' + money(m.profit) + '</span>' },
-          { key:'mg', label:'Marj', align:'right', render:(m) =>
-            '<span class="num text-dim">' + (m.sale ? '%' + ((m.profit / m.sale) * 100).toFixed(0) : '—') + '</span>' }
+          { key:'m', label:t('c_month'), render:(m) =>
+            '<span class="cell-title">' + esc(monthShort(m.m) + ' ' + num(m.year)) + '</span>' },
+          { key:'s', label:t('series_sales'), align:'right', render:(m) => '<span class="num">' + money(m.sale) + '</span>' },
+          { key:'p', label:t('c_profit'), align:'right', render:(m) => '<span class="num text-success">' + money(m.profit) + '</span>' },
+          { key:'mg', label:t('c_margin'), align:'right', render:(m) =>
+            '<span class="num text-dim">' + (m.sale ? pctPlain((m.profit / m.sale) * 100) + (lang() === 'fa' ? '٪' : '%') : '—') + '</span>' }
         ], s12.slice().reverse()) + '</div></section>' +
       '</div>',
 
     mount: function () {
       lineChart(document.getElementById('repChart'), {
         data: s12,
-        series: [{ key:'sale', name:'Satış', color: SERIES_1 },
-                 { key:'profit', name:'Kâr', color: SERIES_2 }]
+        series: [{ key:'sale', name:t('series_sales'), color:SERIES_1 },
+                 { key:'profit', name:t('c_profit'), color:SERIES_2 }]
       });
-      hBars(document.getElementById('repCat'), categoryTotals());
+      hBars(document.getElementById('repCat'),
+        categoryTotals().map((r) => ({ name: catLabel(r.key), value: r.value })));
     }
   };
 };
 
 /* --- Personel --- */
 PAGES.personel = function () {
-  const perf = staffPerformance();
   const k = kpis();
   return {
     html:
-      '<div class="page-head"><div><h2>Personel</h2>' +
-      '<p class="sub">' + k.staffCount + ' aktif · ' + k.staffTotal + ' kayıtlı</p></div>' +
+      '<div class="page-head"><div><h2>' + esc(t('nav_staff')) + '</h2>' +
+      '<p class="sub">' + esc(t('p_staff_sub', { a:num(k.staffCount), t:num(k.staffTotal) })) + '</p></div>' +
       '<div class="head-actions"><button class="btn btn-primary" data-act="new-staff">' +
-      icon('plus') + 'Personel Ekle</button></div></div>' +
+      icon('plus') + t('btn_new_staff') + '</button></div></div>' +
 
       '<section class="card"><div class="card-body flush">' +
       table([
-        { key:'name', label:'Personel', render:(r) => {
+        { key:'name', label:t('c_staff'), render:(r) => {
             const s = staffById(r.staffId);
-            return '<span class="cell-main"><span class="avatar">' +
-              esc(s.name.split(' ').map((x) => x[0]).join('').slice(0, 2).toUpperCase()) + '</span>' +
-              '<span><span class="cell-title">' + esc(s.name) + '</span>' +
-              '<span class="cell-sub">' + esc(s.role) + '</span></span></span>'; } },
-        { key:'phone', label:'Telefon', render:(r) => '<span class="num">' + esc(staffById(r.staffId).phone) + '</span>' },
-        { key:'start', label:'Başlangıç', render:(r) => '<span class="num">' + fmtDate(new Date(staffById(r.staffId).start)) + '</span>' },
-        { key:'count', label:'Satış Adedi', align:'right', render:(r) => '<span class="num">' + r.count + '</span>' },
-        { key:'rev', label:'Ciro', align:'right', render:(r) => '<span class="num strong">' + money(r.revenue) + '</span>' },
-        { key:'st', label:'Durum', render:(r) => staffById(r.staffId).active
-            ? badge('success','Aktif','check') : badge('muted','Pasif') },
-        { key:'_actions', label:'İşlem', align:'right', render:() =>
-          '<div class="actions">' + actionBtn('edit','Düzenle') + '</div>' }
-      ], perf) + '</div></section>'
+            return '<span class="cell-main"><span class="avatar">' + esc(staffInitials(s)) + '</span>' +
+              '<span><span class="cell-title">' + esc(staffName(s)) + '</span>' +
+              '<span class="cell-sub">' + esc(roleLabel(s.role)) + '</span></span></span>'; } },
+        { key:'phone', label:t('c_phone'), render:(r) => ltr(staffById(r.staffId).phone) },
+        { key:'start', label:t('c_start'), render:(r) => '<span class="num">' + fmtDate(new Date(staffById(r.staffId).start)) + '</span>' },
+        { key:'count', label:t('c_sale_count'), align:'right', render:(r) => '<span class="num">' + num(r.count) + '</span>' },
+        { key:'rev', label:t('c_revenue'), align:'right', render:(r) => '<span class="num strong">' + money(r.revenue) + '</span>' },
+        { key:'st', label:t('c_status'), render:(r) => staffById(r.staffId).active
+            ? badge('success', t('b_active'), 'check') : badge('muted', t('b_passive')) },
+        { key:'_actions', label:t('c_action'), align:'right', render:() =>
+          '<div class="actions">' + actionBtn('edit', t('btn_edit')) + '</div>' }
+      ], staffPerformance(), { wide:true }) + '</div></section>'
   };
 };
 
@@ -979,49 +949,57 @@ PAGES.personel = function () {
 PAGES.ayarlar = function () {
   return {
     html:
-      '<div class="page-head"><div><h2>Ayarlar</h2>' +
-      '<p class="sub">İşletme ve uygulama tercihleri</p></div>' +
+      '<div class="page-head"><div><h2>' + esc(t('nav_settings')) + '</h2>' +
+      '<p class="sub">' + esc(t('p_settings_sub')) + '</p></div>' +
       '<div class="head-actions"><button class="btn btn-primary" data-act="save-settings">' +
-      icon('check') + 'Değişiklikleri Kaydet</button></div></div>' +
+      icon('check') + t('btn_save_set') + '</button></div></div>' +
 
       '<div class="grid grid-2">' +
-        '<section class="card"><div class="card-head"><div><h3>İşletme Bilgileri</h3>' +
-        '<p class="sub">Faturalarda görünen bilgiler</p></div></div>' +
+        '<section class="card"><div class="card-head"><div><h3>' + esc(t('h_business')) + '</h3>' +
+        '<p class="sub">' + esc(t('h_business_sub')) + '</p></div></div>' +
         '<div class="card-body">' +
-          field('İşletme Adı','text','NetStore Elektronik') +
-          field('Vergi No','text','1234567890') +
-          field('Telefon','tel','+90 212 000 00 00') +
-          field('E-posta','email','info@netstore.com') +
-          '<div class="field"><label>Adres</label><textarea>Perpa Ticaret Merkezi A Blok Kat:5 No:312, Şişli / İstanbul</textarea></div>' +
+          field(t('s_biz_name'), 'text', t('inv_biz_name')) +
+          field(t('s_tax_no'), 'text', 'AF-1234567890') +
+          field(t('f_phone'), 'tel', '+93 20 210 00 00') +
+          field(t('f_email'), 'email', 'info@netstore.af') +
+          '<div class="field"><label>' + esc(t('f_address')) + '</label><textarea>' +
+            esc(t('inv_biz_addr')) + '</textarea></div>' +
         '</div></section>' +
 
         '<div class="grid" style="gap:16px;align-content:start">' +
-          '<section class="card"><div class="card-head"><div><h3>Finans</h3>' +
-          '<p class="sub">Para birimi ve vade tercihleri</p></div></div>' +
+          '<section class="card"><div class="card-head"><div><h3>' + esc(t('s_language')) + '</h3>' +
+          '<p class="sub">' + esc(t('s_lang_hint')) + '</p></div></div>' +
+          '<div class="card-body"><div class="seg" data-seg="lang" style="width:100%">' +
+            Object.keys(LANGS).map((k) => '<button data-val="' + k + '"' +
+              (lang() === k ? ' class="on"' : '') + ' style="flex:1">' + esc(LANGS[k].name) + '</button>').join('') +
+          '</div></div></section>' +
+
+          '<section class="card"><div class="card-head"><div><h3>' + esc(t('h_finance')) + '</h3>' +
+          '<p class="sub">' + esc(t('h_finance_sub')) + '</p></div></div>' +
           '<div class="card-body">' +
-            '<div class="field"><label>Para Birimi</label><select>' +
-            '<option selected>Euro (€)</option><option>Türk Lirası (₺)</option><option>Dolar ($)</option>' +
-            '</select></div>' +
-            field('Varsayılan Vade (gün)','number','30') +
-            '<div class="field"><label>Gecikme Uyarısı</label><select>' +
-            '<option selected>Vade gününde</option><option>3 gün önce</option><option>7 gün önce</option>' +
-            '</select><p class="hint">Vadesi yaklaşan faturalar dashboard\'da turuncu uyarı olarak gösterilir.</p></div>' +
+            '<div class="field"><label>' + esc(t('s_currency')) + '</label>' +
+            '<select><option selected>' + esc(t('s_currency_afn')) + '</option></select></div>' +
+            field(t('s_default_due'), 'number', '30') +
+            '<div class="field"><label>' + esc(t('s_late_alert')) + '</label><select>' +
+            '<option selected>' + esc(t('s_on_due')) + '</option><option>' + esc(t('s_3_before')) +
+            '</option><option>' + esc(t('s_7_before')) + '</option></select>' +
+            '<p class="hint">' + esc(t('s_late_hint')) + '</p></div>' +
           '</div></section>' +
 
-          '<section class="card"><div class="card-head"><div><h3>Stok</h3>' +
-          '<p class="sub">Kritik seviye uyarıları</p></div></div>' +
+          '<section class="card"><div class="card-head"><div><h3>' + esc(t('h_stock_set')) + '</h3>' +
+          '<p class="sub">' + esc(t('h_stock_set_sub')) + '</p></div></div>' +
           '<div class="card-body">' +
-            field('Varsayılan Minimum Stok','number','5') +
-            '<div class="field"><label>Uyarı Kanalı</label><select>' +
-            '<option selected>Uygulama içi</option><option>E-posta</option><option>WhatsApp</option>' +
-            '</select></div>' +
+            field(t('s_default_min'), 'number', '5') +
+            '<div class="field"><label>' + esc(t('s_alert_channel')) + '</label><select>' +
+            '<option selected>' + esc(t('s_in_app')) + '</option><option>' + esc(t('f_email')) +
+            '</option><option>WhatsApp</option></select></div>' +
           '</div></section>' +
 
-          '<section class="card"><div class="card-head"><div><h3>Tehlikeli Bölge</h3>' +
-          '<p class="sub">Bu işlemler geri alınamaz</p></div></div>' +
+          '<section class="card"><div class="card-head"><div><h3>' + esc(t('h_danger')) + '</h3>' +
+          '<p class="sub">' + esc(t('h_danger_sub')) + '</p></div></div>' +
           '<div class="card-body"><div class="action-row">' +
-            '<button class="btn btn-danger" data-act="reset-data">' + icon('refresh') + 'Verileri Sıfırla</button>' +
-            '<button class="btn btn-danger" data-act="delete-account">' + icon('trash') + 'Hesabı Sil</button>' +
+            '<button class="btn btn-danger" data-act="reset-data">' + icon('refresh') + t('btn_reset_data') + '</button>' +
+            '<button class="btn btn-danger" data-act="delete-account">' + icon('trash') + t('btn_del_account') + '</button>' +
           '</div></div></section>' +
         '</div>' +
       '</div>'
@@ -1034,29 +1012,56 @@ function field(label, type, value) {
 }
 
 /* ==========================================================================
-   Kabuk: yönlendirme, menü, modal, bildirim
+   Kabuk
    ========================================================================== */
 
 const STATE = { route:'dashboard', param:null, filter:'all' };
 
+function renderChrome() {
+  /* marka */
+  document.getElementById('brandName').textContent = t('app_name');
+  document.getElementById('brandSub').textContent = t('app_sub');
+
+  /* arama ve düğme etiketleri */
+  const si = document.getElementById('searchInput');
+  si.placeholder = t('search_ph');
+  si.setAttribute('aria-label', t('aria_search'));
+  document.getElementById('btnNotif').setAttribute('aria-label', t('aria_notif'));
+  document.getElementById('btnHelp').setAttribute('aria-label', t('aria_help'));
+  document.getElementById('btnBurger').setAttribute('aria-label', t('aria_menu_open'));
+  document.getElementById('btnNavClose').setAttribute('aria-label', t('aria_menu_close'));
+
+  /* kullanıcı kartı */
+  const me = staffById('s1');
+  document.getElementById('meName').textContent = staffName(me);
+  document.getElementById('meRole').textContent = roleLabel(me.role);
+  document.getElementById('meAvatar').textContent = staffInitials(me);
+
+  /* dil seçici */
+  document.getElementById('langSwitch').innerHTML =
+    '<div class="seg" data-seg="lang" aria-label="' + esc(t('aria_lang')) + '">' +
+    Object.keys(LANGS).map((k) => '<button data-val="' + k + '"' +
+      (lang() === k ? ' class="on"' : '') + ' title="' + esc(LANGS[k].name) + '">' +
+      esc(LANGS[k].short) + '</button>').join('') + '</div>';
+}
+
 function renderSidebar() {
   let html = '';
   NAV.forEach((g) => {
-    if (g.group) html += '<div class="nav-group-label">' + esc(g.group) + '</div>';
+    if (g.group) html += '<div class="nav-group-label">' + esc(t(g.group)) + '</div>';
     g.items.forEach((it) => {
-      const active = STATE.route === it.id ||
-        (it.id === 'musteriler' && STATE.route === 'musteri');
-      let badgeHtml = '';
+      const active = STATE.route === it.id || (it.id === 'musteriler' && STATE.route === 'musteri');
+      let b = '';
       if (it.id === 'borc') {
         const n = openBalances().filter((r) => r.sum.isLate).length;
-        if (n) badgeHtml = '<span class="nav-badge">' + n + '</span>';
+        if (n) b = '<span class="nav-badge">' + num(n) + '</span>';
       }
       if (it.id === 'stok') {
         const n = kpis().lowCount;
-        if (n) badgeHtml = '<span class="nav-badge">' + n + '</span>';
+        if (n) b = '<span class="nav-badge">' + num(n) + '</span>';
       }
       html += '<a class="nav-item' + (active ? ' active' : '') + '" href="#/' + it.id + '">' +
-        icon(it.icon) + '<span>' + esc(it.label) + '</span>' + badgeHtml + '</a>';
+        icon(it.icon) + '<span>' + esc(t(it.key)) + '</span>' + b + '</a>';
     });
   });
   document.getElementById('sidebarNav').innerHTML = html;
@@ -1074,14 +1079,17 @@ function render() {
   STATE.param = r.param;
 
   const meta = PAGE_META[STATE.route] || PAGE_META.dashboard;
-  document.getElementById('pageTitle').textContent = meta.title;
-  document.getElementById('pageCrumb').textContent = meta.crumb;
-  document.title = 'NetStore — ' + meta.title;
+  document.getElementById('pageTitle').textContent = t(meta.title);
+  document.getElementById('pageCrumb').textContent = t(meta.crumb);
+  document.title = t('app_name') + ' — ' + t(meta.title);
 
+  /* rota değişince açık kalan katmanlar kapanır */
+  closeDoc();
+  closeModal();
+
+  renderChrome();
   const out = PAGES[STATE.route](STATE.param);
-  const host = document.getElementById('page');
-  host.innerHTML = out.html;
-  host.scrollIntoView({ block:'start' });
+  document.getElementById('page').innerHTML = out.html;
   window.scrollTo(0, 0);
 
   renderSidebar();
@@ -1089,7 +1097,6 @@ function render() {
   closeNav();
 }
 
-/* --- mobil çekmece --- */
 function openNav()  { document.body.classList.add('nav-open'); }
 function closeNav() { document.body.classList.remove('nav-open'); }
 
@@ -1102,8 +1109,7 @@ function toast(msg, tone) {
                  '<span>' + esc(msg) + '</span>';
   host.appendChild(el);
   setTimeout(() => {
-    el.style.opacity = '0';
-    el.style.transition = 'opacity 200ms';
+    el.style.opacity = '0'; el.style.transition = 'opacity 200ms';
     setTimeout(() => el.remove(), 220);
   }, 2600);
 }
@@ -1122,51 +1128,50 @@ function closeModal() {
   host.innerHTML = '';
 }
 
-/** Tahsilat ekleme — gerçekten kayıt oluşturur ve ekranı tazeler. */
 function paymentModal(custId) {
   const open = openBalances();
-  if (!open.length) { toast('Açık bakiyesi olan müşteri yok.', 'info'); return; }
+  if (!open.length) { toast(t('t_no_open'), 'info'); return; }
 
   const target = custId && customerById(custId) ? custId : open[0].customer.id;
   const sum = customerSummary(target);
   const openSales = sum.sales.filter((s) => saleTotals(s).remaining > 0);
 
   openModal(
-    '<div class="card-head"><div><h3>Tahsilat Ekle</h3>' +
-    '<p class="sub">Ödeme, müşterinin bakiyesinden düşülür</p></div>' +
-    '<div class="head-actions"><button class="btn btn-ghost btn-sm btn-icon" data-act="close-modal" aria-label="Kapat">' +
-    icon('x') + '</button></div></div>' +
+    '<div class="card-head"><div><h3>' + esc(t('m_add_payment')) + '</h3>' +
+    '<p class="sub">' + esc(t('m_add_pay_sub')) + '</p></div>' +
+    '<div class="head-actions"><button class="btn btn-ghost btn-sm btn-icon" data-act="close-modal" aria-label="' +
+    esc(t('aria_close')) + '">' + icon('x') + '</button></div></div>' +
     '<div class="card-body">' +
-      '<div class="field"><label>Müşteri</label><select id="pmCust">' +
+      '<div class="field"><label>' + esc(t('m_customer')) + '</label><select id="pmCust">' +
       open.map((r) => '<option value="' + r.customer.id + '"' + (r.customer.id === target ? ' selected' : '') + '>' +
-        esc(customerName(r.customer)) + ' — ' + money(r.sum.remaining) + ' borç</option>').join('') +
+        esc(t('m_opt_debt', { name: customerName(r.customer), v: money(r.sum.remaining) })) + '</option>').join('') +
       '</select></div>' +
-      '<div class="field"><label>Fatura</label><select id="pmSale">' +
-      openSales.map((s) => '<option value="' + s.id + '">' + esc(s.no) + ' — ' +
-        money(saleTotals(s).remaining) + ' kalan</option>').join('') +
+      '<div class="field"><label>' + esc(t('m_invoice')) + '</label><select id="pmSale">' +
+      openSales.map((s) => '<option value="' + s.id + '">' +
+        esc(t('m_opt_rem', { no: s.no, v: money(saleTotals(s).remaining) })) + '</option>').join('') +
       '</select></div>' +
-      '<div class="field"><label>Tutar (€)</label>' +
+      '<div class="field"><label>' + esc(t('m_amount', { c: langMeta().currency })) + '</label>' +
       '<input type="number" id="pmAmount" min="1" step="1" value="' +
       (openSales.length ? Math.round(saleTotals(openSales[0]).remaining) : 0) + '">' +
-      '<p class="hint">Kalan borçtan fazlası girilemez.</p></div>' +
-      '<div class="field"><label>Ödeme Yöntemi</label><select id="pmMethod">' +
-      '<option>Nakit</option><option>Havale/EFT</option><option>Kredi Kartı</option></select></div>' +
+      '<p class="hint">' + esc(t('m_hint_max')) + '</p></div>' +
+      '<div class="field"><label>' + esc(t('m_method')) + '</label><select id="pmMethod">' +
+      METHODS.map((m) => '<option value="' + m + '">' + esc(methodLabel(m)) + '</option>').join('') +
+      '</select></div>' +
     '</div>' +
     '<div class="modal-foot">' +
-      '<button class="btn btn-ghost" data-act="close-modal">Vazgeç</button>' +
-      '<button class="btn btn-success" data-act="save-payment">' + icon('handCoins') + 'Tahsilatı Kaydet</button>' +
+      '<button class="btn btn-ghost" data-act="close-modal">' + esc(t('btn_cancel')) + '</button>' +
+      '<button class="btn btn-success" data-act="save-payment">' + icon('handCoins') + t('btn_save_pay') + '</button>' +
     '</div>'
   );
 
-  /* müşteri değişince fatura listesi güncellenir */
   document.getElementById('pmCust').addEventListener('change', function () {
     const s2 = customerSummary(this.value);
     const list = s2.sales.filter((s) => saleTotals(s).remaining > 0);
     document.getElementById('pmSale').innerHTML = list.map((s) =>
-      '<option value="' + s.id + '">' + esc(s.no) + ' — ' + money(saleTotals(s).remaining) + ' kalan</option>').join('');
+      '<option value="' + s.id + '">' + esc(t('m_opt_rem', { no: s.no, v: money(saleTotals(s).remaining) })) +
+      '</option>').join('');
     document.getElementById('pmAmount').value = list.length ? Math.round(saleTotals(list[0]).remaining) : 0;
   });
-
   document.getElementById('pmSale').addEventListener('change', function () {
     const s = saleById(this.value);
     if (s) document.getElementById('pmAmount').value = Math.round(saleTotals(s).remaining);
@@ -1180,22 +1185,19 @@ function savePayment() {
   const method = document.getElementById('pmMethod').value;
   const sale = saleById(saleId);
 
-  if (!sale) { toast('Kapatılacak açık fatura yok.', 'warning'); return; }
-  if (!amount || amount <= 0) { toast('Geçerli bir tutar girin.', 'warning'); return; }
+  if (!sale) { toast(t('t_no_open_inv'), 'warning'); return; }
+  if (!amount || amount <= 0) { toast(t('t_bad_amount'), 'warning'); return; }
 
-  const rem = saleTotals(sale).remaining;
-  const final = Math.min(amount, rem);
-
+  const final = Math.min(amount, saleTotals(sale).remaining);
   PAYMENTS.unshift({
-    id: 'pm' + (PAYMENTS.length + 1000),
-    saleId: saleId, customerId: custId,
-    date: new Date(TODAY), amount: final, method: method
+    id:'pm' + (PAYMENTS.length + 1000), saleId:saleId, customerId:custId,
+    date:new Date(TODAY), amount:final, method:method
   });
   PAYMENTS.sort((a, b) => b.date - a.date);
 
   closeModal();
   render();
-  toast(money(final) + ' tahsilat kaydedildi.');
+  toast(t('t_saved', { v: money(final) }));
 }
 
 /* --- olaylar --- */
@@ -1204,7 +1206,11 @@ document.addEventListener('click', function (ev) {
   if (nav) { ev.preventDefault(); nav.dataset.nav === 'open' ? openNav() : closeNav(); return; }
 
   const seg = ev.target.closest('[data-seg] button');
-  if (seg) { STATE.filter = seg.dataset.val; render(); return; }
+  if (seg) {
+    const group = seg.closest('[data-seg]').dataset.seg;
+    if (group === 'lang') { setLang(seg.dataset.val); render(); return; }
+    STATE.filter = seg.dataset.val; render(); return;
+  }
 
   const a = ev.target.closest('[data-act]');
   if (!a) {
@@ -1213,37 +1219,37 @@ document.addEventListener('click', function (ev) {
   }
 
   const act = a.dataset.act;
+  if (act === 'add-payment')  { paymentModal(a.dataset.id); return; }
+  if (act === 'save-payment') { savePayment(); return; }
+  if (act === 'close-modal')  { closeModal(); return; }
+  if (act === 'doc-invoice')  { invoiceDoc(a.dataset.id); return; }
+  if (act === 'doc-receipt')  { receiptDoc(a.dataset.id); return; }
+  if (act === 'close-doc')    { closeDoc(); return; }
+  if (act === 'print-doc' || act === 'print') { window.print(); return; }
 
-  if (act === 'add-payment')   { paymentModal(a.dataset.id); return; }
-  if (act === 'save-payment')  { savePayment(); return; }
-  if (act === 'close-modal')   { closeModal(); return; }
-  if (act === 'print')         { window.print(); return; }
-
-  /* Bu ekranlar tasarım şablonu olarak hazır; kayıt formları veri katmanına
-     bağlandığında aynı modal düzeni kullanılacak. */
-  const messages = {
-    'new-sale':'Yeni satış ekranı', 'new-invoice':'Fatura oluşturma ekranı',
-    'new-product':'Yeni ürün formu', 'new-customer':'Yeni müşteri formu',
-    'new-purchase':'Yeni alış formu', 'new-staff':'Personel ekleme formu',
-    'stock-in':'Stok giriş formu', 'invoice':'Fatura önizleme',
-    'edit-customer':'Müşteri düzenleme formu', 'export':'Dışa aktarma'
+  /* Bu formlar tasarım şablonu olarak hazır; veri katmanına bağlandığında
+     aynı modal düzeni kullanılacak. */
+  const screens = {
+    'new-sale':'scr_new_sale', 'new-invoice':'scr_new_invoice', 'new-product':'scr_new_product',
+    'new-customer':'scr_new_customer', 'new-purchase':'scr_new_purchase', 'new-staff':'scr_new_staff',
+    'stock-in':'scr_stock_in', 'edit-customer':'scr_edit_cust', 'export':'scr_export'
   };
-  if (messages[act]) { toast(messages[act] + ' henüz bağlanmadı.', 'info'); return; }
+  if (screens[act]) { toast(t('t_not_wired', { n: t(screens[act]) }), 'info'); return; }
 
   if (act === 'delete-customer' || act === 'reset-data' || act === 'delete-account') {
-    toast('Tehlikeli işlem — onay adımı gerekiyor.', 'warning');
-    return;
+    toast(t('t_danger'), 'warning'); return;
   }
-  if (act === 'save-settings') { toast('Ayarlar kaydedildi.'); return; }
+  if (act === 'save-settings') { toast(t('t_settings')); return; }
 });
 
 document.addEventListener('keydown', function (ev) {
-  if (ev.key === 'Escape') { closeModal(); closeNav(); }
+  if (ev.key === 'Escape') { closeDoc(); closeModal(); closeNav(); }
 });
 
 window.addEventListener('hashchange', render);
 
 document.addEventListener('DOMContentLoaded', function () {
+  applyLangToDocument();
   hydrateIcons(document);
   render();
 });
