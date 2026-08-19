@@ -16,8 +16,10 @@
         <a href="index.html" data-page-link="home" data-i18n="nav_home">Ana Sayfa</a>
         <a href="yolculugum.html" data-page-link="journey" data-i18n="nav_journey">Yolculuğum</a>
         <a href="projeler.html" data-page-link="projects" data-i18n="nav_projects">Projeler</a>
+        <a href="ogrenme.html" data-page-link="learning" data-i18n="nav_learning">Öğrenme</a>
         <a href="notlar.html" data-page-link="notes" data-i18n="nav_notes">Notlar</a>
         <a href="hakkimda.html" data-page-link="about" data-i18n="nav_about">Hakkımda</a>
+        <a href="iletisim.html" data-page-link="contact" data-i18n="nav_contact">İletişim</a>
       </nav>
 
       <div class="nav-actions">
@@ -31,27 +33,63 @@
           <svg class="icon-sun" data-lucide="sun" style="display:none"></svg>
         </button>
 
+        <div class="appearance-switch">
+          <button class="icon-btn appearance-trigger" data-i18n-aria-label="aria_appearance" aria-label="Görünümü özelleştir">
+            <svg data-lucide="palette"></svg>
+          </button>
+          <div class="appearance-menu">
+            <div class="appearance-section">
+              <span class="appearance-label" data-i18n="appearance_theme">Tema</span>
+              <div class="appearance-options">
+                <button type="button" class="theme-choice" data-theme-choice="dark">
+                  <svg data-lucide="moon"></svg><span data-i18n="appearance_theme_dark">Koyu</span>
+                </button>
+                <button type="button" class="theme-choice" data-theme-choice="light">
+                  <svg data-lucide="sun"></svg><span data-i18n="appearance_theme_light">Açık</span>
+                </button>
+                <button type="button" class="theme-choice" data-theme-choice="system">
+                  <svg data-lucide="monitor"></svg><span data-i18n="appearance_theme_system">Sistem</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="appearance-section">
+              <span class="appearance-label" data-i18n="appearance_accent">Vurgu Rengi</span>
+              <div class="accent-swatches">
+                <button type="button" class="accent-swatch" data-accent-choice="gold" style="--swatch:#dba55a" data-i18n-aria-label="accent_gold" aria-label="Altın"></button>
+                <button type="button" class="accent-swatch" data-accent-choice="blue" style="--swatch:#5b9bd5" data-i18n-aria-label="accent_blue" aria-label="Mavi"></button>
+                <button type="button" class="accent-swatch" data-accent-choice="purple" style="--swatch:#a78bfa" data-i18n-aria-label="accent_purple" aria-label="Mor"></button>
+                <button type="button" class="accent-swatch" data-accent-choice="green" style="--swatch:#4fd694" data-i18n-aria-label="accent_green" aria-label="Yeşil"></button>
+              </div>
+            </div>
+
+            <div class="appearance-section">
+              <span class="appearance-label" data-i18n="appearance_glass">Cam Yoğunluğu</span>
+              <input type="range" class="glass-slider" min="0" max="32" value="20" data-i18n-aria-label="appearance_glass" aria-label="Cam Yoğunluğu" />
+            </div>
+          </div>
+        </div>
+
         <div class="lang-switch">
           <button class="lang-trigger">
-            <span class="flag">🇹🇷</span>
             <span class="name">TR</span>
             <svg data-lucide="chevron-down"></svg>
           </button>
           <div class="lang-menu">
             <button class="lang-option" data-lang="tr">
-              <span class="flag">🇹🇷</span><span class="name" data-i18n="lang_tr">Türkçe</span>
+              <span class="name" data-i18n="lang_tr">Türkçe</span>
               <svg class="check" data-lucide="check"></svg>
             </button>
             <button class="lang-option" data-lang="fa">
-              <span class="flag">🇮🇷</span><span class="name" data-i18n="lang_fa">فارسی</span>
+              <span class="name" data-i18n="lang_fa">فارسی</span>
               <svg class="check" data-lucide="check"></svg>
             </button>
             <button class="lang-option" data-lang="de">
-              <span class="flag">🇩🇪</span><span class="name" data-i18n="lang_de">Deutsch</span>
+              <span class="name" data-i18n="lang_de">Deutsch</span>
               <svg class="check" data-lucide="check"></svg>
             </button>
             <button class="lang-option" data-lang="en">
-              <span class="flag">🇬🇧</span><span class="name" data-i18n="lang_en">English</span>
+              <span class="name" data-i18n="lang_en">English</span>
               <svg class="check" data-lucide="check"></svg>
             </button>
           </div>
@@ -82,65 +120,93 @@
 
         <div class="timeline-item">
           <div class="timeline-marker"><svg data-lucide="flag"></svg></div>
-          <div class="timeline-card">
+          <button type="button" class="timeline-card" aria-expanded="false">
             <span class="timeline-date" data-i18n="journey_tl1_date">Ağustos 2025</span>
-            <h3 data-i18n="journey_tl1_title">Yolun Başlangıcı</h3>
-            <p data-i18n="journey_tl1_desc">Kod yazmaya karar verdim ve ilk "Merhaba Dünya" programımı çalıştırdım. İşte o an bu yolculuk başladı.</p>
-          </div>
+            <h3><span data-i18n="journey_tl1_title">Yolun Başlangıcı</span><svg data-lucide="chevron-down" class="timeline-toggle-icon"></svg></h3>
+            <div class="timeline-detail">
+              <div class="timeline-detail-inner">
+                <p data-i18n="journey_tl1_desc">Kod yazmaya karar verdim ve ilk "Merhaba Dünya" programımı çalıştırdım. İşte o an bu yolculuk başladı.</p>
+              </div>
+            </div>
+          </button>
         </div>
 
         <div class="timeline-item">
           <div class="timeline-marker"><svg data-lucide="code"></svg></div>
-          <div class="timeline-card">
+          <button type="button" class="timeline-card" aria-expanded="false">
             <span class="timeline-date" data-i18n="journey_tl2_date">Eylül 2025</span>
-            <h3 data-i18n="journey_tl2_title">HTML & CSS ile Temeller</h3>
-            <p data-i18n="journey_tl2_desc">Web sayfalarının nasıl inşa edildiğini öğrendim; ilk statik sayfalarımı sıfırdan kodladım.</p>
-          </div>
+            <h3><span data-i18n="journey_tl2_title">HTML & CSS ile Temeller</span><svg data-lucide="chevron-down" class="timeline-toggle-icon"></svg></h3>
+            <div class="timeline-detail">
+              <div class="timeline-detail-inner">
+                <p data-i18n="journey_tl2_desc">Web sayfalarının nasıl inşa edildiğini öğrendim; ilk statik sayfalarımı sıfırdan kodladım.</p>
+              </div>
+            </div>
+          </button>
         </div>
 
         <div class="timeline-item">
           <div class="timeline-marker"><svg data-lucide="braces"></svg></div>
-          <div class="timeline-card">
+          <button type="button" class="timeline-card" aria-expanded="false">
             <span class="timeline-date" data-i18n="journey_tl3_date">Kasım 2025</span>
-            <h3 data-i18n="journey_tl3_title">JavaScript'e İlk Adım</h3>
-            <p data-i18n="journey_tl3_desc">Değişkenler, fonksiyonlar ve döngülerle tanıştım. Sayfalara hayat vermenin keyfini keşfettim.</p>
-          </div>
+            <h3><span data-i18n="journey_tl3_title">JavaScript'e İlk Adım</span><svg data-lucide="chevron-down" class="timeline-toggle-icon"></svg></h3>
+            <div class="timeline-detail">
+              <div class="timeline-detail-inner">
+                <p data-i18n="journey_tl3_desc">Değişkenler, fonksiyonlar ve döngülerle tanıştım. Sayfalara hayat vermenin keyfini keşfettim.</p>
+              </div>
+            </div>
+          </button>
         </div>
 
         <div class="timeline-item">
           <div class="timeline-marker"><svg data-lucide="rocket"></svg></div>
-          <div class="timeline-card">
+          <button type="button" class="timeline-card" aria-expanded="false">
             <span class="timeline-date" data-i18n="journey_tl4_date">Ocak 2026</span>
-            <h3 data-i18n="journey_tl4_title">İlk Projem: Kişisel Web Sitesi</h3>
-            <p data-i18n="journey_tl4_desc">Öğrendiklerimi bir araya getirip ilk gerçek projemi yayınladım — şu an üzerinde çalıştığım bu site.</p>
-          </div>
+            <h3><span data-i18n="journey_tl4_title">İlk Projem: Kişisel Web Sitesi</span><svg data-lucide="chevron-down" class="timeline-toggle-icon"></svg></h3>
+            <div class="timeline-detail">
+              <div class="timeline-detail-inner">
+                <p data-i18n="journey_tl4_desc">Öğrendiklerimi bir araya getirip ilk gerçek projemi yayınladım — şu an üzerinde çalıştığım bu site.</p>
+              </div>
+            </div>
+          </button>
         </div>
 
         <div class="timeline-item">
           <div class="timeline-marker"><svg data-lucide="cloud-sun"></svg></div>
-          <div class="timeline-card">
+          <button type="button" class="timeline-card" aria-expanded="false">
             <span class="timeline-date" data-i18n="journey_tl5_date">Nisan 2026</span>
-            <h3 data-i18n="journey_tl5_title">API'lerle Tanışma: Hava Durumu Uygulaması</h3>
-            <p data-i18n="journey_tl5_desc">Harici bir API'den veri çekmeyi ve JavaScript ile dinamik olarak göstermeyi öğrendim.</p>
-          </div>
+            <h3><span data-i18n="journey_tl5_title">API'lerle Tanışma: Hava Durumu Uygulaması</span><svg data-lucide="chevron-down" class="timeline-toggle-icon"></svg></h3>
+            <div class="timeline-detail">
+              <div class="timeline-detail-inner">
+                <p data-i18n="journey_tl5_desc">Harici bir API'den veri çekmeyi ve JavaScript ile dinamik olarak göstermeyi öğrendim.</p>
+              </div>
+            </div>
+          </button>
         </div>
 
-        <div class="timeline-item active">
+        <div class="timeline-item active expanded">
           <div class="timeline-marker"><svg data-lucide="layout-grid"></svg></div>
-          <div class="timeline-card">
+          <button type="button" class="timeline-card" aria-expanded="true">
             <span class="timeline-date" data-i18n="journey_tl6_date">Ağustos 2026</span>
-            <h3 data-i18n="journey_tl6_title">DOM ve CSS Grid ile Derinleşiyorum</h3>
-            <p data-i18n="journey_tl6_desc">DOM manipülasyonu ve modern grid düzenleriyle daha esnek, etkileşimli arayüzler kuruyorum. Şu anda buradayım.</p>
-          </div>
+            <h3><span data-i18n="journey_tl6_title">DOM ve CSS Grid ile Derinleşiyorum</span><svg data-lucide="chevron-down" class="timeline-toggle-icon"></svg></h3>
+            <div class="timeline-detail">
+              <div class="timeline-detail-inner">
+                <p data-i18n="journey_tl6_desc">DOM manipülasyonu ve modern grid düzenleriyle daha esnek, etkileşimli arayüzler kuruyorum. Şu anda buradayım.</p>
+              </div>
+            </div>
+          </button>
         </div>
 
         <div class="timeline-item upcoming">
           <div class="timeline-marker"><svg data-lucide="target"></svg></div>
-          <div class="timeline-card">
+          <button type="button" class="timeline-card" aria-expanded="false">
             <span class="timeline-date" data-i18n="journey_tl7_date">Sıradaki Hedef</span>
-            <h3 data-i18n="journey_tl7_title">Backend & Veritabanlarına Giriş</h3>
-            <p data-i18n="journey_tl7_desc">Node.js ve veritabanlarını öğrenerek tam yığın (full-stack) bir geliştirici olma yolunda ilerlemek istiyorum.</p>
-          </div>
+            <h3><span data-i18n="journey_tl7_title">Backend & Veritabanlarına Giriş</span><svg data-lucide="chevron-down" class="timeline-toggle-icon"></svg></h3>
+            <div class="timeline-detail">
+              <div class="timeline-detail-inner">
+                <p data-i18n="journey_tl7_desc">Node.js ve veritabanlarını öğrenerek tam yığın (full-stack) bir geliştirici olma yolunda ilerlemek istiyorum.</p>
+              </div>
+            </div>
+          </button>
         </div>
 
       </div>
@@ -169,8 +235,10 @@
       <a href="index.html" data-page-link="home"><svg data-lucide="home"></svg><span data-i18n="nav_home">Ana Sayfa</span></a>
       <a href="yolculugum.html" data-page-link="journey"><svg data-lucide="compass"></svg><span data-i18n="nav_journey">Yolculuğum</span></a>
       <a href="projeler.html" data-page-link="projects"><svg data-lucide="folder"></svg><span data-i18n="nav_projects">Projeler</span></a>
+      <a href="ogrenme.html" data-page-link="learning"><svg data-lucide="graduation-cap"></svg><span data-i18n="nav_learning">Öğrenme</span></a>
       <a href="notlar.html" data-page-link="notes"><svg data-lucide="notebook-pen"></svg><span data-i18n="nav_notes">Notlar</span></a>
       <a href="hakkimda.html" data-page-link="about"><svg data-lucide="user-round"></svg><span data-i18n="nav_about">Hakkımda</span></a>
+      <a href="iletisim.html" data-page-link="contact"><svg data-lucide="send"></svg><span data-i18n="nav_contact">İletişim</span></a>
     </nav>
     <div class="mobile-divider"></div>
     <div class="mobile-social">
@@ -183,5 +251,11 @@
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="js/i18n.js"></script>
   <script src="js/main.js"></script>
+  <script src="js/timeline.js"></script>
+  <script src="js/mouse-glow.js"></script>
+  <script src="js/toast.js"></script>
+  <script src="js/appearance.js"></script>
+  <script src="js/cursor.js"></script>
+  <script src="js/navbar-scroll.js"></script>
 </body>
 </html>

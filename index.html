@@ -16,8 +16,10 @@
         <a href="index.html" data-page-link="home" data-i18n="nav_home">Ana Sayfa</a>
         <a href="yolculugum.html" data-page-link="journey" data-i18n="nav_journey">Yolculuğum</a>
         <a href="projeler.html" data-page-link="projects" data-i18n="nav_projects">Projeler</a>
+        <a href="ogrenme.html" data-page-link="learning" data-i18n="nav_learning">Öğrenme</a>
         <a href="notlar.html" data-page-link="notes" data-i18n="nav_notes">Notlar</a>
         <a href="hakkimda.html" data-page-link="about" data-i18n="nav_about">Hakkımda</a>
+        <a href="iletisim.html" data-page-link="contact" data-i18n="nav_contact">İletişim</a>
       </nav>
 
       <div class="nav-actions">
@@ -31,27 +33,63 @@
           <svg class="icon-sun" data-lucide="sun" style="display:none"></svg>
         </button>
 
+        <div class="appearance-switch">
+          <button class="icon-btn appearance-trigger" data-i18n-aria-label="aria_appearance" aria-label="Görünümü özelleştir">
+            <svg data-lucide="palette"></svg>
+          </button>
+          <div class="appearance-menu">
+            <div class="appearance-section">
+              <span class="appearance-label" data-i18n="appearance_theme">Tema</span>
+              <div class="appearance-options">
+                <button type="button" class="theme-choice" data-theme-choice="dark">
+                  <svg data-lucide="moon"></svg><span data-i18n="appearance_theme_dark">Koyu</span>
+                </button>
+                <button type="button" class="theme-choice" data-theme-choice="light">
+                  <svg data-lucide="sun"></svg><span data-i18n="appearance_theme_light">Açık</span>
+                </button>
+                <button type="button" class="theme-choice" data-theme-choice="system">
+                  <svg data-lucide="monitor"></svg><span data-i18n="appearance_theme_system">Sistem</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="appearance-section">
+              <span class="appearance-label" data-i18n="appearance_accent">Vurgu Rengi</span>
+              <div class="accent-swatches">
+                <button type="button" class="accent-swatch" data-accent-choice="gold" style="--swatch:#dba55a" data-i18n-aria-label="accent_gold" aria-label="Altın"></button>
+                <button type="button" class="accent-swatch" data-accent-choice="blue" style="--swatch:#5b9bd5" data-i18n-aria-label="accent_blue" aria-label="Mavi"></button>
+                <button type="button" class="accent-swatch" data-accent-choice="purple" style="--swatch:#a78bfa" data-i18n-aria-label="accent_purple" aria-label="Mor"></button>
+                <button type="button" class="accent-swatch" data-accent-choice="green" style="--swatch:#4fd694" data-i18n-aria-label="accent_green" aria-label="Yeşil"></button>
+              </div>
+            </div>
+
+            <div class="appearance-section">
+              <span class="appearance-label" data-i18n="appearance_glass">Cam Yoğunluğu</span>
+              <input type="range" class="glass-slider" min="0" max="32" value="20" data-i18n-aria-label="appearance_glass" aria-label="Cam Yoğunluğu" />
+            </div>
+          </div>
+        </div>
+
         <div class="lang-switch">
           <button class="lang-trigger">
-            <span class="flag">🇹🇷</span>
             <span class="name">TR</span>
             <svg data-lucide="chevron-down"></svg>
           </button>
           <div class="lang-menu">
             <button class="lang-option" data-lang="tr">
-              <span class="flag">🇹🇷</span><span class="name" data-i18n="lang_tr">Türkçe</span>
+              <span class="name" data-i18n="lang_tr">Türkçe</span>
               <svg class="check" data-lucide="check"></svg>
             </button>
             <button class="lang-option" data-lang="fa">
-              <span class="flag">🇮🇷</span><span class="name" data-i18n="lang_fa">فارسی</span>
+              <span class="name" data-i18n="lang_fa">فارسی</span>
               <svg class="check" data-lucide="check"></svg>
             </button>
             <button class="lang-option" data-lang="de">
-              <span class="flag">🇩🇪</span><span class="name" data-i18n="lang_de">Deutsch</span>
+              <span class="name" data-i18n="lang_de">Deutsch</span>
               <svg class="check" data-lucide="check"></svg>
             </button>
             <button class="lang-option" data-lang="en">
-              <span class="flag">🇬🇧</span><span class="name" data-i18n="lang_en">English</span>
+              <span class="name" data-i18n="lang_en">English</span>
               <svg class="check" data-lucide="check"></svg>
             </button>
           </div>
@@ -98,15 +136,10 @@
         <div class="hero-visual">
           <div class="code-card">
             <div class="code-card-bar"><span></span><span></span><span></span></div>
-            <pre><code><span class="ln">01</span><span class="kw">const</span> farhad = {
-<span class="ln">02</span>  <span class="prop">learning</span>: <span class="bool">true</span>,
-<span class="ln">03</span>  <span class="prop">focus</span>: <span class="str">"<span data-i18n="code_focus">hergün</span>"</span>,
-<span class="ln">04</span>  <span class="prop">goal</span>: <span class="str">"<span data-i18n="code_goal">daha iyi olmak</span>"</span>,
-<span class="ln">05</span>  <span class="prop">passion</span>: <span class="str">"<span data-i18n="code_passion">kod</span>"</span>,
-<span class="ln">06</span>  <span class="prop">location</span>: <span class="str">"<span data-i18n="code_location">Almanya</span>"</span>,
-<span class="ln">07</span>  <span class="prop">status</span>: <span class="str">"<span data-i18n="code_status">inşa ediyor...</span>"</span>
-<span class="ln">08</span>};
-<span class="ln">&nbsp;</span>&gt;_<span class="cursor"></span></code></pre>
+            <div class="code-card-body">
+            <pre><code><span class="code-line"><span class="ln">01</span><span class="kw">const</span> farhad = {</span><span class="code-line">  <span class="prop">learning</span>: <span class="bool">true</span>,</span><span class="code-line">  <span class="prop">focus</span>: <span class="str">"<span data-i18n="code_focus">hergün</span>"</span>,</span><span class="code-line">  <span class="prop">goal</span>: <span class="str">"<span data-i18n="code_goal">daha iyi olmak</span>"</span>,</span><span class="code-line">  <span class="prop">passion</span>: <span class="str">"<span data-i18n="code_passion">kod</span>"</span>,</span><span class="code-line">  <span class="prop">location</span>: <span class="str">"<span data-i18n="code_location">Almanya</span>"</span>,</span><span class="code-line">  <span class="prop">status</span>: <span class="str">"<span data-i18n="code_status">inşa ediyor...</span>"</span></span><span class="code-line"><span class="ln">08</span>};</span><span class="code-line"><span class="ln">&nbsp;</span>&gt;_<span class="cursor"></span></span></code></pre>
+              <svg data-lucide="heart" class="code-card-heart"></svg>
+            </div>
           </div>
 
           <p class="current-label" data-i18n="current_label">Şu An Çalışıyorum</p>
@@ -259,8 +292,10 @@
       <a href="index.html" data-page-link="home"><svg data-lucide="home"></svg><span data-i18n="nav_home">Ana Sayfa</span></a>
       <a href="yolculugum.html" data-page-link="journey"><svg data-lucide="compass"></svg><span data-i18n="nav_journey">Yolculuğum</span></a>
       <a href="projeler.html" data-page-link="projects"><svg data-lucide="folder"></svg><span data-i18n="nav_projects">Projeler</span></a>
+      <a href="ogrenme.html" data-page-link="learning"><svg data-lucide="graduation-cap"></svg><span data-i18n="nav_learning">Öğrenme</span></a>
       <a href="notlar.html" data-page-link="notes"><svg data-lucide="notebook-pen"></svg><span data-i18n="nav_notes">Notlar</span></a>
       <a href="hakkimda.html" data-page-link="about"><svg data-lucide="user-round"></svg><span data-i18n="nav_about">Hakkımda</span></a>
+      <a href="iletisim.html" data-page-link="contact"><svg data-lucide="send"></svg><span data-i18n="nav_contact">İletişim</span></a>
     </nav>
     <div class="mobile-divider"></div>
     <div class="mobile-social">
@@ -273,5 +308,11 @@
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="js/i18n.js"></script>
   <script src="js/main.js"></script>
+  <script src="js/tilt.js"></script>
+  <script src="js/mouse-glow.js"></script>
+  <script src="js/toast.js"></script>
+  <script src="js/appearance.js"></script>
+  <script src="js/cursor.js"></script>
+  <script src="js/navbar-scroll.js"></script>
 </body>
 </html>

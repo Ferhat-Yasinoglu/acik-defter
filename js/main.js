@@ -26,9 +26,16 @@
       if (dict[key] !== undefined) el.textContent = dict[key];
     });
 
-    document.querySelectorAll(".lang-trigger .flag").forEach((el) => {
-      el.textContent = LANG_META[lang].flag;
+    document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
+      const key = el.getAttribute("data-i18n-placeholder");
+      if (dict[key] !== undefined) el.placeholder = dict[key];
     });
+
+    document.querySelectorAll("[data-i18n-aria-label]").forEach((el) => {
+      const key = el.getAttribute("data-i18n-aria-label");
+      if (dict[key] !== undefined) el.setAttribute("aria-label", dict[key]);
+    });
+
     document.querySelectorAll(".lang-trigger .name").forEach((el) => {
       el.textContent = lang.toUpperCase();
     });
@@ -66,27 +73,43 @@
 
   /* ---------------- theme ---------------- */
 
-  function getTheme() {
+  function getThemePref() {
     return localStorage.getItem(STORAGE_THEME) || "dark";
   }
 
-  function applyTheme(theme) {
-    root.setAttribute("data-theme", theme);
-    localStorage.setItem(STORAGE_THEME, theme);
+  function resolveTheme(pref) {
+    if (pref === "system") {
+      return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+    return pref;
+  }
+
+  function applyTheme(pref) {
+    localStorage.setItem(STORAGE_THEME, pref);
+    const resolved = resolveTheme(pref);
+    root.setAttribute("data-theme", resolved);
     document.querySelectorAll(".theme-toggle .icon-moon").forEach((el) => {
-      el.style.display = theme === "dark" ? "block" : "none";
+      el.style.display = resolved === "dark" ? "block" : "none";
     });
     document.querySelectorAll(".theme-toggle .icon-sun").forEach((el) => {
-      el.style.display = theme === "dark" ? "none" : "block";
+      el.style.display = resolved === "dark" ? "none" : "block";
     });
+    document.dispatchEvent(new CustomEvent("fy:theme-applied", { detail: { pref, resolved } }));
   }
+  window.applyTheme = applyTheme;
 
   function initTheme() {
     document.querySelectorAll(".theme-toggle").forEach((btn) => {
       btn.addEventListener("click", () => {
-        applyTheme(getTheme() === "dark" ? "light" : "dark");
+        applyTheme(resolveTheme(getThemePref()) === "dark" ? "light" : "dark");
       });
     });
+
+    if (window.matchMedia) {
+      window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => {
+        if (getThemePref() === "system") applyTheme("system");
+      });
+    }
   }
 
   /* ---------------- clock ---------------- */
@@ -146,7 +169,7 @@
   /* ---------------- init ---------------- */
 
   document.addEventListener("DOMContentLoaded", () => {
-    applyTheme(getTheme());
+    applyTheme(getThemePref());
     applyLanguage(getLang());
     initLangMenu();
     initTheme();

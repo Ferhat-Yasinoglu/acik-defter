@@ -16,8 +16,10 @@
         <a href="index.html" data-page-link="home" data-i18n="nav_home">Ana Sayfa</a>
         <a href="yolculugum.html" data-page-link="journey" data-i18n="nav_journey">Yolculuğum</a>
         <a href="projeler.html" data-page-link="projects" data-i18n="nav_projects">Projeler</a>
+        <a href="ogrenme.html" data-page-link="learning" data-i18n="nav_learning">Öğrenme</a>
         <a href="notlar.html" data-page-link="notes" data-i18n="nav_notes">Notlar</a>
         <a href="hakkimda.html" data-page-link="about" data-i18n="nav_about">Hakkımda</a>
+        <a href="iletisim.html" data-page-link="contact" data-i18n="nav_contact">İletişim</a>
       </nav>
 
       <div class="nav-actions">
@@ -31,27 +33,63 @@
           <svg class="icon-sun" data-lucide="sun" style="display:none"></svg>
         </button>
 
+        <div class="appearance-switch">
+          <button class="icon-btn appearance-trigger" data-i18n-aria-label="aria_appearance" aria-label="Görünümü özelleştir">
+            <svg data-lucide="palette"></svg>
+          </button>
+          <div class="appearance-menu">
+            <div class="appearance-section">
+              <span class="appearance-label" data-i18n="appearance_theme">Tema</span>
+              <div class="appearance-options">
+                <button type="button" class="theme-choice" data-theme-choice="dark">
+                  <svg data-lucide="moon"></svg><span data-i18n="appearance_theme_dark">Koyu</span>
+                </button>
+                <button type="button" class="theme-choice" data-theme-choice="light">
+                  <svg data-lucide="sun"></svg><span data-i18n="appearance_theme_light">Açık</span>
+                </button>
+                <button type="button" class="theme-choice" data-theme-choice="system">
+                  <svg data-lucide="monitor"></svg><span data-i18n="appearance_theme_system">Sistem</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="appearance-section">
+              <span class="appearance-label" data-i18n="appearance_accent">Vurgu Rengi</span>
+              <div class="accent-swatches">
+                <button type="button" class="accent-swatch" data-accent-choice="gold" style="--swatch:#dba55a" data-i18n-aria-label="accent_gold" aria-label="Altın"></button>
+                <button type="button" class="accent-swatch" data-accent-choice="blue" style="--swatch:#5b9bd5" data-i18n-aria-label="accent_blue" aria-label="Mavi"></button>
+                <button type="button" class="accent-swatch" data-accent-choice="purple" style="--swatch:#a78bfa" data-i18n-aria-label="accent_purple" aria-label="Mor"></button>
+                <button type="button" class="accent-swatch" data-accent-choice="green" style="--swatch:#4fd694" data-i18n-aria-label="accent_green" aria-label="Yeşil"></button>
+              </div>
+            </div>
+
+            <div class="appearance-section">
+              <span class="appearance-label" data-i18n="appearance_glass">Cam Yoğunluğu</span>
+              <input type="range" class="glass-slider" min="0" max="32" value="20" data-i18n-aria-label="appearance_glass" aria-label="Cam Yoğunluğu" />
+            </div>
+          </div>
+        </div>
+
         <div class="lang-switch">
           <button class="lang-trigger">
-            <span class="flag">🇹🇷</span>
             <span class="name">TR</span>
             <svg data-lucide="chevron-down"></svg>
           </button>
           <div class="lang-menu">
             <button class="lang-option" data-lang="tr">
-              <span class="flag">🇹🇷</span><span class="name" data-i18n="lang_tr">Türkçe</span>
+              <span class="name" data-i18n="lang_tr">Türkçe</span>
               <svg class="check" data-lucide="check"></svg>
             </button>
             <button class="lang-option" data-lang="fa">
-              <span class="flag">🇮🇷</span><span class="name" data-i18n="lang_fa">فارسی</span>
+              <span class="name" data-i18n="lang_fa">فارسی</span>
               <svg class="check" data-lucide="check"></svg>
             </button>
             <button class="lang-option" data-lang="de">
-              <span class="flag">🇩🇪</span><span class="name" data-i18n="lang_de">Deutsch</span>
+              <span class="name" data-i18n="lang_de">Deutsch</span>
               <svg class="check" data-lucide="check"></svg>
             </button>
             <button class="lang-option" data-lang="en">
-              <span class="flag">🇬🇧</span><span class="name" data-i18n="lang_en">English</span>
+              <span class="name" data-i18n="lang_en">English</span>
               <svg class="check" data-lucide="check"></svg>
             </button>
           </div>
@@ -78,60 +116,158 @@
     </section>
 
     <div class="container notes-page">
-      <div class="panel">
 
-        <div class="note-row">
-          <div class="note-date"><div class="d">14</div><div class="m" data-i18n="month_aug">Ağu</div></div>
-          <div class="note-body">
-            <h3><span class="dot"></span><span data-i18n="note1_title">JavaScript Döngüler</span></h3>
-            <p data-i18n="note1_desc">For, while ve do while döngülerini anladım ve örneklerle pekiştirdim.</p>
+      <div class="notes-toolbar">
+        <div class="notes-filters" aria-label="Not kategorisi filtrele">
+          <button type="button" class="filter-pill active" data-filter="all" aria-pressed="true" data-i18n="filter_all">Tümü</button>
+          <button type="button" class="filter-pill" data-filter="js" aria-pressed="false" data-i18n="filter_js">JavaScript</button>
+          <button type="button" class="filter-pill" data-filter="css" aria-pressed="false" data-i18n="filter_css">CSS</button>
+          <button type="button" class="filter-pill" data-filter="git" aria-pressed="false" data-i18n="filter_git">Git</button>
+          <button type="button" class="filter-pill" data-filter="api" aria-pressed="false" data-i18n="filter_api">API</button>
+          <button type="button" class="filter-pill" data-filter="design" aria-pressed="false" data-i18n="filter_design">Tasarım</button>
+        </div>
+        <span class="notes-count"><span class="num">6</span> <span data-i18n="notes_count_label">not</span></span>
+      </div>
+
+      <div class="notes-timeline">
+
+        <div class="notes-month-group">
+          <h2 class="notes-month-label" data-i18n="month_aug_full">Ağustos 2026</h2>
+          <div class="notes-list">
+
+            <article class="note-card" data-category="js">
+              <button type="button" class="note-summary" aria-expanded="false">
+                <div class="note-date"><div class="d">14</div><div class="m" data-i18n="month_aug">Ağu</div></div>
+                <div class="note-body">
+                  <h3><span class="note-cat" data-i18n="filter_js">JavaScript</span><span data-i18n="note1_title">JavaScript Döngüler</span></h3>
+                  <p data-i18n="note1_desc">For, while ve do while döngülerini anladım ve örneklerle pekiştirdim.</p>
+                </div>
+                <svg data-lucide="chevron-down" class="note-toggle-icon"></svg>
+              </button>
+              <div class="note-detail">
+                <div class="note-detail-inner">
+                  <ul class="note-points">
+                    <li><svg data-lucide="check"></svg><span data-i18n="note1_point1">for döngüsüyle belirli sayıda tekrar eden işlemler yazdım.</span></li>
+                    <li><svg data-lucide="check"></svg><span data-i18n="note1_point2">while ve do-while arasındaki farkı, koşulun ne zaman kontrol edildiğini görerek anladım.</span></li>
+                    <li><svg data-lucide="check"></svg><span data-i18n="note1_point3">break ve continue ile döngü akışını nasıl kontrol edeceğimi öğrendim.</span></li>
+                  </ul>
+                </div>
+              </div>
+            </article>
+
+            <article class="note-card" data-category="css">
+              <button type="button" class="note-summary" aria-expanded="false">
+                <div class="note-date"><div class="d">13</div><div class="m" data-i18n="month_aug">Ağu</div></div>
+                <div class="note-body">
+                  <h3><span class="note-cat" data-i18n="filter_css">CSS</span><span data-i18n="note2_title">CSS Grid Öğreniyorum</span></h3>
+                  <p data-i18n="note2_desc">Grid sistemi ile modern ve esnek tasarım yapmayı öğrendim.</p>
+                </div>
+                <svg data-lucide="chevron-down" class="note-toggle-icon"></svg>
+              </button>
+              <div class="note-detail">
+                <div class="note-detail-inner">
+                  <ul class="note-points">
+                    <li><svg data-lucide="check"></svg><span data-i18n="note2_point1">grid-template-columns ile sütun sayısını ve genişliklerini kontrol etmeyi öğrendim.</span></li>
+                    <li><svg data-lucide="check"></svg><span data-i18n="note2_point2">fr birimiyle esnek, oranlı sütunlar oluşturmayı keşfettim.</span></li>
+                    <li><svg data-lucide="check"></svg><span data-i18n="note2_point3">gap özelliğiyle hücreler arası boşlukları kolayca ayarladım.</span></li>
+                  </ul>
+                </div>
+              </div>
+            </article>
+
+            <article class="note-card" data-category="js">
+              <button type="button" class="note-summary" aria-expanded="false">
+                <div class="note-date"><div class="d">12</div><div class="m" data-i18n="month_aug">Ağu</div></div>
+                <div class="note-body">
+                  <h3><span class="note-cat" data-i18n="filter_js">JavaScript</span><span data-i18n="note3_title">DOM Manipülasyonu</span></h3>
+                  <p data-i18n="note3_desc">Javascript ile sayfa içeriğini değiştirmeyi öğrendim.</p>
+                </div>
+                <svg data-lucide="chevron-down" class="note-toggle-icon"></svg>
+              </button>
+              <div class="note-detail">
+                <div class="note-detail-inner">
+                  <ul class="note-points">
+                    <li><svg data-lucide="check"></svg><span data-i18n="note3_point1">querySelector ve querySelectorAll ile sayfadaki elementleri seçmeyi öğrendim.</span></li>
+                    <li><svg data-lucide="check"></svg><span data-i18n="note3_point2">classList ile elementlere stil sınıfı ekleyip kaldırmayı denedim.</span></li>
+                    <li><svg data-lucide="check"></svg><span data-i18n="note3_point3">addEventListener ile buton tıklamalarına tepki veren küçük etkileşimler yazdım.</span></li>
+                  </ul>
+                </div>
+              </div>
+            </article>
+
+            <article class="note-card" data-category="git">
+              <button type="button" class="note-summary" aria-expanded="false">
+                <div class="note-date"><div class="d">05</div><div class="m" data-i18n="month_aug">Ağu</div></div>
+                <div class="note-body">
+                  <h3><span class="note-cat" data-i18n="filter_git">Git</span><span data-i18n="note4_title">Git ve GitHub'a Giriş</span></h3>
+                  <p data-i18n="note4_desc">Versiyon kontrolünün ne işe yaradığını öğrendim; ilk commit'imi attım ve GitHub'a bir repo yükledim.</p>
+                </div>
+                <svg data-lucide="chevron-down" class="note-toggle-icon"></svg>
+              </button>
+              <div class="note-detail">
+                <div class="note-detail-inner">
+                  <ul class="note-points">
+                    <li><svg data-lucide="check"></svg><span data-i18n="note4_point1">git init, add ve commit komutlarıyla temel bir versiyon geçmişi oluşturdum.</span></li>
+                    <li><svg data-lucide="check"></svg><span data-i18n="note4_point2">Değişiklikleri git status ve git log ile takip etmeyi öğrendim.</span></li>
+                    <li><svg data-lucide="check"></svg><span data-i18n="note4_point3">İlk repomu GitHub'a push ederek uzak depo kavramını anladım.</span></li>
+                  </ul>
+                </div>
+              </div>
+            </article>
+
           </div>
-          <svg data-lucide="chevron-right" class="icon-flip"></svg>
         </div>
 
-        <div class="note-row">
-          <div class="note-date"><div class="d">13</div><div class="m" data-i18n="month_aug">Ağu</div></div>
-          <div class="note-body">
-            <h3><span class="dot"></span><span data-i18n="note2_title">CSS Grid Öğreniyorum</span></h3>
-            <p data-i18n="note2_desc">Grid sistemi ile modern ve esnek tasarım yapmayı öğrendim.</p>
+        <div class="notes-month-group">
+          <h2 class="notes-month-label" data-i18n="month_jul_full">Temmuz 2026</h2>
+          <div class="notes-list">
+
+            <article class="note-card" data-category="api">
+              <button type="button" class="note-summary" aria-expanded="false">
+                <div class="note-date"><div class="d">28</div><div class="m" data-i18n="month_jul">Tem</div></div>
+                <div class="note-body">
+                  <h3><span class="note-cat" data-i18n="filter_api">API</span><span data-i18n="note5_title">Fetch API ile Veri Çekmek</span></h3>
+                  <p data-i18n="note5_desc">JavaScript'in fetch fonksiyonuyla dış kaynaklardan veri çekmeyi ve Promise'leri anladım.</p>
+                </div>
+                <svg data-lucide="chevron-down" class="note-toggle-icon"></svg>
+              </button>
+              <div class="note-detail">
+                <div class="note-detail-inner">
+                  <ul class="note-points">
+                    <li><svg data-lucide="check"></svg><span data-i18n="note5_point1">fetch() fonksiyonuyla bir API'den JSON verisi çekmeyi öğrendim.</span></li>
+                    <li><svg data-lucide="check"></svg><span data-i18n="note5_point2">then() zincirleriyle asenkron sonuçları işlemeyi denedim.</span></li>
+                    <li><svg data-lucide="check"></svg><span data-i18n="note5_point3">async/await kullanarak kodu daha okunabilir hale getirdim.</span></li>
+                  </ul>
+                </div>
+              </div>
+            </article>
+
+            <article class="note-card" data-category="design">
+              <button type="button" class="note-summary" aria-expanded="false">
+                <div class="note-date"><div class="d">20</div><div class="m" data-i18n="month_jul">Tem</div></div>
+                <div class="note-body">
+                  <h3><span class="note-cat" data-i18n="filter_design">Tasarım</span><span data-i18n="note6_title">Duyarlı Tasarım Temelleri</span></h3>
+                  <p data-i18n="note6_desc">Medya sorguları ve esnek birimlerle farklı ekran boyutlarına uyum sağlayan sayfalar tasarlamayı öğrendim.</p>
+                </div>
+                <svg data-lucide="chevron-down" class="note-toggle-icon"></svg>
+              </button>
+              <div class="note-detail">
+                <div class="note-detail-inner">
+                  <ul class="note-points">
+                    <li><svg data-lucide="check"></svg><span data-i18n="note6_point1">@media sorgularıyla farklı ekran genişliklerine özel stiller yazdım.</span></li>
+                    <li><svg data-lucide="check"></svg><span data-i18n="note6_point2">rem ve % gibi esnek birimlerin px'e göre avantajlarını gördüm.</span></li>
+                    <li><svg data-lucide="check"></svg><span data-i18n="note6_point3">Mobile-first yaklaşımla önce küçük ekranı, sonra büyük ekranı tasarladım.</span></li>
+                  </ul>
+                </div>
+              </div>
+            </article>
+
           </div>
-          <svg data-lucide="chevron-right" class="icon-flip"></svg>
         </div>
 
-        <div class="note-row">
-          <div class="note-date"><div class="d">12</div><div class="m" data-i18n="month_aug">Ağu</div></div>
-          <div class="note-body">
-            <h3><span class="dot"></span><span data-i18n="note3_title">DOM Manipülasyonu</span></h3>
-            <p data-i18n="note3_desc">Javascript ile sayfa içeriğini değiştirmeyi öğrendim.</p>
-          </div>
-          <svg data-lucide="chevron-right" class="icon-flip"></svg>
-        </div>
-
-        <div class="note-row">
-          <div class="note-date"><div class="d">05</div><div class="m" data-i18n="month_aug">Ağu</div></div>
-          <div class="note-body">
-            <h3><span class="dot"></span><span data-i18n="note4_title">Git ve GitHub'a Giriş</span></h3>
-            <p data-i18n="note4_desc">Versiyon kontrolünün ne işe yaradığını öğrendim; ilk commit'imi attım ve GitHub'a bir repo yükledim.</p>
-          </div>
-          <svg data-lucide="chevron-right" class="icon-flip"></svg>
-        </div>
-
-        <div class="note-row">
-          <div class="note-date"><div class="d">28</div><div class="m" data-i18n="month_jul">Tem</div></div>
-          <div class="note-body">
-            <h3><span class="dot"></span><span data-i18n="note5_title">Fetch API ile Veri Çekmek</span></h3>
-            <p data-i18n="note5_desc">JavaScript'in fetch fonksiyonuyla dış kaynaklardan veri çekmeyi ve Promise'leri anladım.</p>
-          </div>
-          <svg data-lucide="chevron-right" class="icon-flip"></svg>
-        </div>
-
-        <div class="note-row">
-          <div class="note-date"><div class="d">20</div><div class="m" data-i18n="month_jul">Tem</div></div>
-          <div class="note-body">
-            <h3><span class="dot"></span><span data-i18n="note6_title">Duyarlı Tasarım Temelleri</span></h3>
-            <p data-i18n="note6_desc">Medya sorguları ve esnek birimlerle farklı ekran boyutlarına uyum sağlayan sayfalar tasarlamayı öğrendim.</p>
-          </div>
-          <svg data-lucide="chevron-right" class="icon-flip"></svg>
+        <div class="notes-empty">
+          <svg data-lucide="search-x"></svg>
+          <p data-i18n="notes_empty_text">Bu kategoride henüz not yok.</p>
         </div>
 
       </div>
@@ -160,8 +296,10 @@
       <a href="index.html" data-page-link="home"><svg data-lucide="home"></svg><span data-i18n="nav_home">Ana Sayfa</span></a>
       <a href="yolculugum.html" data-page-link="journey"><svg data-lucide="compass"></svg><span data-i18n="nav_journey">Yolculuğum</span></a>
       <a href="projeler.html" data-page-link="projects"><svg data-lucide="folder"></svg><span data-i18n="nav_projects">Projeler</span></a>
+      <a href="ogrenme.html" data-page-link="learning"><svg data-lucide="graduation-cap"></svg><span data-i18n="nav_learning">Öğrenme</span></a>
       <a href="notlar.html" data-page-link="notes"><svg data-lucide="notebook-pen"></svg><span data-i18n="nav_notes">Notlar</span></a>
       <a href="hakkimda.html" data-page-link="about"><svg data-lucide="user-round"></svg><span data-i18n="nav_about">Hakkımda</span></a>
+      <a href="iletisim.html" data-page-link="contact"><svg data-lucide="send"></svg><span data-i18n="nav_contact">İletişim</span></a>
     </nav>
     <div class="mobile-divider"></div>
     <div class="mobile-social">
@@ -174,5 +312,11 @@
   <script src="https://unpkg.com/lucide@latest"></script>
   <script src="js/i18n.js"></script>
   <script src="js/main.js"></script>
+  <script src="js/notes.js"></script>
+  <script src="js/mouse-glow.js"></script>
+  <script src="js/toast.js"></script>
+  <script src="js/appearance.js"></script>
+  <script src="js/cursor.js"></script>
+  <script src="js/navbar-scroll.js"></script>
 </body>
 </html>
