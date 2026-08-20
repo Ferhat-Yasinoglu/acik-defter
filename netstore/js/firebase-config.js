@@ -27,7 +27,7 @@ const FIREBASE = {
 /* Uygulamayı kullanacak Google hesapları. Büyük/küçük harf önemli değil —
    karşılaştırma iki tarafı da küçük harfe çevirerek yapılır (cloud.js). */
 const ALLOWED = [
-  'ferhatyasinoglu@gmail.com',
+  'farhadyaqoobi.kunduz@gmail.com',
   'muhammedyakubi2000@gmail.com'
 ];
 
