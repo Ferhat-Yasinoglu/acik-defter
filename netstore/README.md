@@ -29,6 +29,7 @@ Başla** ile temizleyip kendi kayıtlarınızla çalışabilirsiniz.
 | `index.html` | Uygulama kabuğu: kenar çubuğu, üst bar, belge/modal/bildirim yuvaları |
 | `css/netstore.css` | Tasarım sistemi: tokenlar, bileşenler, RTL, responsive, baskı |
 | `js/i18n.js` | **Sözlük + dil çalışma zamanı**: çeviri, yön, sayı/para/tarih biçimi |
+| `js/pwa.js` | Telefona kurulum: `beforeinstallprompt` yakalama, kurulum/çevrimdışı durumu |
 | `js/store.js` | **Kalıcılık**: localStorage'a yazma/okuma, yedek al/geri yükle, sıfırlama |
 | `js/search.js` | Global arama: ürün, müşteri ve fatura kayıtlarında |
 | `js/icons.js` | Satır içi SVG ikon seti (CDN bağımlılığı yok, çevrimdışı çalışır) |
@@ -37,6 +38,10 @@ Başla** ile temizleyip kendi kayıtlarınızla çalışabilirsiniz.
 | `js/invoice.js` | Fatura ve tahsilat fişi belgeleri (seçili dilde, basılabilir) |
 | `js/forms.js` | Kayıt formları, doğrulama, silme onayı, CSV dışa aktarma |
 | `js/app.js` | Yönlendirme (hash router), sayfa şablonları, etkileşimler |
+| `sw.js` | Servis çalışanı: uygulama kabuğunu önbelleğe alır, internetsiz açar |
+| `manifest.webmanifest` | Uygulama künyesi: ad, simgeler, tam ekran modu, kısayollar |
+| `css/fonts.css` + `fonts/` | Inter ve Vazirmatn'ın yerel kopyası (209 KB, 4 dosya) |
+| `icons/` | Ana ekran simgeleri (192 / 512 / maskable 512 / 1024 px) |
 
 ## Çok dillilik
 
@@ -179,6 +184,34 @@ ayın **aynı gün aralığıyla** kıyaslanır.
 `PURCHASES` dizilerini kendi kaynağınızdan doldurun. Türetilmiş fonksiyonlar ve
 tüm arayüz aynı kalır — sayfa şablonları yalnızca bu fonksiyonları çağırır.
 
+## Telefona kurulum (Android / iPhone)
+
+Uygulama bir **PWA**'dır: ayrı bir mağaza kurulumu olmadan ana ekrana eklenir,
+tam ekran açılır ve **internetsiz çalışır**.
+
+| Parça | Ne yapar |
+|---|---|
+| `manifest.webmanifest` | Ad, simge, `standalone` modu, `#0B1120` tema rengi, üç kısayol (Yeni Satış / Müşteriler / Borç Takibi) |
+| `sw.js` | 23 dosyalık uygulama kabuğunu kurulumda önbelleğe alır; sonraki açılışlarda önce önbellekten verir, arka planda tazeler |
+| `js/pwa.js` | Kurulum olayını yakalar; Ayarlar → **Uygulama** kartında “Telefona Kur” düğmesi olarak sunar |
+| `fonts/` | Yazı tipleri depoda — internetsiz açılışta Farsça metin yedek yazı tipine düşmez |
+
+**Kurulum:** Android · Chrome'da ⋮ → *Uygulamayı yükle*, iPhone · Safari'de
+Paylaş → *Ana Ekrana Ekle*. Chrome kurulabilir olduğuna karar verdiğinde
+Ayarlar sayfasındaki düğme kendiliğinden belirir.
+
+**Şart:** servis çalışanı yalnızca **https://** (veya `localhost`) üzerinde
+çalışır. Dosyadan (`file://`) açıldığında uygulama yine çalışır, sadece
+çevrimdışı katmanı devre dışı kalır.
+
+Ana ekrandan açıldığında `@media (display-mode: standalone)` bloğu devreye
+girer: çentik ve alt gezinme çubuğu payı (`env(safe-area-inset-*)`) uygulamanın
+kendisi tarafından bırakılır.
+
+**Dosyalarda değişiklik yaptıktan sonra** `sw.js` içindeki `CACHE` sürümünü
+artırın (`netstore-v1` → `netstore-v2`); eski önbellek silinir ve yeni sürüm
+telefona iner.
+
 ## Responsive davranış
 
 - **≥1025px** — sabit kenar çubuğu, 3 sütunlu KPI ızgarası
@@ -192,7 +225,8 @@ tüm arayüz aynı kalır — sayfa şablonları yalnızca bu fonksiyonları ça
 kombinasyonunda yatay taşma, JS hatası ve çevrilmemiş metin olmadan
 doğrulanmıştır. Ayrıca kalıcılık, arama, yedekleme ve boş-veri davranışı için
 **21 uçtan uca kontrol**, form işlemleri için **31 kontrol** ve mobil arama için
-**15 kontrol** çalışır durumdadır.
+**15 kontrol** ve telefona kurulum / çevrimdışı davranış için **20 kontrol**
+çalışır durumdadır.
 
 Kayıt işlemleri ayrıca uçtan uca test edilmiştir (31 kontrol): satış oluşturma
 ve stok düşümü, yetersiz stokta engelleme, ürün ekle/düzenle/sil, yinelenen stok

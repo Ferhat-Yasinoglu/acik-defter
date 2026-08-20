@@ -1013,6 +1013,8 @@ PAGES.ayarlar = function () {
             '</option><option>WhatsApp</option></select></div>' +
           '</div></section>' +
 
+          installCard() +
+
           (function () {
             const info = storageInfo();
             return '<section class="card"><div class="card-head"><div><h3>' + esc(t('h_data')) + '</h3>' +
@@ -1041,6 +1043,40 @@ PAGES.ayarlar = function () {
       '</div>'
   };
 };
+
+/* Ayarlar > Uygulama kartı: kurulum durumu + çevrimdışı hazırlık. */
+function installCard() {
+  const st = installState();
+  const off = offlineState();
+
+  const head = st === 'installed' ? t('pw_installed')
+    : st === 'ready' ? t('pw_install')
+    : t('pw_manual');
+  const sub = st === 'installed' ? t('pw_installed_sub')
+    : st === 'ready' ? t('pw_ready_sub')
+    : t('pw_manual_and') + ' ' + t('pw_manual_ios');
+
+  const offText = off === 'on' ? t('pw_offline_on')
+    : off === 'wait' ? t('pw_offline_wait')
+    : t('pw_offline_none');
+
+  return '<section class="card"><div class="card-head"><div><h3>' + esc(t('h_app')) + '</h3>' +
+    '<p class="sub">' + esc(t('h_app_sub')) + '</p></div></div>' +
+    '<div class="card-body">' +
+      '<div class="alert alert-' + (st === 'installed' ? 'success' : 'info') + '" style="margin-bottom:14px">' +
+        icon(st === 'installed' ? 'check' : 'smartphone') +
+        '<div><strong>' + esc(head) + '</strong>' +
+        '<span class="alert-text">' + esc(sub) + '</span></div></div>' +
+
+      (st === 'ready'
+        ? '<div class="action-row"><button class="btn btn-primary" data-act="install-app">' +
+          icon('install') + esc(t('pw_install')) + '</button></div>'
+        : '') +
+
+      '<p class="hint" style="margin-top:' + (st === 'ready' ? '12px' : '0') + '">' +
+        esc(offText) + '</p>' +
+    '</div></section>';
+}
 
 function field(label, type, value) {
   return '<div class="field"><label>' + esc(label) + '</label>' +
@@ -1312,6 +1348,7 @@ document.addEventListener('click', function (ev) {
   if (act === 'search-toggle') { toggleMobileSearch(); return; }
 
   /* --- ayarlar --- */
+  if (act === 'install-app') { promptInstall(); return; }
   if (act === 'save-settings') { toast(t('t_settings')); return; }
   if (act === 'reset-data') {
     confirmModal({

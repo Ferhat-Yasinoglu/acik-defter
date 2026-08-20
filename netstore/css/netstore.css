@@ -4,7 +4,9 @@
    Renk bütçesi: ~%80 nötr yüzey / ~%20 anlamlı vurgu
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Vazirmatn:wght@400;500;600;700;800&display=swap');
+/* Yazı tipleri depoda tutuluyor — internetsiz açılışta da doğru çizilsin.
+   Bkz. css/fonts.css ve fonts/ klasörü. */
+@import url('fonts.css');
 
 /* --------------------------------------------------------------------------
    1. Tokenlar
@@ -800,6 +802,7 @@ table.data .actions { display: flex; gap: 6px; justify-content: flex-end; }
 .alert-danger  { background: var(--danger-soft);  border-color: rgba(239,68,68,0.28);  color: var(--danger); }
 .alert-warning { background: var(--warning-soft); border-color: rgba(245,158,11,0.28); color: var(--warning); }
 .alert-info    { background: var(--info-soft);    border-color: rgba(59,130,246,0.28); color: var(--info); }
+.alert-success { background: var(--success-soft); border-color: rgba(34,197,94,0.28);  color: var(--success); }
 .alert strong { color: var(--text); display: block; margin-bottom: 1px; }
 .alert .alert-text { color: var(--text-2); }
 
@@ -1474,3 +1477,23 @@ html[dir='rtl'] .sheet-sub-h { letter-spacing: normal; text-transform: none; }
 }
 html[dir='rtl'] .sheet .mono,
 html[dir='rtl'] .invoice-no { direction: ltr; unicode-bidi: isolate; }
+
+/* ==========================================================================
+   Ana ekrandan açıldığında (PWA / tam ekran)
+   Tarayıcı çubuğu olmadığı için çentik ve alt gezinme çubuğu payını
+   uygulamanın kendisi bırakmalı. Tarayıcıda açıkken hiçbir şey değişmez.
+   ========================================================================== */
+
+@media (display-mode: standalone), (display-mode: fullscreen), (display-mode: minimal-ui) {
+  .topbar {
+    height: calc(var(--topbar-h) + env(safe-area-inset-top, 0px));
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+  .sidebar { padding-top: env(safe-area-inset-top, 0px); }
+  .page { padding-bottom: calc(26px + env(safe-area-inset-bottom, 0px)); }
+  .modal-host, .doc-host { padding-bottom: env(safe-area-inset-bottom, 0px); }
+
+  /* Ana ekran uygulamasında metin seçme kazayla açılan menüleri tetikliyor;
+     yalnızca gerçekten kopyalanacak alanlarda serbest bırakılıyor. */
+  .sidebar, .topbar { -webkit-user-select: none; user-select: none; }
+}

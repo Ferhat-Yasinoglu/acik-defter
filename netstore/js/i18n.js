@@ -476,6 +476,22 @@ const I18N = {
   cf_empty:        { tr:'Tüm kayıtlar silinecek ve uygulama boş açılacak.', en:'All records will be deleted and the app will start empty.', fa:'همهٔ رکوردها حذف می‌شود و برنامه خالی باز خواهد شد.' },
   cf_empty_note:   { tr:'Önce yedek almanız önerilir — bu işlem geri alınamaz.', en:'Taking a backup first is recommended — this cannot be undone.', fa:'ابتدا نسخهٔ پشتیبان بگیرید — این عمل قابل بازگشت نیست.' },
 
+  /* ---------------- telefona kurulum (PWA) ---------------- */
+  h_app:           { tr:'Uygulama',              en:'App',                 fa:'اپلیکیشن' },
+  h_app_sub:       { tr:'Telefona kur, internetsiz kullan', en:'Install on your phone, use offline', fa:'روی موبایل نصب کنید، بدون انترنت کار می‌کند' },
+  pw_install:      { tr:'Telefona Kur',          en:'Install App',         fa:'نصب روی موبایل' },
+  pw_installed:    { tr:'Uygulama kurulu',       en:'App is installed',    fa:'اپلیکیشن نصب است' },
+  pw_installed_sub:{ tr:'Ana ekrandaki simgeden tam ekran açılıyor.', en:'Opens full screen from the home-screen icon.', fa:'از آیکن صفحهٔ اصلی به‌صورت تمام‌صفحه باز می‌شود.' },
+  pw_ready_sub:    { tr:'Ana ekrana simge eklenir, tarayıcı çubuğu görünmez.', en:'Adds a home-screen icon and hides the browser bar.', fa:'آیکن به صفحهٔ اصلی اضافه می‌شود و نوار مرورگر پنهان می‌گردد.' },
+  pw_manual:       { tr:'Tarayıcı menüsünden kurun', en:'Install from the browser menu', fa:'از منوی مرورگر نصب کنید' },
+  pw_manual_and:   { tr:'Android · Chrome: ⋮ menüsü → “Uygulamayı yükle” veya “Ana ekrana ekle”.', en:'Android · Chrome: ⋮ menu → “Install app” or “Add to Home screen”.', fa:'اندروید · کروم: منوی ⋮ ← «نصب برنامه» یا «افزودن به صفحهٔ اصلی».' },
+  pw_manual_ios:   { tr:'iPhone · Safari: Paylaş → “Ana Ekrana Ekle”.', en:'iPhone · Safari: Share → “Add to Home Screen”.', fa:'آیفون · سافاری: اشتراک‌گذاری ← «افزودن به صفحهٔ اصلی».' },
+  pw_offline_on:   { tr:'Çevrimdışı hazır — internet olmadan da açılır.', en:'Offline ready — opens without internet.', fa:'آمادهٔ کار بدون انترنت.' },
+  pw_offline_wait: { tr:'Çevrimdışı kopya hazırlanıyor — sayfayı bir kez yenileyin.', en:'Preparing the offline copy — refresh the page once.', fa:'نسخهٔ آفلاین آماده می‌شود — یک بار صفحه را تازه کنید.' },
+  pw_offline_none: { tr:'Çevrimdışı destek yok — uygulama https:// adresinden açılmalı.', en:'No offline support — open the app over https://.', fa:'پشتیبانی آفلاین نیست — برنامه باید از https:// باز شود.' },
+  pw_install_done: { tr:'Uygulama ana ekrana eklendi.', en:'App added to your home screen.', fa:'اپلیکیشن به صفحهٔ اصلی اضافه شد.' },
+  pw_install_no:   { tr:'Kurulum iptal edildi.',  en:'Installation dismissed.', fa:'نصب لغو شد.' },
+
   /* ---------------- boş durumlar ---------------- */
   e_start_products:{ tr:'Henüz ürün yok. “{b}” ile ilk ürününüzü ekleyin.', en:'No products yet. Add your first with “{b}”.', fa:'هنوز جنسی نیست. با «{b}» اولین جنس را اضافه کنید.' },
   e_start_customers:{ tr:'Henüz müşteri yok. “{b}” ile ilk müşterinizi ekleyin.', en:'No customers yet. Add your first with “{b}”.', fa:'هنوز مشتری نیست. با «{b}» اولین مشتری را اضافه کنید.' },
