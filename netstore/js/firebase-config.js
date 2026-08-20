@@ -16,12 +16,12 @@
    ========================================================================== */
 
 const FIREBASE = {
-  apiKey:            '',
-  authDomain:        '',
-  projectId:         '',
-  storageBucket:     '',
-  messagingSenderId: '',
-  appId:             ''
+  apiKey:            'AIzaSyBev35PriGcxWn3wae23HWr79FN5HJ83fw',
+  authDomain:        'netstore-62221.firebaseapp.com',
+  projectId:         'netstore-62221',
+  storageBucket:     'netstore-62221.firebasestorage.app',
+  messagingSenderId: '1004942071993',
+  appId:             '1:1004942071993:web:4debe0a294620b130fa368'
 };
 
 /* Uygulamayı kullanacak Google hesapları. Büyük/küçük harf önemli değil —
