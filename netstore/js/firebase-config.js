@@ -24,9 +24,12 @@ const FIREBASE = {
   appId:             ''
 };
 
-/* Uygulamayı kullanacak Google hesapları. Küçük harfle yazın.
-   Örnek: ['ferhat@gmail.com', 'ortagim@gmail.com'] */
-const ALLOWED = [];
+/* Uygulamayı kullanacak Google hesapları. Büyük/küçük harf önemli değil —
+   karşılaştırma iki tarafı da küçük harfe çevirerek yapılır (cloud.js). */
+const ALLOWED = [
+  'ferhatyasinoglu@gmail.com',
+  'muhammedyakubi2000@gmail.com'
+];
 
 /* Ortak defterin adı. İki kişi de aynı defteri görsün diye aynı kalmalı. */
 const SHOP_ID = 'main';
