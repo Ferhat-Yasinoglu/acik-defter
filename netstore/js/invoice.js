@@ -41,10 +41,7 @@ function docShell(inner) {
 function sheetHeader(docTitle, meta) {
   return '<header class="sheet-head">' +
       '<div class="sheet-brand">' +
-        '<span class="sheet-mark">' +
-          '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" ' +
-          'stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 19V5l14 14V5"/></svg>' +
-        '</span>' +
+        '<img class="sheet-mark" src="icons/logo-128.png" alt="">' +
         '<div>' +
           '<div class="sheet-biz">' + esc(t('inv_biz_name')) + '</div>' +
           '<div class="sheet-biz-sub">' + esc(t('inv_biz_addr')) + '</div>' +

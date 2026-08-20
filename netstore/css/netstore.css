@@ -96,6 +96,8 @@ a { color: inherit; text-decoration: none; }
 button { font: inherit; color: inherit; cursor: pointer; }
 svg { flex: none; }
 
+img { max-width: 100%; }
+
 /* Para ve sayılar hizalı dursun */
 .num, .money, td.num, th.num { font-variant-numeric: tabular-nums; }
 
@@ -148,14 +150,13 @@ svg { flex: none; }
   flex: none;
 }
 
+/* Marka amblemi. Kendi beyaz zemini ve kırmızı hâlesi olan yuvarlak bir
+   rozet olduğu için altına ayrıca bir kutu çizilmiyor. */
 .brand-mark {
   width: 34px; height: 34px;
-  border-radius: 10px;
-  display: grid; place-items: center;
-  background: linear-gradient(140deg, var(--accent-hover), var(--accent));
-  box-shadow: 0 4px 14px -4px var(--accent-glow);
-  color: #fff;
   flex: none;
+  object-fit: contain;
+  display: block;
 }
 
 .brand-name { font-size: 15.5px; font-weight: 700; letter-spacing: -0.02em; }
@@ -1300,9 +1301,9 @@ html[dir='rtl'] .sheet { line-height: 1.8; }
 }
 .sheet-brand { display: flex; gap: 12px; align-items: flex-start; }
 .sheet-mark {
-  width: 38px; height: 38px; border-radius: 9px; flex: none;
-  display: grid; place-items: center;
-  background: #7C3AED; color: #fff;
+  width: 40px; height: 40px; flex: none;
+  object-fit: contain;
+  display: block;
 }
 .sheet-biz { font-size: 16px; font-weight: 700; }
 .sheet-biz-sub { font-size: 11.5px; color: #64748B; }
@@ -1514,7 +1515,7 @@ body.auth-open .app { visibility: hidden; }
 }
 
 .auth-brand { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
-.auth-brand .brand-mark { width: 42px; height: 42px; border-radius: 12px; }
+.auth-brand .brand-mark { width: 46px; height: 46px; }
 .auth-name { font-size: 18px; font-weight: 700; letter-spacing: -0.02em; }
 .auth-tag {
   font-size: 11px; font-weight: 600; color: var(--text-3);

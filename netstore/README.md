@@ -46,7 +46,7 @@ Başla** ile temizleyip kendi kayıtlarınızla çalışabilirsiniz.
 | `sw.js` | Servis çalışanı: uygulama kabuğunu önbelleğe alır, internetsiz açar |
 | `manifest.webmanifest` | Uygulama künyesi: ad, simgeler, tam ekran modu, kısayollar |
 | `css/fonts.css` + `fonts/` | Inter ve Vazirmatn'ın yerel kopyası (209 KB, 4 dosya) |
-| `icons/` | Ana ekran simgeleri (192 / 512 / maskable 512 / 1024 px) |
+| `icons/` | Marka amblemi: ana ekran simgeleri (192/512/1024), maskable, favicon, arayüz kopyası |
 
 ## Çok dillilik
 
@@ -294,6 +294,11 @@ tam ekran açılır ve **internetsiz çalışır**.
 | `sw.js` | 23 dosyalık uygulama kabuğunu kurulumda önbelleğe alır; sonraki açılışlarda önce önbellekten verir, arka planda tazeler |
 | `js/pwa.js` | Kurulum olayını yakalar; Ayarlar → **Uygulama** kartında “Telefona Kur” düğmesi olarak sunar |
 | `fonts/` | Yazı tipleri depoda — internetsiz açılışta Farsça metin yedek yazı tipine düşmez |
+
+Amblem tek kaynaktan üretilir: `icons/logo-128.png` arayüzde (kenar çubuğu,
+giriş ekranı, fatura başlığı), `favicon-64.png` sekmede, `icon-*.png` ana
+ekranda kullanılır. `maskable-512.png` Android'in simgeyi kırpmasına karşı
+koyu lacivert zemine oturtulmuş ve amblem güvenli alanda tutulmuştur.
 
 **Kurulum:** Android · Chrome'da ⋮ → *Uygulamayı yükle*, iPhone · Safari'de
 Paylaş → *Ana Ekrana Ekle*. Chrome kurulabilir olduğuna karar verdiğinde
