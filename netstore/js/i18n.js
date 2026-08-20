@@ -464,6 +464,8 @@ const I18N = {
   h_data_sub:      { tr:'Kayıtlar bu tarayıcıda saklanır', en:'Records are stored in this browser', fa:'رکوردها در همین مرورگر ذخیره می‌شوند' },
   st_records:      { tr:'{n} kayıt · {s}',       en:'{n} records · {s}',   fa:'{n} رکورد · {s}' },
   st_not_saved:    { tr:'Henüz kaydedilmedi',    en:'Not saved yet',       fa:'هنوز ذخیره نشده' },
+  st_records_cloud:{ tr:'{n} kayıt · ortak defterde', en:'{n} records · in the shared ledger', fa:'{n} رکورد · در دفتر مشترک' },
+  st_cloud_hint:   { tr:'Kayıtlar bulutta; yedek dosyası yine de indirebilirsiniz.', en:'Records live in the cloud; you can still download a backup file.', fa:'رکوردها در ابر است؛ باز هم می‌توانید نسخهٔ پشتیبان بگیرید.' },
   st_save_failed:  { tr:'Kaydedilemedi — tarayıcı depolaması dolu veya kapalı.', en:'Could not save — browser storage is full or disabled.', fa:'ذخیره نشد — حافظهٔ مرورگر پر یا غیرفعال است.' },
   st_backup:       { tr:'Yedek Al',              en:'Download Backup',     fa:'دریافت نسخهٔ پشتیبان' },
   st_backup_done:  { tr:'Yedek dosyası indirildi.', en:'Backup file downloaded.', fa:'فایل پشتیبان دانلود شد.' },
@@ -475,6 +477,29 @@ const I18N = {
   st_emptied:      { tr:'Tüm kayıtlar silindi. Artık kendi verinizi girebilirsiniz.', en:'All records cleared. You can now enter your own data.', fa:'همهٔ رکوردها پاک شد. حالا می‌توانید داده‌های خود را وارد کنید.' },
   cf_empty:        { tr:'Tüm kayıtlar silinecek ve uygulama boş açılacak.', en:'All records will be deleted and the app will start empty.', fa:'همهٔ رکوردها حذف می‌شود و برنامه خالی باز خواهد شد.' },
   cf_empty_note:   { tr:'Önce yedek almanız önerilir — bu işlem geri alınamaz.', en:'Taking a backup first is recommended — this cannot be undone.', fa:'ابتدا نسخهٔ پشتیبان بگیرید — این عمل قابل بازگشت نیست.' },
+
+  /* ---------------- giriş / ortak defter ---------------- */
+  au_sub:          { tr:'Ortak deftere Google hesabınızla girin', en:'Sign in to the shared ledger with Google', fa:'با حساب گوگل وارد دفتر مشترک شوید' },
+  au_google:       { tr:'Google ile giriş yap',  en:'Sign in with Google', fa:'ورود با گوگل' },
+  au_signing:      { tr:'Giriş yapılıyor…',      en:'Signing in…',         fa:'در حال ورود…' },
+  au_loading:      { tr:'Defter yükleniyor…',    en:'Loading the ledger…', fa:'دفتر بارگیری می‌شود…' },
+  au_failed:       { tr:'Giriş yapılamadı. Tekrar deneyin.', en:'Sign-in failed. Please try again.', fa:'ورود ناموفق بود. دوباره تلاش کنید.' },
+  au_offline_note: { tr:'Bir kez girdikten sonra internetsiz de çalışır.', en:'Once signed in, it works offline too.', fa:'پس از یک بار ورود، بدون انترنت هم کار می‌کند.' },
+  au_denied_head:  { tr:'Bu hesabın erişimi yok', en:'This account has no access', fa:'این حساب دسترسی ندارد' },
+  au_denied:       { tr:'{e} bu deftere ekli değil. Yetkili bir hesapla girin.', en:'{e} is not on this ledger. Sign in with an authorised account.', fa:'{e} در این دفتر نیست. با حساب مجاز وارد شوید.' },
+  au_other:        { tr:'Başka hesapla gir',     en:'Use another account',  fa:'با حساب دیگر وارد شوید' },
+  au_signout:      { tr:'Çıkış yap',             en:'Sign out',             fa:'خروج' },
+  cf_signout:      { tr:'Çıkış yapılsın mı? Kayıtlar ortak defterde durur, silinmez.', en:'Sign out? Your records stay in the shared ledger.', fa:'خارج می‌شوید؟ رکوردها در دفتر مشترک باقی می‌ماند.' },
+
+  h_cloud:         { tr:'Ortak Defter',          en:'Shared Ledger',        fa:'دفتر مشترک' },
+  h_cloud_sub:     { tr:'Kayıtlar iki telefonda da aynı', en:'Records stay the same on both phones', fa:'رکوردها در هر دو موبایل یکسان می‌ماند' },
+  cl_signed_as:    { tr:'{n} olarak girildi',    en:'Signed in as {n}',     fa:'وارد شده به نام {n}' },
+  cl_peers:        { tr:'{n} kişi bu defteri kullanıyor', en:'{n} people use this ledger', fa:'{n} نفر از این دفتر استفاده می‌کنند' },
+  cl_synced:       { tr:'Eşitlendi — değişiklikler anında karşı tarafa geçiyor.', en:'In sync — changes reach the other person instantly.', fa:'همگام شد — تغییرات فوراً به طرف مقابل می‌رسد.' },
+  cl_write_failed: { tr:'Değişiklik buluta yazılamadı; internet gelince tekrar denenecek.', en:'Could not write to the cloud; it will retry when you are back online.', fa:'در ابر ذخیره نشد؛ با بازگشت انترنت دوباره تلاش می‌شود.' },
+  cl_read_failed:  { tr:'Ortak deftere ulaşılamadı ({e}).', en:'Could not reach the shared ledger ({e}).', fa:'دسترسی به دفتر مشترک ممکن نشد ({e}).' },
+  cl_local_head:   { tr:'Şu an yalnız bu cihazda', en:'Currently on this device only', fa:'فعلاً فقط روی همین دستگاه' },
+  cl_local_sub:    { tr:'Ortak kullanım için js/firebase-config.js dosyasını doldurun; kurulum README’de anlatılıyor.', en:'Fill in js/firebase-config.js to share; setup is described in the README.', fa:'برای استفادهٔ مشترک js/firebase-config.js را پر کنید؛ راهنما در README است.' },
 
   /* ---------------- telefona kurulum (PWA) ---------------- */
   h_app:           { tr:'Uygulama',              en:'App',                 fa:'اپلیکیشن' },

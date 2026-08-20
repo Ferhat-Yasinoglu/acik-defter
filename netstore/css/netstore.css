@@ -1479,6 +1479,79 @@ html[dir='rtl'] .sheet .mono,
 html[dir='rtl'] .invoice-no { direction: ltr; unicode-bidi: isolate; }
 
 /* ==========================================================================
+   Giriş ekranı (ortak defter)
+   Uygulamanın üstünde tam sayfa açılır; giriş yapılmadan arkası görünmez.
+   ========================================================================== */
+
+.auth-host {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: none;
+  place-items: center;
+  padding: 24px;
+  padding-block-start: calc(24px + env(safe-area-inset-top, 0px));
+  padding-block-end: calc(24px + env(safe-area-inset-bottom, 0px));
+  background:
+    radial-gradient(120% 80% at 50% -10%, rgba(124, 58, 237, 0.20), transparent 62%),
+    var(--bg);
+  overflow-y: auto;
+}
+.auth-host.on { display: grid; }
+
+/* Arkadaki uygulama okunmasın; giriş yapılmadan kaydırma da olmasın. */
+body.auth-open { overflow: hidden; }
+body.auth-open .app { visibility: hidden; }
+
+.auth-card {
+  width: 100%;
+  max-width: 380px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  box-shadow: var(--shadow-lg);
+  padding: 26px 24px 22px;
+}
+
+.auth-brand { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.auth-brand .brand-mark { width: 42px; height: 42px; border-radius: 12px; }
+.auth-name { font-size: 18px; font-weight: 700; letter-spacing: -0.02em; }
+.auth-tag {
+  font-size: 11px; font-weight: 600; color: var(--text-3);
+  letter-spacing: 0.05em; text-transform: uppercase;
+}
+
+.auth-lead { color: var(--text-2); font-size: 13.5px; margin-bottom: 18px; }
+.auth-note { color: var(--text-3); font-size: 12px; margin-top: 14px; text-align: center; }
+
+.auth-btn { width: 100%; justify-content: center; }
+.auth-card .alert { margin-bottom: 16px; }
+
+.auth-wait {
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  color: var(--text-2); font-size: 13.5px;
+  padding: 26px 0 18px;
+}
+
+.spinner {
+  width: 17px; height: 17px; flex: none;
+  border: 2px solid var(--border-strong);
+  border-top-color: var(--accent-hover);
+  border-radius: 50%;
+  animation: spin 700ms linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner { animation-duration: 2s; }
+}
+
+@media (max-width: 430px) {
+  .auth-host { padding-inline: 16px; }
+  .auth-card { padding: 22px 18px 18px; }
+}
+
+/* ==========================================================================
    Ana ekrandan açıldığında (PWA / tam ekran)
    Tarayıcı çubuğu olmadığı için çentik ve alt gezinme çubuğu payını
    uygulamanın kendisi bırakmalı. Tarayıcıda açıkken hiçbir şey değişmez.

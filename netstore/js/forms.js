@@ -149,10 +149,38 @@ const optRoles     = () => ['manager','sales','warehouse','accounting']
 const optMethods   = () => METHODS.map((k) => ({ value: k, label: methodLabel(k) }));
 const optActive    = () => [{ value:'1', label:t('b_active') }, { value:'0', label:t('b_passive') }];
 
+/**
+ * Yeni kayıt kimliği.
+ *
+ * Sıra numarası (p1, p2, …) ortak defterde güvenli değil: iki kişi aynı
+ * anda kayıt girdiğinde ikisi de aynı kimliği üretir ve biri diğerinin
+ * kaydını ezer. Zaman damgası + rastgele son ek bunu pratikte imkânsız
+ * kılar. Örnek verideki kısa kimlikler olduğu gibi kalır.
+ */
 function nextId(arr, prefix) {
-  let n = 1;
-  while (arr.some((x) => x.id === prefix + n)) n++;
-  return prefix + n;
+  let id;
+  do {
+    id = prefix + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  } while (arr.some((x) => x.id === id));
+  return id;
+}
+
+/**
+ * Sıradaki belge numarası (fatura “FT-”, alış “AL-”).
+ *
+ * Dizi uzunluğundan saymak iki yerde yanlış sonuç verirdi: kayıt silinince
+ * numara tekrarlanır, ortak defterde de iki kişi aynı numarayı üretir.
+ * Bunun yerine o ayın en büyük numarası bulunup bir artırılıyor.
+ */
+function nextDocNo(arr, prefix, d) {
+  const head = prefix + d.getFullYear() + String(d.getMonth() + 1).padStart(2, '0') + '-';
+  let max = 1000;
+  arr.forEach((r) => {
+    if (typeof r.no !== 'string' || r.no.indexOf(head) !== 0) return;
+    const n = parseInt(r.no.slice(head.length), 10);
+    if (isFinite(n) && n > max) max = n;
+  });
+  return head + String(max + 1).padStart(4, '0');
 }
 
 /* --------------------------------------------------------------------------
@@ -273,11 +301,9 @@ function newSaleForm(presetCustomerId) {
 /** Satışı kaydeder, stoktan düşer, peşin tahsilatı işler. */
 function createSale(o) {
   const d = new Date(TODAY);
-  const seq = SALES.length + PAYMENTS.length + 1;
   const sale = {
     id: nextId(SALES, 'sl'),
-    no: 'FT-' + d.getFullYear() + String(d.getMonth() + 1).padStart(2, '0') + '-' +
-        String(1000 + seq).padStart(4, '0'),
+    no: nextDocNo(SALES, 'FT-', d),
     customerId: o.customerId,
     staffId: o.staffId,
     date: d,
@@ -490,8 +516,7 @@ function newPurchaseForm() {
       const d = new Date(TODAY);
       const rec = {
         id: nextId(PURCHASES, 'pu'),
-        no: 'AL-' + d.getFullYear() + String(d.getMonth() + 1).padStart(2, '0') + '-' +
-            String(1000 + PURCHASES.length + 1).padStart(4, '0'),
+        no: nextDocNo(PURCHASES, 'AL-', d),
         supplier: v.supplier, date: d,
         items: SALE_LINES.map((ln) => {
           const p = productById(ln.pid);

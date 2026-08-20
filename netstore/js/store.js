@@ -1,10 +1,15 @@
 /* ==========================================================================
    NetStore — kalıcı depolama
-   Kayıtlar tarayıcının localStorage'ında saklanır; sayfa yenilense de durur.
-   İlk açılışta kayıt yoksa örnek veri seti yüklü gelir.
 
-   Gerçek bir arka uç eklendiğinde değiştirilmesi gereken tek yer burasıdır:
-   save/load/clear imzaları aynı kalabilir.
+   İki mod vardır ve uygulamanın geri kalanı hangisinde olduğunu bilmez:
+
+     yerel  — kayıtlar tarayıcının localStorage'ında. Firebase ayarları
+              doldurulmadığında çalışan mod; ilk açılışta örnek veri gelir.
+     ortak  — kayıtlar Firestore'da (bkz. js/cloud.js). İki kişi aynı
+              defteri görür; giriş zorunludur, örnek veri yüklenmez.
+
+   Her iki modda da dışarıya aynı imzalar açılır: saveData / loadData /
+   startEmpty / resetToDemo / exportBackup / importBackup.
    ========================================================================== */
 
 const STORE_KEY = 'netstore-data';
@@ -54,8 +59,10 @@ function serialize() {
   return out;
 }
 
-/** Belleği diske yazar. Kota dolarsa sessizce vazgeçmez — kullanıcıyı uyarır. */
+/** Belleği kalıcı hâle getirir: ortak moddaysa buluta, değilse diske. */
 function saveData() {
+  if (typeof cloudActive === 'function' && cloudActive()) return cloudSave();
+
   try {
     localStorage.setItem(STORE_KEY, JSON.stringify(serialize()));
     return true;
@@ -66,21 +73,18 @@ function saveData() {
   }
 }
 
-/** Diskteki kaydı belleğe alır. Kayıt yoksa/bozuksa false döner. */
-function loadData() {
-  let raw;
-  try { raw = localStorage.getItem(STORE_KEY); } catch (e) { return false; }
-  if (!raw) return false;
-
-  let obj;
-  try { obj = JSON.parse(raw); } catch (e) { return false; }
-  if (!obj || obj.v !== STORE_VERSION) return false;
-
+/** Düz nesnenin (yedek dosyası, disk kaydı, örnek veri) geçerli olup
+    olmadığına bakar. Hepsi mevcut olmadan hiçbirini uygulamayız: yarım
+    yüklenmiş bir durum, bozuk veriden daha kötüdür. */
+function validSnapshot(obj) {
   const c = collections();
-  /* Hepsi mevcut olmadan hiçbirini uygulamayız: yarım yüklenmiş bir durum,
-     bozuk veriden daha kötüdür. */
-  if (!Object.keys(c).every((k) => Array.isArray(obj[k]))) return false;
+  return !!obj && obj.v === STORE_VERSION &&
+         Object.keys(c).every((k) => Array.isArray(obj[k]));
+}
 
+/** Düz nesneyi belleğe alır (tarihleri Date'e çevirerek). */
+function applySnapshot(obj) {
+  const c = collections();
   Object.keys(c).forEach((key) => {
     const fields = DATE_FIELDS[key];
     replaceAll(c[key], obj[key].map((rec) => {
@@ -94,6 +98,19 @@ function loadData() {
   SALES.sort((a, b) => b.date - a.date);
   PAYMENTS.sort((a, b) => b.date - a.date);
   PURCHASES.sort((a, b) => b.date - a.date);
+}
+
+/** Diskteki kaydı belleğe alır. Kayıt yoksa/bozuksa false döner. */
+function loadData() {
+  let raw;
+  try { raw = localStorage.getItem(STORE_KEY); } catch (e) { return false; }
+  if (!raw) return false;
+
+  let obj;
+  try { obj = JSON.parse(raw); } catch (e) { return false; }
+  if (!validSnapshot(obj)) return false;
+
+  applySnapshot(obj);
   return true;
 }
 
@@ -121,9 +138,27 @@ function startEmpty() {
   saveData();
 }
 
-/** Örnek veri setine döner: kaydı silip sayfayı yeniden yükler (seed
-    data.js'in yüklenme anında üretiliyor). */
+/** Açılışta yakalanan örnek veri. Ortak modda bulut kayıtları belleği
+    ezdiği için, “demoya dön” diyebilmek adına bir kopyası saklanır. */
+let SEED = null;
+
+function captureSeed() {
+  if (!SEED) SEED = JSON.parse(JSON.stringify(serialize()));
+}
+
+/** Örnek veri setine döner.
+    Yerel modda: kaydı silip sayfayı yeniden yükler (seed data.js'in
+    yüklenme anında üretiliyor).
+    Ortak modda: yakalanan örnek veriyi belleğe alıp buluta yazar —
+    yeniden yükleme işe yaramazdı, bulut kaydı geri gelirdi. */
 function resetToDemo() {
+  if (typeof cloudActive === 'function' && cloudActive()) {
+    if (!SEED) return;
+    applySnapshot(SEED);
+    saveData();
+    render();
+    return;
+  }
   clearData();
   location.reload();
 }
@@ -160,22 +195,14 @@ function importBackup() {
       try { obj = JSON.parse(String(reader.result)); }
       catch (e) { toast(t('st_import_bad'), 'warning'); return; }
 
-      const c = collections();
-      if (!obj || obj.v !== STORE_VERSION ||
-          !Object.keys(c).every((k) => Array.isArray(obj[k]))) {
-        toast(t('st_import_bad'), 'warning');
-        return;
-      }
-      /* Önce diske yaz, sonra oku: tek bir doğrulama yolu kalsın. */
-      try { localStorage.setItem(STORE_KEY, JSON.stringify(obj)); }
-      catch (e) { toast(t('st_save_failed'), 'warning'); return; }
+      if (!validSnapshot(obj)) { toast(t('st_import_bad'), 'warning'); return; }
 
-      if (loadData()) {
-        render();
-        toast(t('st_import_done', { n: num(storageInfo().records) }));
-      } else {
-        toast(t('st_import_bad'), 'warning');
-      }
+      /* Önce belleğe, sonra kalıcı katmana: yerel modda diske, ortak modda
+         buluta gider — tek bir yol iki modu da kapsar. */
+      applySnapshot(obj);
+      saveData();
+      render();
+      toast(t('st_import_done', { n: num(storageInfo().records) }));
     };
     reader.readAsText(file);
   });
@@ -186,7 +213,12 @@ function importBackup() {
    Açılış
    -------------------------------------------------------------------------- */
 
-/** data.js örnek veriyi ürettikten sonra çağrılır: kayıt varsa onu kullan. */
+/**
+ * data.js örnek veriyi ürettikten sonra çağrılır.
+ * Yerel modda: diskte kayıt varsa onu kullan, yoksa örneği kaydet.
+ * Ortak modda hiç çağrılmaz — veri buluttan gelir, örnek veri yüklenmez.
+ */
 function initStore() {
+  captureSeed();
   if (!loadData()) saveData();      // ilk açılış: örnek veri kaydedilir
 }

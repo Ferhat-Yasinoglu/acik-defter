@@ -298,8 +298,13 @@ function initials(c) {
   return ((f[0] || '') + (l[0] || '')).toUpperCase();
 }
 function staffInitials(s) {
-  const n = staffName(s).split(' ');
-  return ((n[0] ? n[0][0] : '') + (n[1] ? n[1][0] : '')).toUpperCase();
+  return initialsOf(staffName(s));
+}
+
+/** Serbest metinden baş harfler — personel adı ya da Google hesabı için. */
+function initialsOf(text) {
+  const n = String(text || '').trim().split(/[\s.@_-]+/);
+  return ((n[0] ? n[0][0] : '') + (n[1] ? n[1][0] : '')).toUpperCase() || 'NS';
 }
 
 /** Bir satışın toplam / maliyet / kâr / tahsil edilen / kalan değerleri. */

@@ -30,7 +30,12 @@ Başla** ile temizleyip kendi kayıtlarınızla çalışabilirsiniz.
 | `css/netstore.css` | Tasarım sistemi: tokenlar, bileşenler, RTL, responsive, baskı |
 | `js/i18n.js` | **Sözlük + dil çalışma zamanı**: çeviri, yön, sayı/para/tarih biçimi |
 | `js/pwa.js` | Telefona kurulum: `beforeinstallprompt` yakalama, kurulum/çevrimdışı durumu |
-| `js/store.js` | **Kalıcılık**: localStorage'a yazma/okuma, yedek al/geri yükle, sıfırlama |
+| `js/store.js` | **Kalıcılık**: yerel modda localStorage, ortak modda bulut; yedek al/geri yükle |
+| `js/firebase-config.js` | **Doldurulacak dosya**: Firebase bilgileri + izinli e-postalar |
+| `js/cloud.js` | Ortak defter: Firestore eşitlemesi, fark bulup yazma, oturum durumu |
+| `js/auth.js` | Google giriş ekranı (giriş yok / yetkisiz / yükleniyor) |
+| `vendor/firebase.js` | Firebase SDK'nın yerel kopyası (npm'den paketlendi) |
+| `firestore.rules` | Sunucu tarafı güvenlik: veriye yalnızca izinli e-postalar erişir |
 | `js/search.js` | Global arama: ürün, müşteri ve fatura kayıtlarında |
 | `js/icons.js` | Satır içi SVG ikon seti (CDN bağımlılığı yok, çevrimdışı çalışır) |
 | `js/data.js` | Örnek veri + **tüm türetilmiş hesaplar** (KPI, durum, bakiye, seriler) |
@@ -118,8 +123,10 @@ yalnızca kâğıdı basar; arayüz, araç çubuğu ve kenar çubuğu baskıya g
 
 ## Veri ve kalıcılık
 
-Kayıtlar `localStorage`'da `netstore-data` anahtarıyla saklanır. Her kayıt
-değişikliğinden sonra otomatik yazılır (`commit()` → `saveData()` + `render()`).
+Her kayıt değişikliğinden sonra otomatik yazılır (`commit()` → `saveData()` +
+`render()`). `saveData()` iki moddan hangisinde olduğuna kendisi karar verir:
+**yerel modda** `localStorage`'a (`netstore-data` anahtarı), **ortak modda**
+Firestore'a (bkz. “Ortak kullanım”).
 
 | İşlem | Nerede | Ne yapar |
 |---|---|---|
@@ -131,8 +138,8 @@ değişikliğinden sonra otomatik yazılır (`commit()` → `saveData()` + `rend
 Uygulama boş veriyle de çalışır: sayfalar yönlendirici boş durum mesajı gösterir,
 ürün/müşteri/personel olmadan satış formu açılmaz ve nedenini söyler.
 
-**Gerçek bir arka uca geçerken** değiştirilmesi gereken tek dosya `js/store.js`'tir;
-`saveData` / `loadData` / `clearData` imzaları aynı kalabilir.
+Uygulamanın geri kalanı hangi modda olduğunu bilmez: form kodu diziyi
+değiştirip `commit()` çağırır, gerisi `js/store.js` ile `js/cloud.js`'in işidir.
 
 ## Global arama
 
@@ -180,9 +187,101 @@ ayın **aynı gün aralığıyla** kıyaslanır.
 
 ## Kendi verinize bağlama
 
-`js/data.js` içindeki `PRODUCTS`, `CUSTOMERS`, `STAFF`, `SALES`, `PAYMENTS`,
-`PURCHASES` dizilerini kendi kaynağınızdan doldurun. Türetilmiş fonksiyonlar ve
-tüm arayüz aynı kalır — sayfa şablonları yalnızca bu fonksiyonları çağırır.
+Uygulamayı açıp Ayarlar → Veri → **Sıfırdan Başla** deyin; örnek veri silinir,
+kendi kayıtlarınızı girmeye başlarsınız. Ortak modda bu işlem buluttaki defteri
+de boşaltır.
+
+Toplu aktarım için `js/data.js` içindeki `PRODUCTS`, `CUSTOMERS`, `STAFF`,
+`SALES`, `PAYMENTS`, `PURCHASES` dizilerini kendi kaynağınızdan doldurun.
+Türetilmiş fonksiyonlar ve tüm arayüz aynı kalır — sayfa şablonları yalnızca
+bu fonksiyonları çağırır.
+
+## Ortak kullanım (iki kişi) — Google ile giriş
+
+Varsayılan hâlde uygulama **yerel** çalışır: kayıtlar açıldığı cihazda durur.
+`js/firebase-config.js` doldurulduğu anda **ortak moda** geçer — iki kişi
+Google hesabıyla girer, ikisi de aynı defteri görür, biri kayıt girdiğinde
+diğerinin ekranında **anında** belirir.
+
+### Neden kayıt başına ayrı belge?
+
+Tüm veriyi tek belgede tutmak daha basit olurdu, ama iki kişi aynı anda kayıt
+girdiğinde biri diğerinin yazdığını silerdi. Her kaydın kendi belgesi olunca
+çakışma yalnızca ikisi **aynı kaydı aynı anda** düzenlerse olur.
+
+Aynı sebeple kayıt kimlikleri de değişti: sıra numarası (`p1`, `p2`, …) yerine
+zaman + rastgele son ek kullanılıyor. İki kişi aynı saniyede satış girse bile
+aynı kimliği üretemezler. Belge numaraları (`FT-…`) o ayın en büyük
+numarasından devam ediyor — dizi uzunluğundan saymak, kayıt silinince numarayı
+tekrarlardı.
+
+### Kurulum (yaklaşık 10 dakika, bir kez)
+
+**1. Proje aç** — [console.firebase.google.com](https://console.firebase.google.com)
+→ *Add project* → ad verin → Google Analytics'e gerek yok, kapatın.
+
+**2. Web uygulaması ekle** — proje ana sayfasında `</>` simgesi → bir takma ad
+yazın → *Register app*. Ekranda çıkan `firebaseConfig` bloğundaki değerleri
+`js/firebase-config.js` içine kopyalayın.
+
+**3. Google girişini aç** — sol menüde *Build → Authentication → Get started*
+→ *Sign-in method* sekmesi → **Google** → *Enable* → destek e-postasını seçin
+→ *Save*.
+
+**4. Alan adını izin listesine ekle** — *Authentication → Settings →
+Authorized domains* → *Add domain* → uygulamanın adresi
+(örn. `y-ferhat.github.io`). Bu yapılmazsa giriş `unauthorized-domain`
+hatası verir.
+
+**5. Veritabanını aç** — *Build → Firestore Database → Create database* →
+**Production mode** → konum olarak `asia-south1` (Mumbai) Afganistan'a en
+yakınıdır → *Enable*.
+
+**6. Güvenlik kurallarını yapıştır** — *Firestore Database → Rules* sekmesi →
+`firestore.rules` dosyasının içeriğini yapıştırın, **e-posta listesini kendi
+hesaplarınızla değiştirin** → *Publish*.
+
+**7. E-postaları uygulamaya da yazın** — `js/firebase-config.js` içindeki
+`ALLOWED` dizisine aynı iki adresi yazın, sonra değişiklikleri gönderin.
+
+### İki listeyi de doldurmak neden gerekli?
+
+| Liste | Nerede | Ne işe yarar |
+|---|---|---|
+| `firestore.rules` | Sunucuda | **Gerçek güvenlik.** Listede olmayan hesap veriyi hiçbir şekilde okuyamaz. |
+| `ALLOWED` | Uygulamada | Sadece arayüz: yetkisiz hesaba boş ekran yerine “bu hesabın erişimi yok” demek için. |
+
+`js/firebase-config.js` içindeki `apiKey` **gizli bir anahtar değildir** — her
+web uygulamasında açıkta durur, Google da böyle tasarlamıştır. Güvenliği
+sağlayan tek şey 6. adımdaki kurallardır; o adımı atlamayın.
+
+### Çevrimdışı ve çakışma
+
+Firestore'un kendi yerel önbelleği açık: internet gidince uygulama çalışmaya
+devam eder, girdiğiniz kayıtlar sıraya alınır, bağlantı gelince kendiliğinden
+eşitlenir. İkiniz de **aynı anda çevrimdışıyken** satış girerseniz iki fatura
+aynı numarayı alabilir; kayıtlar kaybolmaz, yalnızca numara tekrar eder.
+
+### Ücret
+
+İki kullanıcı ve küçük bir dükkan için Firebase'in ücretsiz katmanı
+(*Spark*) fazlasıyla yeterlidir: günde 50.000 okuma / 20.000 yazma ve 1 GB
+depolama. Kart bilgisi istemez.
+
+### Firebase paketini yeniden üretmek
+
+`vendor/firebase.js`, SDK'nın yalnızca kullanılan parçalarından oluşan yerel
+bir kopyadır (CDN yerine depoda tutuluyor ki uygulama internetsiz de
+yüklenebilsin):
+
+```
+npm install firebase@10 esbuild
+esbuild entry.js --bundle --format=iife --minify --target=es2019 \
+  --outfile=vendor/firebase.js
+```
+
+Dosyalarda değişiklik yaptıktan sonra `sw.js` içindeki `CACHE` sürümünü
+artırmayı unutmayın; yoksa telefonlarda eski kopya açılmaya devam eder.
 
 ## Telefona kurulum (Android / iPhone)
 
@@ -225,8 +324,12 @@ telefona iner.
 kombinasyonunda yatay taşma, JS hatası ve çevrilmemiş metin olmadan
 doğrulanmıştır. Ayrıca kalıcılık, arama, yedekleme ve boş-veri davranışı için
 **21 uçtan uca kontrol**, form işlemleri için **31 kontrol** ve mobil arama için
-**15 kontrol** ve telefona kurulum / çevrimdışı davranış için **20 kontrol**
-çalışır durumdadır.
+**15 kontrol**, telefona kurulum / çevrimdışı davranış için **21 kontrol** ve
+ortak defter için **19 kontrol** çalışır durumdadır. Ortak defter testleri iki
+istemciyi aynı anda açıp Firebase'i simüle eder: giriş kapısı, izinsiz hesabın
+reddi, bir taraftaki kaydın diğerinde belirmesi, stok düşümünün iki tarafta da
+tutması, silmenin yayılması, kimliklerin çakışmaması ve çıkışta belleğin
+boşalması.
 
 Kayıt işlemleri ayrıca uçtan uca test edilmiştir (31 kontrol): satış oluşturma
 ve stok düşümü, yetersiz stokta engelleme, ürün ekle/düzenle/sil, yinelenen stok

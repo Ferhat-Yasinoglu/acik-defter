@@ -1,0 +1,39 @@
+/* ==========================================================================
+   NetStore — Firestore güvenlik kuralları
+
+   Firebase konsolunda: Firestore Database > Rules > buraya yapıştır > Publish
+
+   Aşağıdaki e-posta listesi güvenliğin GERÇEK sınırıdır. js/firebase-config.js
+   içindeki liste yalnızca arayüz içindir (kullanıcıya “erişimin yok” demek
+   için); onu değiştiren biri veriye yine ulaşamaz, çünkü sunucu bu kurallara
+   bakar.
+
+   Listeyi kendi Google hesaplarınızla değiştirin — küçük harfle yazın.
+   ========================================================================== */
+
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function izinli() {
+      return request.auth != null
+        && request.auth.token.email_verified == true
+        && request.auth.token.email.lower() in [
+             'buraya-birinci@gmail.com',
+             'buraya-ikinci@gmail.com'
+           ];
+    }
+
+    /* Ortak defter: ürünler, müşteriler, personel, satışlar, tahsilatlar,
+       alışlar. İki hesap da tam yetkili. */
+    match /shops/{shopId}/{belge=**} {
+      allow read, write: if izinli();
+    }
+
+    /* Başka hiçbir yola erişim yok. */
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

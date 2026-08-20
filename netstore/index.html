@@ -96,11 +96,21 @@
   <div class="modal-host" id="modalHost" role="dialog" aria-modal="true"></div>
   <div class="toast-host" id="toastHost" aria-live="polite"></div>
 
+  <!-- Ortak modda giriş yapılmadan uygulama çizilmez; ekran buraya açılır. -->
+  <div class="auth-host" id="authHost" role="dialog" aria-modal="true"></div>
+
   <script src="js/i18n.js"></script>
   <script src="js/pwa.js"></script>
   <script src="js/icons.js"></script>
   <script src="js/data.js"></script>
   <script src="js/store.js"></script>
+
+  <!-- Ortak defter: Firebase SDK yerel kopya, ayarlar boşsa yerel modda kalır -->
+  <script src="js/firebase-config.js"></script>
+  <script src="vendor/firebase.js"></script>
+  <script src="js/cloud.js"></script>
+  <script src="js/auth.js"></script>
+
   <script src="js/charts.js"></script>
   <script src="js/invoice.js"></script>
   <script src="js/forms.js"></script>

@@ -1013,18 +1013,25 @@ PAGES.ayarlar = function () {
             '</option><option>WhatsApp</option></select></div>' +
           '</div></section>' +
 
+          cloudCard() +
+
           installCard() +
 
           (function () {
             const info = storageInfo();
+            const cloud = cloudInfo().mode === 'cloud';
+            /* Ortak modda localStorage boştur; “kaydedilmedi” demek yanıltıcı
+               olurdu — kayıt sayısını defterin kendisinden gösteriyoruz. */
+            const line = cloud ? t('st_records_cloud', { n: num(info.records) })
+              : info.saved ? t('st_records', { n: num(info.records), s: fmtBytes(info.bytes) })
+              : t('st_not_saved');
+
             return '<section class="card"><div class="card-head"><div><h3>' + esc(t('h_data')) + '</h3>' +
-              '<p class="sub">' + esc(t('h_data_sub')) + '</p></div></div>' +
+              '<p class="sub">' + esc(cloud ? t('h_cloud_sub') : t('h_data_sub')) + '</p></div></div>' +
               '<div class="card-body">' +
                 '<div class="alert alert-info" style="margin-bottom:14px">' + icon('archive') +
-                  '<div><strong>' + esc(info.saved
-                    ? t('st_records', { n: num(info.records), s: fmtBytes(info.bytes) })
-                    : t('st_not_saved')) + '</strong>' +
-                  '<span class="alert-text">' + esc(t('st_empty_hint')) + '</span></div></div>' +
+                  '<div><strong>' + esc(line) + '</strong>' +
+                  '<span class="alert-text">' + esc(cloud ? t('st_cloud_hint') : t('st_empty_hint')) + '</span></div></div>' +
                 '<div class="action-row">' +
                   '<button class="btn btn-ghost" data-act="backup">' + icon('download') + esc(t('st_backup')) + '</button>' +
                   '<button class="btn btn-ghost" data-act="restore">' + icon('refresh') + esc(t('st_restore')) + '</button>' +
@@ -1043,6 +1050,28 @@ PAGES.ayarlar = function () {
       '</div>'
   };
 };
+
+/* Ayarlar > Ortak Defter kartı: kim girmiş, kaç kişi kullanıyor, çıkış. */
+function cloudCard() {
+  const ci = cloudInfo();
+
+  const body = ci.mode === 'local'
+    ? '<div class="alert alert-info">' + icon('info') +
+        '<div><strong>' + esc(t('cl_local_head')) + '</strong>' +
+        '<span class="alert-text">' + esc(t('cl_local_sub')) + '</span></div></div>'
+    : '<div class="alert alert-success" style="margin-bottom:14px">' + icon('check') +
+        '<div><strong>' + esc(t('cl_signed_as', { n: ci.name })) + '</strong>' +
+        '<span class="alert-text">' + esc(t('cl_peers', { n: num(ci.peers) })) + '</span></div></div>' +
+      '<div class="action-row">' +
+        '<button class="btn btn-ghost" data-act="sign-out">' +
+          icon('logout') + esc(t('au_signout')) + '</button>' +
+      '</div>' +
+      '<p class="hint" style="margin-top:12px">' + esc(t('cl_synced')) + '</p>';
+
+  return '<section class="card"><div class="card-head"><div><h3>' + esc(t('h_cloud')) + '</h3>' +
+    '<p class="sub">' + esc(t('h_cloud_sub')) + '</p></div></div>' +
+    '<div class="card-body">' + body + '</div></section>';
+}
 
 /* Ayarlar > Uygulama kartı: kurulum durumu + çevrimdışı hazırlık. */
 function installCard() {
@@ -1103,12 +1132,24 @@ function renderChrome() {
   document.getElementById('btnBurger').setAttribute('aria-label', t('aria_menu_open'));
   document.getElementById('btnNavClose').setAttribute('aria-label', t('aria_menu_close'));
 
-  /* Kullanıcı kartı. Personel listesi boş olabilir (kullanıcı sıfırdan
-     başlamış olabilir) — o durumda kart yer tutucuya düşer, çökmez. */
+  /* Kullanıcı kartı. Ortak modda giriş yapan Google hesabı gösterilir;
+     yerel modda personel listesinden. Liste boş olabilir (kullanıcı
+     sıfırdan başlamış olabilir) — o durumda kart yer tutucuya düşer. */
+  const ci = cloudInfo();
   const me = staffById('s1') || STAFF[0] || null;
-  document.getElementById('meName').textContent = me ? staffName(me) : t('app_name');
-  document.getElementById('meRole').textContent = me ? roleLabel(me.role) : t('app_sub');
-  document.getElementById('meAvatar').textContent = me ? staffInitials(me) : 'NS';
+  const nameEl = document.getElementById('meName');
+  const roleEl = document.getElementById('meRole');
+  const avEl = document.getElementById('meAvatar');
+
+  if (ci.mode === 'cloud' && ci.email) {
+    nameEl.textContent = ci.name;
+    roleEl.textContent = ci.email;
+    avEl.textContent = initialsOf(ci.name || ci.email);
+  } else {
+    nameEl.textContent = me ? staffName(me) : t('app_name');
+    roleEl.textContent = me ? roleLabel(me.role) : t('app_sub');
+    avEl.textContent = me ? staffInitials(me) : 'NS';
+  }
 
   /* dil seçici */
   document.getElementById('langSwitch').innerHTML =
@@ -1349,6 +1390,11 @@ document.addEventListener('click', function (ev) {
 
   /* --- ayarlar --- */
   if (act === 'install-app') { promptInstall(); return; }
+  if (act === 'auth-in') { authSignIn(); return; }
+  if (act === 'sign-out') {
+    confirmModal({ message: t('cf_signout'), onConfirm: authSignOut });
+    return;
+  }
   if (act === 'save-settings') { toast(t('t_settings')); return; }
   if (act === 'reset-data') {
     confirmModal({
@@ -1385,9 +1431,36 @@ window.addEventListener('hashchange', render);
 document.addEventListener('DOMContentLoaded', function () {
   applyLangToDocument();
   hydrateIcons(document);
-  initStore();          // kayıtlı veri varsa örnek veriyi değiştirir
-  render();
+  captureSeed();        // örnek verinin kopyası — “demoya dön” için
+  bootApp();
 });
+
+/**
+ * Açılış.
+ * Yerel mod: diskteki kaydı yükle, çiz.
+ * Ortak mod: giriş ekranını göster; defter buluttan gelene kadar çizme.
+ */
+function bootApp() {
+  if (!cloudEnabled()) {
+    initStore();
+    render();
+    return;
+  }
+
+  showAuth('loading', {});
+  cloudStart({
+    onSignedOut: function () { showAuth('signed-out', {}); },
+    onDenied: function (user) { showAuth('denied', { email: user.email }); },
+    onReady: function () { hideAuth(); render(); },
+    onData: render,
+    onError: function (code) {
+      /* Kural reddi ya da bağlantı hatası: kullanıcı boş ekranla
+         karşılaşmasın, ne olduğunu görsün. */
+      if (!cloudActive()) showAuth('signed-out', { failed: true });
+      else toast(t('cl_read_failed', { e: code }), 'warning');
+    }
+  });
+}
 
 /** Bayt sayısını okunur biçime çevirir. */
 function fmtBytes(b) {
