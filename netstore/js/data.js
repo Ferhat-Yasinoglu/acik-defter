@@ -410,23 +410,46 @@ function kpis() {
   };
 }
 
-/** Son N ayın satış / kâr serisi. Ay ADI DEĞİL indeksi saklanır; dil
-    değiştiğinde etiket yeniden çözülür. */
+/**
+ * Son N ayın satış / kâr serisi.
+ * Gruplama SEÇİLİ TAKVİME göre yapılır: hicri-şemsi seçiliyken kovalar da
+ * şemsi aylardır, miladi ay sınırları değil. Etiket saklanmaz; her kova
+ * kendi temsilci tarihini taşır, ad ve yıl ekranda çözülür.
+ */
 function monthlySeries(n) {
-  const out = [];
-  for (let back = n - 1; back >= 0; back--) {
-    const d = new Date(TODAY.getFullYear(), TODAY.getMonth() - back, 1);
-    const next = new Date(d.getFullYear(), d.getMonth() + 1, 1);
-    let sale = 0, profit = 0;
-    SALES.forEach((s) => {
-      if (s.date >= d && s.date < next) {
-        const t2 = saleTotals(s);
-        sale += t2.total; profit += t2.profit;
-      }
-    });
-    out.push({ m: d.getMonth(), year: d.getFullYear(), sale, profit });
+  const buckets = {}, order = [];
+  const cur = new Date(TODAY);
+  const floor = new Date(TODAY.getFullYear() - 3, 0, 1);
+
+  while (order.length < n && cur >= floor) {
+    const k = monthKey(cur);
+    if (!buckets[k]) {
+      buckets[k] = { key: k, ref: new Date(cur), sale: 0, profit: 0 };
+      order.push(k);
+    }
+    cur.setDate(cur.getDate() - 1);
   }
-  return out;
+  order.reverse();
+
+  SALES.forEach((s) => {
+    const b = buckets[monthKey(s.date)];
+    if (!b) return;
+    const t2 = saleTotals(s);
+    b.sale += t2.total; b.profit += t2.profit;
+  });
+
+  return order.map((k) => buckets[k]);
+}
+
+/** Seçili takvimde, verilen tarihin ayının ilk günü. */
+function calMonthStart(d) {
+  const k = monthKey(d);
+  const x = new Date(d);
+  while (monthKey(new Date(x.getFullYear(), x.getMonth(), x.getDate() - 1)) === k) {
+    x.setDate(x.getDate() - 1);
+  }
+  x.setHours(0, 0, 0, 0);
+  return x;
 }
 
 /** Kategori bazlı satış cirosu (anahtar döner, etiket ekranda çözülür). */
@@ -505,10 +528,13 @@ function periodTotals(start, end, field) {
 }
 
 function momChange(field) {
-  const day = TODAY.getDate();
-  const curStart = new Date(TODAY.getFullYear(), TODAY.getMonth(), 1);
-  const prevStart = new Date(TODAY.getFullYear(), TODAY.getMonth() - 1, 1);
-  const prevEnd = new Date(TODAY.getFullYear(), TODAY.getMonth() - 1, day, 23, 59, 59);
+  const curStart = calMonthStart(TODAY);
+  const elapsed = daysBetween(curStart, TODAY);              // ayın kaçıncı gününde olduğumuz
+
+  const prevEndDay = new Date(curStart); prevEndDay.setDate(prevEndDay.getDate() - 1);
+  const prevStart = calMonthStart(prevEndDay);
+  const prevEnd = addDays(prevStart, elapsed);
+  prevEnd.setHours(23, 59, 59);
 
   const cur = periodTotals(curStart, TODAY, field);
   const prev = periodTotals(prevStart, prevEnd, field);

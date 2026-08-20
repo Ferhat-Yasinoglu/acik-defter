@@ -447,8 +447,11 @@ PAGES.urunler = function () {
           '<span class="num text-success">' + pctPlain(((p.sell - p.buy) / p.sell) * 100) + (lang() === 'fa' ? '٪' : '%') + '</span>' },
         { key:'stock', label:t('c_stock'), align:'right', render:(p) =>
           '<span class="num ' + (p.stock <= p.min ? 'text-warning strong' : '') + '">' + num(p.stock) + '</span>' },
-        { key:'_actions', label:t('c_action'), align:'right', render:() =>
-          '<div class="actions">' + actionBtn('edit', t('btn_edit')) + actionBtn('trash', t('btn_delete')) + '</div>' }
+        { key:'_actions', label:t('c_action'), align:'right', render:(p) =>
+          '<div class="actions">' +
+            actionBtn('edit', t('btn_edit'), ' data-act="edit-product" data-id="' + p.id + '"') +
+            actionBtn('trash', t('btn_delete'), ' data-act="delete-product" data-id="' + p.id + '"') +
+          '</div>' }
       ], PRODUCTS, { wide:true }) + '</div></section>'
   };
 };
@@ -492,8 +495,8 @@ PAGES.stok = function () {
           p.stock <= p.min ? badge('danger', t('b_critical'), 'alert')
           : p.stock <= p.min * 1.6 ? badge('warning', t('b_running_low'), 'clock')
           : badge('success', t('b_sufficient'), 'check') },
-        { key:'_actions', label:t('c_action'), align:'right', render:() =>
-          '<div class="actions"><button class="btn btn-ghost btn-sm" data-act="stock-in">' +
+        { key:'_actions', label:t('c_action'), align:'right', render:(p) =>
+          '<div class="actions"><button class="btn btn-ghost btn-sm" data-act="stock-in" data-id="' + p.id + '">' +
           icon('plus') + t('btn_entry') + '</button></div>' }
       ], sorted, { wide:true }) + '</div></section>'
   };
@@ -599,7 +602,7 @@ PAGES.musteri = function (id) {
             d: fmtDate(new Date(c.since)) })) + '</p></div>' +
         '</div>' +
         '<div class="head-actions">' +
-          '<button class="btn btn-ghost" data-act="edit-customer">' + icon('edit') + t('btn_edit') + '</button>' +
+          '<button class="btn btn-ghost" data-act="edit-customer" data-id="' + c.id + '">' + icon('edit') + t('btn_edit') + '</button>' +
           '<button class="btn btn-success" data-act="add-payment" data-id="' + c.id + '">' +
             icon('handCoins') + t('btn_add_payment') + '</button>' +
         '</div>' +
@@ -636,13 +639,15 @@ PAGES.musteri = function (id) {
             '<div class="card-body"><div class="action-row">' +
               '<button class="btn btn-success" data-act="add-payment" data-id="' + c.id + '">' +
                 icon('handCoins') + t('btn_add_payment') + '</button>' +
+              '<button class="btn btn-primary" data-act="new-sale" data-id="' + c.id + '">' +
+                icon('plus') + t('btn_new_sale') + '</button>' +
               (s.sales.length ? '<button class="btn btn-info" data-act="doc-invoice" data-id="' + s.sales[0].id + '">' +
                 icon('invoice') + t('btn_invoice') + '</button>' : '') +
               '<a class="btn btn-whatsapp" href="' + waLink + '" target="_blank" rel="noopener">' +
                 icon('whatsapp') + t('btn_whatsapp') + '</a>' +
               '<a class="btn btn-primary" href="' + mailLink + '">' + icon('mail') + t('btn_email') + '</a>' +
               '<button class="btn btn-ghost" data-act="print">' + icon('printer') + t('btn_statement') + '</button>' +
-              '<button class="btn btn-danger" data-act="delete-customer">' + icon('trash') + t('btn_delete_cust') + '</button>' +
+              '<button class="btn btn-danger" data-act="delete-customer" data-id="' + c.id + '">' + icon('trash') + t('btn_delete_cust') + '</button>' +
             '</div></div>' +
           '</section>' +
         '</div>' +
@@ -896,7 +901,7 @@ PAGES.raporlar = function () {
         '<div class="card-body flush">' +
         table([
           { key:'m', label:t('c_month'), render:(m) =>
-            '<span class="cell-title">' + esc(monthShort(m.m) + ' ' + num(m.year)) + '</span>' },
+            '<span class="cell-title">' + esc(monthShort(m.ref) + ' ' + calYear(m.ref)) + '</span>' },
           { key:'s', label:t('series_sales'), align:'right', render:(m) => '<span class="num">' + money(m.sale) + '</span>' },
           { key:'p', label:t('c_profit'), align:'right', render:(m) => '<span class="num text-success">' + money(m.profit) + '</span>' },
           { key:'mg', label:t('c_margin'), align:'right', render:(m) =>
@@ -939,8 +944,10 @@ PAGES.personel = function () {
         { key:'rev', label:t('c_revenue'), align:'right', render:(r) => '<span class="num strong">' + money(r.revenue) + '</span>' },
         { key:'st', label:t('c_status'), render:(r) => staffById(r.staffId).active
             ? badge('success', t('b_active'), 'check') : badge('muted', t('b_passive')) },
-        { key:'_actions', label:t('c_action'), align:'right', render:() =>
-          '<div class="actions">' + actionBtn('edit', t('btn_edit')) + '</div>' }
+        { key:'_actions', label:t('c_action'), align:'right', render:(r) =>
+          '<div class="actions">' +
+          actionBtn('edit', t('btn_edit'), ' data-act="edit-staff" data-id="' + r.staffId + '"') +
+          '</div>' }
       ], staffPerformance(), { wide:true }) + '</div></section>'
   };
 };
@@ -972,6 +979,14 @@ PAGES.ayarlar = function () {
           '<div class="card-body"><div class="seg" data-seg="lang" style="width:100%">' +
             Object.keys(LANGS).map((k) => '<button data-val="' + k + '"' +
               (lang() === k ? ' class="on"' : '') + ' style="flex:1">' + esc(LANGS[k].name) + '</button>').join('') +
+          '</div></div></section>' +
+
+          '<section class="card"><div class="card-head"><div><h3>' + esc(t('s_calendar')) + '</h3>' +
+          '<p class="sub">' + esc(t('s_cal_hint')) + '</p></div></div>' +
+          '<div class="card-body"><div class="seg" data-seg="cal" style="width:100%">' +
+            [['gregory', t('s_cal_greg')], ['persian', t('s_cal_persian')]].map(([k, l]) =>
+              '<button data-val="' + k + '"' + (calendar() === k ? ' class="on"' : '') +
+              ' style="flex:1">' + esc(l) + '</button>').join('') +
           '</div></div></section>' +
 
           '<section class="card"><div class="card-head"><div><h3>' + esc(t('h_finance')) + '</h3>' +
@@ -1209,6 +1224,7 @@ document.addEventListener('click', function (ev) {
   if (seg) {
     const group = seg.closest('[data-seg]').dataset.seg;
     if (group === 'lang') { setLang(seg.dataset.val); render(); return; }
+    if (group === 'cal')  { setCalendar(seg.dataset.val); render(); return; }
     STATE.filter = seg.dataset.val; render(); return;
   }
 
@@ -1219,31 +1235,71 @@ document.addEventListener('click', function (ev) {
   }
 
   const act = a.dataset.act;
-  if (act === 'add-payment')  { paymentModal(a.dataset.id); return; }
-  if (act === 'save-payment') { savePayment(); return; }
-  if (act === 'close-modal')  { closeModal(); return; }
-  if (act === 'doc-invoice')  { invoiceDoc(a.dataset.id); return; }
-  if (act === 'doc-receipt')  { receiptDoc(a.dataset.id); return; }
+  const id = a.dataset.id;
+
+  /* --- belgeler --- */
+  if (act === 'doc-invoice')  { invoiceDoc(id); return; }
+  if (act === 'doc-receipt')  { receiptDoc(id); return; }
   if (act === 'close-doc')    { closeDoc(); return; }
   if (act === 'print-doc' || act === 'print') { window.print(); return; }
 
-  /* Bu formlar tasarım şablonu olarak hazır; veri katmanına bağlandığında
-     aynı modal düzeni kullanılacak. */
-  const screens = {
-    'new-sale':'scr_new_sale', 'new-invoice':'scr_new_invoice', 'new-product':'scr_new_product',
-    'new-customer':'scr_new_customer', 'new-purchase':'scr_new_purchase', 'new-staff':'scr_new_staff',
-    'stock-in':'scr_stock_in', 'edit-customer':'scr_edit_cust', 'export':'scr_export'
-  };
-  if (screens[act]) { toast(t('t_not_wired', { n: t(screens[act]) }), 'info'); return; }
+  /* --- modal denetimi --- */
+  if (act === 'close-modal')  { ACTIVE_FORM = null; PENDING_CONFIRM = null; closeModal(); return; }
+  if (act === 'form-submit')  { submitActiveForm(); return; }
+  if (act === 'confirm-yes')  { runPendingConfirm(); return; }
 
-  if (act === 'delete-customer' || act === 'reset-data' || act === 'delete-account') {
-    toast(t('t_danger'), 'warning'); return;
-  }
+  /* --- kalem listesi --- */
+  if (act === 'line-add')     { lineAdd(); return; }
+  if (act === 'line-remove')  { lineRemove(Number(a.dataset.line)); return; }
+
+  /* --- tahsilat --- */
+  if (act === 'add-payment')  { paymentModal(id); return; }
+  if (act === 'save-payment') { savePayment(); return; }
+
+  /* --- kayıt formları --- */
+  if (act === 'new-sale' || act === 'new-invoice') { newSaleForm(id); return; }
+  if (act === 'new-product')    { productForm(); return; }
+  if (act === 'edit-product')   { productForm(id); return; }
+  if (act === 'delete-product') { deleteProduct(id); return; }
+  if (act === 'new-customer')   { customerForm(); return; }
+  if (act === 'edit-customer')  { customerForm(id || STATE.param); return; }
+  if (act === 'delete-customer'){ deleteCustomer(id || STATE.param); return; }
+  if (act === 'new-purchase')   { newPurchaseForm(); return; }
+  if (act === 'new-staff')      { staffForm(); return; }
+  if (act === 'edit-staff')     { staffForm(id); return; }
+  if (act === 'stock-in')       { stockInForm(id); return; }
+
+  /* --- dışa aktarma --- */
+  if (act === 'export') { exportCurrent(); return; }
+
+  /* --- ayarlar --- */
   if (act === 'save-settings') { toast(t('t_settings')); return; }
+  if (act === 'reset-data') {
+    confirmModal({
+      message: t('cf_reset'), note: t('cf_reset_note'),
+      onConfirm: function () { location.reload(); }
+    });
+    return;
+  }
+  if (act === 'delete-account') { toast(t('t_danger'), 'warning'); return; }
+});
+
+/* kalem miktarı doğrudan alandan değişir */
+document.addEventListener('input', function (ev) {
+  const q = ev.target.closest('.line-qty');
+  if (q) lineQty(Number(q.dataset.line), q.value);
 });
 
 document.addEventListener('keydown', function (ev) {
-  if (ev.key === 'Escape') { closeDoc(); closeModal(); closeNav(); }
+  if (ev.key === 'Escape') {
+    closeDoc(); ACTIVE_FORM = null; PENDING_CONFIRM = null; closeModal(); closeNav();
+  }
+  /* formda Enter kaydeder — çok satırlı alan hariç */
+  if (ev.key === 'Enter' && ACTIVE_FORM && ev.target.tagName !== 'TEXTAREA' &&
+      document.getElementById('modalHost').classList.contains('on')) {
+    ev.preventDefault();
+    submitActiveForm();
+  }
 });
 
 window.addEventListener('hashchange', render);

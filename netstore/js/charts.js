@@ -102,7 +102,7 @@ function lineChart(host, opts) {
     if (i % skip !== 0 && i !== data.length - 1) return;
     xLabels += '<text x="' + x(i).toFixed(1) + '" y="' + (H - 9) +
                '" text-anchor="middle" font-size="10.5" fill="' + AXIS_INK + '">' +
-               esc(d.m !== undefined ? monthShort(d.m) : d.label) + '</text>';
+               esc(d.ref ? monthShort(d.ref) : d.label) + '</text>';
   });
 
   let paths = '', dots = '';
@@ -183,7 +183,7 @@ function lineChart(host, opts) {
               '<span class="tip-val">' + money(d[s.key]) + '</span></div>';
     });
     tip.innerHTML = '<div class="tip-title">' +
-      esc((d.m !== undefined ? monthShort(d.m) : d.label) + ' ' + (d.year ? num(d.year) : '')) +
+      esc(d.ref ? monthShort(d.ref) + ' ' + calYear(d.ref) : d.label) +
       '</div>' + rows;
     tip.classList.add('on');
 

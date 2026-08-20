@@ -1022,6 +1022,89 @@ table.data .actions { display: flex; gap: 6px; justify-content: flex-end; }
 
 
 
+/* --------------------------------------------------------------------------
+   13b. Formlar — iki sütunlu alan ızgarası ve kalem listesi
+   -------------------------------------------------------------------------- */
+
+.field-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0 14px;
+}
+.field-grid > .field { grid-column: 1 / -1; }        /* varsayılan: tam genişlik */
+.field-grid > .field-half { grid-column: span 1; }
+.field-grid > .field-full { grid-column: 1 / -1; }
+
+.modal { max-width: 520px; }
+
+/* --- kalem seçici --- */
+.line-picker { display: flex; gap: 8px; }
+.line-picker select { flex: 1; min-width: 0; height: 38px; }
+.line-picker .btn { flex: none; height: 38px; }
+
+/* Izgara SATIRDA değil listede kurulur: her satır kendi grid'i olsaydı
+   sütun genişlikleri satır satır değişir, miktar kutuları hizalanmazdı.
+   display: contents ile satırların hücreleri ortak ızgaraya girer. */
+.line-host {
+  margin-top: 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  background: var(--surface-2);
+  padding: 8px 10px;
+  max-height: 240px;
+  overflow-y: auto;
+
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 68px auto 32px;
+  align-items: center;
+  column-gap: 0;              /* boşluk hücre dolgusundan gelir, yoksa
+                                 satır ayıracı sütun aralarında kesilir */
+}
+.line-host > .hint { grid-column: 1 / -1; color: var(--text-3); padding: 6px 2px; }
+
+.line-row { display: contents; }
+.line-row > * { padding-block: 7px; border-bottom: 1px solid var(--border); }
+.line-row > *:not(:last-child) { padding-inline-end: 10px; }
+.line-row:last-of-type > * { border-bottom: 0; }
+
+.line-name { font-size: 13px; font-weight: 600; color: var(--text); min-width: 0; }
+.line-sub { display: block; font-size: 11.5px; font-weight: 400; color: var(--text-3); }
+
+.line-qty {
+  height: 32px;
+  padding: 0 8px;
+  border-radius: var(--r-sm);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font: inherit;
+  font-size: 13px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  width: 100%;
+}
+.line-qty:focus { outline: none; border-color: var(--border-accent); }
+
+.line-amount { font-size: 13px; font-weight: 650; color: var(--text); white-space: nowrap; }
+
+.line-total {
+  grid-column: 1 / -1;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px;
+  margin-top: 8px; padding-top: 10px;
+  border-top: 1px solid var(--border-strong);
+  font-size: 13px;
+}
+.line-total span { color: var(--text-2); font-weight: 600; }
+.line-total b { font-size: 15px; font-weight: 700; }
+
+@media (max-width: 560px) {
+  .field-grid { grid-template-columns: minmax(0, 1fr); }
+  .field-grid > .field-half { grid-column: 1 / -1; }
+  .line-host { grid-template-columns: minmax(0, 1fr) 60px 30px; }
+  .line-amount { grid-column: 1 / -1; text-align: end; padding-block: 0 7px; }
+}
+
 /* ==========================================================================
    14. Sağdan sola (فارسی / دری)
    Düzenin çoğu mantıksal özelliklerle çalışır; burada yalnızca yön

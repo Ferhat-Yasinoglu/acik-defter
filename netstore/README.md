@@ -13,6 +13,10 @@ döner, rakamlar Fars rakamlarına (۰۱۲۳) geçer.
 > **Not:** Bu, mevcut bir uygulamanın yeniden tasarımı değil, sıfırdan kurulmuş
 > bir arayüz katmanıdır. Örnek veri seti `js/data.js` içindedir; kendi veri
 > kaynağınıza bağlarken yalnızca o dosyayı değiştirmeniz yeterlidir.
+>
+> Kayıt formları çalışır durumdadır ancak **oturum belleğinde** tutulur: sayfa
+> yenilenince örnek veri seti yeniden üretilir. Kalıcılık, gerçek bir arka uca
+> bağlanınca eklenecek.
 
 ## Dosya yapısı
 
@@ -25,6 +29,7 @@ döner, rakamlar Fars rakamlarına (۰۱۲۳) geçer.
 | `js/data.js` | Örnek veri + **tüm türetilmiş hesaplar** (KPI, durum, bakiye, seriler) |
 | `js/charts.js` | SVG grafik motoru: sparkline, çizgi/alan, yığılmış çubuk, yatay çubuk |
 | `js/invoice.js` | Fatura ve tahsilat fişi belgeleri (seçili dilde, basılabilir) |
+| `js/forms.js` | Kayıt formları, doğrulama, silme onayı, CSV dışa aktarma |
 | `js/app.js` | Yönlendirme (hash router), sayfa şablonları, etkileşimler |
 
 ## Çok dillilik
@@ -44,7 +49,8 @@ kataloglarda da böyle yazılır.
 | Yön | `fa` → `dir="rtl"`, düzen mantıksal özelliklerle (`margin-inline-start` vb.) döner |
 | Yazı tipi | RTL'de Vazirmatn, LTR'de Inter |
 | Rakamlar | `fa` → ۰۱۲۳۴۵۶۷۸۹, diğerlerinde Latin |
-| Tarih | Her dilde **GG/AA/YYYY** (tr'de `GG.AA.YYYY`), miladi takvim |
+| Tarih | Her dilde **GG/AA/YYYY** (tr'de `GG.AA.YYYY`) |
+| Takvim | Miladi veya **hicri-şemsi** — Ayarlar'dan seçilir |
 | Grafikler | Zaman ekseni RTL'de de soldan sağa akar (`.chart-wrap.ltr`) |
 | Telefon/vergi no | `ltr()` ile yön yalıtımı — RTL'de sırası bozulmaz |
 
@@ -52,10 +58,38 @@ Dil `localStorage` içinde `netstore-lang` anahtarıyla saklanır; ilk açılı�
 tarayıcı diline göre seçilir. Değiştirmek için üst bardaki `فا / TR / EN` düğmeleri
 veya Ayarlar sayfası.
 
-**Not — tarih biçimi:** ICU'nun `fa-AF` kalıbı miladi tarihi `AA/GG/YYYY` üretiyor
-ve bu Afganistan'da yanlış okunuyor; bu yüzden sıra `i18n.js` içindeki `fmtDate`
-fonksiyonunda elle kurulur. Hicri-şemsi takvim istenirse aynı fonksiyonda
-`calendar:'persian'` yeterlidir.
+**Takvim.** Ayarlar sayfasından miladi ile hicri-şemsi arasında geçiş yapılır;
+seçim `netstore-cal` anahtarıyla saklanır ve tüm ekranları, faturaları ve
+fişleri kapsar. Hicri-şemsi seçildiğinde grafik kovaları da şemsi aylara göre
+gruplanır — `fa-AF` yerel ayarı Afganistan ay adlarını verir (حمل، ثور، جوزا،
+سرطان، اسد…), İran'ınkileri değil.
+
+**Not — tarih sırası:** ICU'nun `fa-AF` kalıbı miladi tarihi `AA/GG/YYYY`
+üretiyor ve bu Afganistan'da yanlış okunuyor; bu yüzden sıra `i18n.js` içindeki
+`fmtDate` fonksiyonunda `formatToParts` ile elle kurulur.
+
+## Kayıt işlemleri
+
+Tüm formlar veri katmanına bağlıdır; kaydettiğinizde bağımlı alanlar da güncellenir.
+
+| İşlem | Yan etki |
+|---|---|
+| **Yeni satış** | Çok kalemli; stoktan düşer, peşin tahsilat işlenir, durum hesaplanır |
+| **Yeni alış** | Çok kalemli; stoğa ekler, tedarikçi bakiyesi oluşur |
+| **Stok girişi** | Seçili ürünün mevcut stoğuna ekler |
+| **Ürün ekle / düzenle / sil** | Stok kodu benzersizliği denetlenir |
+| **Müşteri ekle / düzenle / sil** | Silmede faturaları ve tahsilatları da kaldırır |
+| **Personel ekle / düzenle** | Aktif/pasif durumu KPI'ları etkiler |
+| **Tahsilat ekle** | Fatura ve müşteri bakiyesinden düşer |
+| **Dışa aktar** | Bulunulan sayfaya göre CSV üretir (UTF-8 BOM'lu, Excel uyumlu) |
+
+Doğrulamalar: zorunlu alan, sayı biçimi, sıfırdan büyük olma, yinelenen stok
+kodu, yetersiz stok, peşin tahsilatın toplamı aşması. Zararına satış engellenmez
+ama uyarı verilir. Silme işlemleri onay ister; borçlu müşteri silinirken açık
+bakiye tutarı gösterilir.
+
+Kalem listesi ortak bir ızgara üzerinde kurulur (`display: contents`), böylece
+miktar ve tutar sütunları satırlar arasında hizalı kalır.
 
 ## Fatura ve tahsilat fişi
 
@@ -124,3 +158,9 @@ tüm arayüz aynı kalır — sayfa şablonları yalnızca bu fonksiyonları ça
 13 sayfanın tamamı **3 dil × 4 ekran genişliği** (1440 / 820 / 390 / 360 px)
 kombinasyonunda yatay taşma, JS hatası ve çevrilmemiş metin olmadan
 doğrulanmıştır.
+
+Kayıt işlemleri ayrıca uçtan uca test edilmiştir (31 kontrol): satış oluşturma
+ve stok düşümü, yetersiz stokta engelleme, ürün ekle/düzenle/sil, yinelenen stok
+kodu reddi, stok girişi, müşteri ekleme ve bağlı kayıtlarla silme, alışta
+maliyet fiyatı ve stok artışı, personel işlemleri, CSV indirme, hicri-şemsi
+takvimin ekran–grafik–fatura genelinde uygulanması.

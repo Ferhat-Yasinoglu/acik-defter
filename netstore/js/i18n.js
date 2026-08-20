@@ -12,6 +12,7 @@ const LANGS = {
 };
 
 const LANG_KEY = 'netstore-lang';
+const CAL_KEY  = 'netstore-cal';
 
 const I18N = {
 
@@ -318,17 +319,7 @@ const I18N = {
   t_saved:         { tr:'{v} tahsilat kaydedildi.', en:'Payment of {v} recorded.', fa:'دریافتی {v} ثبت شد.' },
   t_settings:      { tr:'Ayarlar kaydedildi.', en:'Settings saved.',     fa:'تنظیمات ذخیره شد.' },
   t_danger:        { tr:'Tehlikeli işlem — onay adımı gerekiyor.', en:'Dangerous action — confirmation required.', fa:'عملیات خطرناک — نیاز به تأیید دارد.' },
-  t_not_wired:     { tr:'{n} henüz bağlanmadı.', en:'{n} is not wired up yet.', fa:'{n} هنوز متصل نشده است.' },
 
-  scr_new_sale:    { tr:'Yeni satış ekranı',   en:'New sale screen',     fa:'صفحهٔ فروش جدید' },
-  scr_new_invoice: { tr:'Fatura oluşturma ekranı', en:'Invoice creation screen', fa:'صفحهٔ ایجاد فاکتور' },
-  scr_new_product: { tr:'Yeni ürün formu',     en:'New product form',    fa:'فرم جنس جدید' },
-  scr_new_customer:{ tr:'Yeni müşteri formu',  en:'New customer form',   fa:'فرم مشتری جدید' },
-  scr_new_purchase:{ tr:'Yeni alış formu',     en:'New purchase form',   fa:'فرم خرید جدید' },
-  scr_new_staff:   { tr:'Personel ekleme formu', en:'Add staff form',    fa:'فرم افزودن کارمند' },
-  scr_stock_in:    { tr:'Stok giriş formu',    en:'Stock entry form',    fa:'فرم ورود موجودی' },
-  scr_edit_cust:   { tr:'Müşteri düzenleme formu', en:'Edit customer form', fa:'فرم ویرایش مشتری' },
-  scr_export:      { tr:'Dışa aktarma',        en:'Export',              fa:'خروجی گرفتن' },
 
   /* ---------------- boş durumlar ---------------- */
   e_no_record:     { tr:'Kayıt bulunamadı.',   en:'No records found.',   fa:'رکوردی یافت نشد.' },
@@ -379,6 +370,89 @@ const I18N = {
   role_sales:      { tr:'Satış Danışmanı',     en:'Sales Advisor',       fa:'مشاور فروش' },
   role_warehouse:  { tr:'Depo Sorumlusu',      en:'Warehouse Officer',   fa:'مسئول انبار' },
   role_accounting: { tr:'Muhasebe',            en:'Accounting',          fa:'حسابدار' },
+
+  /* ---------------- formlar ---------------- */
+  form_new_sale:   { tr:'Yeni Satış',           en:'New Sale',            fa:'فروش جدید' },
+  form_new_sale_s: { tr:'Kalem ekleyin, stok ve bakiye otomatik güncellenir', en:'Add line items; stock and balance update automatically', fa:'اقلام را اضافه کنید؛ موجودی و مانده خودکار به‌روز می‌شود' },
+  form_new_prod:   { tr:'Yeni Ürün',            en:'New Product',         fa:'جنس جدید' },
+  form_edit_prod:  { tr:'Ürünü Düzenle',        en:'Edit Product',        fa:'ویرایش جنس' },
+  form_new_cust:   { tr:'Yeni Müşteri',         en:'New Customer',        fa:'مشتری جدید' },
+  form_edit_cust:  { tr:'Müşteriyi Düzenle',    en:'Edit Customer',       fa:'ویرایش مشتری' },
+  form_new_purch:  { tr:'Yeni Alış',            en:'New Purchase',        fa:'خرید جدید' },
+  form_new_staff:  { tr:'Personel Ekle',        en:'Add Staff',           fa:'افزودن کارمند' },
+  form_edit_staff: { tr:'Personeli Düzenle',    en:'Edit Staff',          fa:'ویرایش کارمند' },
+  form_stock_in:   { tr:'Stok Girişi',          en:'Stock Entry',         fa:'ورود موجودی' },
+  form_stock_in_s: { tr:'Girilen miktar mevcut stoğa eklenir', en:'The amount is added to current stock', fa:'مقدار واردشده به موجودی فعلی افزوده می‌شود' },
+
+  fld_name:        { tr:'Ad Soyad',             en:'Full Name',           fa:'نام و تخلص' },
+  fld_prod_name:   { tr:'Ürün Adı',             en:'Product Name',        fa:'نام جنس' },
+  fld_sku:         { tr:'Stok Kodu',            en:'SKU',                 fa:'کد جنس' },
+  fld_category:    { tr:'Kategori',             en:'Category',            fa:'دسته' },
+  fld_buy:         { tr:'Alış Fiyatı ({c})',    en:'Cost Price ({c})',    fa:'قیمت خرید ({c})' },
+  fld_sell:        { tr:'Satış Fiyatı ({c})',   en:'Sale Price ({c})',    fa:'قیمت فروش ({c})' },
+  fld_stock:       { tr:'Başlangıç Stoğu',      en:'Opening Stock',       fa:'موجودی اولیه' },
+  fld_min:         { tr:'Minimum Stok',         en:'Minimum Stock',       fa:'حداقل موجودی' },
+  fld_supplier:    { tr:'Tedarikçi',            en:'Supplier',            fa:'تأمین‌کننده' },
+  fld_type:        { tr:'Müşteri Tipi',         en:'Customer Type',       fa:'نوع مشتری' },
+  fld_role:        { tr:'Görev',                en:'Role',                fa:'وظیفه' },
+  fld_start:       { tr:'İşe Başlama',          en:'Start Date',          fa:'تاریخ شروع کار' },
+  fld_active:      { tr:'Durum',                en:'Status',              fa:'وضعیت' },
+  fld_staff:       { tr:'Satış Danışmanı',      en:'Sales Rep',           fa:'مسئول فروش' },
+  fld_due_days:    { tr:'Vade (gün)',           en:'Payment Term (days)', fa:'مهلت پرداخت (روز)' },
+  fld_prepay:      { tr:'Peşin Tahsilat ({c})', en:'Upfront Payment ({c})', fa:'پرداخت نقدی ({c})' },
+  fld_prepay_h:    { tr:'0 bırakırsanız fatura “Ödeme Bekliyor” olur.', en:'Leave 0 and the invoice becomes “Awaiting Payment”.', fa:'اگر ۰ بماند، فاکتور «در انتظار پرداخت» می‌شود.' },
+  fld_quantity:    { tr:'Miktar',               en:'Quantity',            fa:'مقدار' },
+  fld_paid_amount: { tr:'Ödenen ({c})',         en:'Paid ({c})',          fa:'پرداخت‌شده ({c})' },
+
+  ln_items:        { tr:'Kalemler',             en:'Line Items',          fa:'اقلام' },
+  ln_add:          { tr:'Kalem Ekle',           en:'Add Item',            fa:'افزودن قلم' },
+  ln_remove:       { tr:'Kalemi çıkar',         en:'Remove item',         fa:'حذف قلم' },
+  ln_total:        { tr:'Toplam',               en:'Total',               fa:'مجموع' },
+  ln_stock_left:   { tr:'stokta {n}',           en:'{n} in stock',        fa:'{n} در موجودی' },
+
+  btn_save:        { tr:'Kaydet',               en:'Save',                fa:'ذخیره' },
+  btn_create:      { tr:'Oluştur',              en:'Create',              fa:'ایجاد' },
+  btn_confirm_del: { tr:'Evet, sil',            en:'Yes, delete',         fa:'بله، حذف کن' },
+
+  cf_title:        { tr:'Silme onayı',          en:'Confirm deletion',    fa:'تأیید حذف' },
+  cf_product:      { tr:'“{n}” ürünü silinecek. Bu işlem geri alınamaz.', en:'Product “{n}” will be deleted. This cannot be undone.', fa:'جنس «{n}» حذف می‌شود. این عمل قابل بازگشت نیست.' },
+  cf_customer:     { tr:'“{n}” müşterisi ve {s} faturası silinecek. Bu işlem geri alınamaz.', en:'Customer “{n}” and {s} invoices will be deleted. This cannot be undone.', fa:'مشتری «{n}» و {s} فاکتور آن حذف می‌شود. این عمل قابل بازگشت نیست.' },
+  cf_has_debt:     { tr:'Dikkat: bu müşterinin {v} açık bakiyesi var.', en:'Warning: this customer has an open balance of {v}.', fa:'هشدار: این مشتری {v} مانده باز دارد.' },
+
+  /* --- doğrulama --- */
+  v_required:      { tr:'“{f}” zorunlu.',        en:'“{f}” is required.',  fa:'«{f}» الزامی است.' },
+  v_number:        { tr:'“{f}” geçerli bir sayı olmalı.', en:'“{f}” must be a valid number.', fa:'«{f}» باید عدد معتبر باشد.' },
+  v_positive:      { tr:'“{f}” sıfırdan büyük olmalı.', en:'“{f}” must be greater than zero.', fa:'«{f}» باید بزرگ‌تر از صفر باشد.' },
+  v_sell_lt_buy:   { tr:'Satış fiyatı alış fiyatından düşük — zararına satış.', en:'Sale price is below cost — selling at a loss.', fa:'قیمت فروش کمتر از قیمت خرید است — فروش با ضرر.' },
+  v_no_items:      { tr:'En az bir kalem ekleyin.', en:'Add at least one line item.', fa:'حداقل یک قلم اضافه کنید.' },
+  v_stock_short:   { tr:'“{p}” için yeterli stok yok (mevcut {n}).', en:'Not enough stock for “{p}” (available {n}).', fa:'موجودی «{p}» کافی نیست (موجود {n}).' },
+  v_prepay_max:    { tr:'Peşin tahsilat toplamı aşamaz.', en:'Upfront payment cannot exceed the total.', fa:'پرداخت نقدی نمی‌تواند از مجموع بیشتر باشد.' },
+  v_sku_dup:       { tr:'“{n}” stok kodu zaten kullanılıyor.', en:'SKU “{n}” is already in use.', fa:'کد جنس «{n}» قبلاً استفاده شده است.' },
+
+  /* --- başarı bildirimleri --- */
+  ok_sale:         { tr:'{no} numaralı satış oluşturuldu.', en:'Sale {no} created.', fa:'فروش {no} ایجاد شد.' },
+  ok_product:      { tr:'Ürün kaydedildi.',     en:'Product saved.',      fa:'جنس ذخیره شد.' },
+  ok_customer:     { tr:'Müşteri kaydedildi.',  en:'Customer saved.',     fa:'مشتری ذخیره شد.' },
+  ok_purchase:     { tr:'{no} numaralı alış kaydedildi.', en:'Purchase {no} recorded.', fa:'خرید {no} ثبت شد.' },
+  ok_staff:        { tr:'Personel kaydedildi.', en:'Staff member saved.', fa:'کارمند ذخیره شد.' },
+  ok_stock_in:     { tr:'{p} için {n} adet giriş yapıldı.', en:'{n} units added to {p}.', fa:'{n} عدد به {p} افزوده شد.' },
+  ok_deleted:      { tr:'Silindi.',             en:'Deleted.',            fa:'حذف شد.' },
+  ok_export:       { tr:'{n} satır dışa aktarıldı.', en:'{n} rows exported.', fa:'{n} سطر خروجی گرفته شد.' },
+
+  cf_reset:        { tr:'Tüm veriler örnek veri setine döndürülecek.', en:'All data will be reset to the sample dataset.', fa:'همهٔ داده‌ها به مجموعهٔ نمونه بازگردانده می‌شود.' },
+  cf_reset_note:   { tr:'Bu oturumda eklediğiniz kayıtlar kaybolur.', en:'Records you added in this session will be lost.', fa:'رکوردهایی که در این نشست افزوده‌اید از بین می‌رود.' },
+
+  /* --- takvim ayarı --- */
+  s_calendar:      { tr:'Takvim',               en:'Calendar',            fa:'تقویم' },
+  s_cal_greg:      { tr:'Miladi',               en:'Gregorian',           fa:'میلادی' },
+  s_cal_persian:   { tr:'Hicri-şemsi',          en:'Solar Hijri',         fa:'هجری شمسی' },
+  s_cal_hint:      { tr:'Seçim tüm ekranları, faturaları ve fişleri kapsar.', en:'Applies to all screens, invoices and receipts.', fa:'روی همهٔ صفحات، فاکتورها و رسیدها اعمال می‌شود.' },
+
+  /* --- dışa aktarma --- */
+  exp_products:    { tr:'urunler',              en:'products',            fa:'products' },
+  exp_sales:       { tr:'satislar',             en:'sales',               fa:'sales' },
+  exp_customers:   { tr:'musteriler',           en:'customers',           fa:'customers' },
+  exp_debt:        { tr:'borc-alacak',          en:'receivables',         fa:'receivables' },
 
   /* ---------------- fatura / fiş ---------------- */
   inv_title:       { tr:'FATURA',              en:'INVOICE',             fa:'فاکتور' },
@@ -437,10 +511,26 @@ function t(key, vars) {
   return s;
 }
 
+/* --- takvim tercihi: miladi (gregory) veya hicri-şemsi (persian) --- */
+let CAL = (function () {
+  const saved = localStorage.getItem(CAL_KEY);
+  return saved === 'persian' ? 'persian' : 'gregory';
+})();
+
+function calendar() { return CAL; }
+
+function setCalendar(c) {
+  CAL = (c === 'persian') ? 'persian' : 'gregory';
+  localStorage.setItem(CAL_KEY, CAL);
+  _dtfCache = {};
+}
+
 function setLang(code) {
   if (!LANGS[code]) return;
   LANG = code;
   localStorage.setItem(LANG_KEY, code);
+  _fmtCache = {};
+  _dtfCache = {};
   applyLangToDocument();
 }
 
@@ -454,7 +544,7 @@ function applyLangToDocument() {
    Sayı, para ve tarih — hepsi seçili dile göre
    -------------------------------------------------------------------------- */
 
-const _fmtCache = {};
+let _fmtCache = {};
 function _nf(opts) {
   const key = LANG + JSON.stringify(opts);
   if (!_fmtCache[key]) _fmtCache[key] = new Intl.NumberFormat(LANGS[LANG].locale, opts);
@@ -501,28 +591,55 @@ function pctPlain(v, digits) {
  * sıralama biçimi dile göre değişir. Hicri-şemsi istenirse bu fonksiyonda
  * calendar:'persian' yeterlidir.
  */
+let _dtfCache = {};
+function _dtf(opts, locale) {
+  const key = (locale || LANGS[LANG].locale) + CAL + JSON.stringify(opts);
+  if (!_dtfCache[key]) {
+    _dtfCache[key] = new Intl.DateTimeFormat(locale || LANGS[LANG].locale,
+      Object.assign({ calendar: CAL }, opts));
+  }
+  return _dtfCache[key];
+}
+function _part(parts, type) {
+  const p = parts.find((x) => x.type === type);
+  return p ? p.value : '';
+}
+
+/**
+ * Tarih. Sıra elle kurulur — ICU'nun fa-AF kalıbı AA/GG/YYYY üretiyor ve bu
+ * Afganistan'da yanlış okunur. Her dilde GG/AA/YYYY (tr'de nokta ile),
+ * rakamlar ve takvim seçili tercihe göre.
+ */
 function fmtDate(d) {
   const x = d instanceof Date ? d : new Date(d);
-  /* Sıra elle kurulur: ICU'nun fa-AF kalıbı AA/GG/YYYY üretiyor ve bu
-     Afganistan'da yanlış okunur. Her dilde GG/AA/YYYY, rakamlar yerel. */
-  const p2 = (n) => _nf({ minimumIntegerDigits: 2, useGrouping: false }).format(n);
+  const parts = _dtf({ day: '2-digit', month: '2-digit', year: 'numeric' }).formatToParts(x);
   const sep = LANG === 'tr' ? '.' : '/';
-  return p2(x.getDate()) + sep + p2(x.getMonth() + 1) + sep +
-         _nf({ useGrouping: false }).format(x.getFullYear());
+  return _part(parts, 'day') + sep + _part(parts, 'month') + sep + _part(parts, 'year');
 }
 
-/** Uzun tarih — fatura başlıklarında. */
+/** Uzun tarih. formatToParts ile kurulur: hicri-şemsi seçiliyken bazı
+    yerel ayarlar başa "AP" çağ ekini koyuyor, ona yer yok. */
 function fmtDateLong(d) {
   const x = d instanceof Date ? d : new Date(d);
-  return new Intl.DateTimeFormat(LANGS[LANG].locale, {
-    day: 'numeric', month: 'long', year: 'numeric', calendar: 'gregory'
-  }).format(x);
+  const p = _dtf({ day: 'numeric', month: 'long', year: 'numeric' }).formatToParts(x);
+  return _part(p, 'day') + ' ' + _part(p, 'month') + ' ' + _part(p, 'year');
 }
 
-/** Grafik ekseni için kısa ay adı. */
-function monthShort(monthIndex) {
-  return new Intl.DateTimeFormat(LANGS[LANG].locale, { month: 'short', calendar: 'gregory' })
-    .format(new Date(2026, monthIndex, 1));
+/** Grafik ekseni için kısa ay adı — seçili takvimde. */
+function monthShort(d) {
+  const x = d instanceof Date ? d : new Date(2026, d, 1);
+  return _dtf({ month: 'short' }).format(x);
+}
+
+/** Seçili takvimde yıl-ay anahtarı (gruplama için, dilden bağımsız). */
+function monthKey(d) {
+  const parts = _dtf({ year: 'numeric', month: '2-digit' }, 'en-US-u-nu-latn').formatToParts(d);
+  return _part(parts, 'year') + '-' + _part(parts, 'month');
+}
+
+/** Seçili takvimde ayın yılı — tablo etiketlerinde. */
+function calYear(d) {
+  return _part(_dtf({ year: 'numeric' }).formatToParts(d), 'year');
 }
 
 /* --------------------------------------------------------------------------
