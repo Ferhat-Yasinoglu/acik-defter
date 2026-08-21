@@ -37,7 +37,7 @@ const FIREBASE = {
    uygulamanın çalıştığından emin olun; sırası ters olursa erişim kesilir.
    -------------------------------------------------------------------------- */
 
-const RECAPTCHA_SITE_KEY = '';
+const RECAPTCHA_SITE_KEY = '6LcSDpItAAAAAGrl2DoyssL10wDSPaWOd_BK6JLQ';
 
 /* --------------------------------------------------------------------------
    Kim girebilir?
