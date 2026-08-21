@@ -230,7 +230,7 @@ yazın → *Register app*. Ekranda çıkan `firebaseConfig` bloğundaki değerle
 
 **4. Alan adını izin listesine ekle** — *Authentication → Settings →
 Authorized domains* → *Add domain* → uygulamanın adresi
-(örn. `y-ferhat.github.io`). Bu yapılmazsa giriş `unauthorized-domain`
+(örn. `ferhat-yasinoglu.github.io`). Bu yapılmazsa giriş `unauthorized-domain`
 hatası verir.
 
 **5. Veritabanını aç** — *Build → Firestore Database → Create database* →
