@@ -1061,12 +1061,14 @@ function cloudCard() {
         '<span class="alert-text">' + esc(t('cl_local_sub')) + '</span></div></div>'
     : '<div class="alert alert-success" style="margin-bottom:14px">' + icon('check') +
         '<div><strong>' + esc(t('cl_signed_as', { n: ci.name })) + '</strong>' +
-        '<span class="alert-text">' + esc(t('cl_peers', { n: num(ci.peers) })) + '</span></div></div>' +
+        '<span class="alert-text">' + esc(ci.email) + '</span></div></div>' +
       '<div class="action-row">' +
         '<button class="btn btn-ghost" data-act="sign-out">' +
           icon('logout') + esc(t('au_signout')) + '</button>' +
       '</div>' +
-      '<p class="hint" style="margin-top:12px">' + esc(t('cl_synced')) + '</p>';
+      '<p class="hint" style="margin-top:12px">' + esc(t('cl_synced')) + '</p>' +
+      '<p class="hint">' + icon('shield') +
+        esc(t(ci.guarded ? 'cl_guarded' : 'cl_unguarded')) + '</p>';
 
   return '<section class="card"><div class="card-head"><div><h3>' + esc(t('h_cloud')) + '</h3>' +
     '<p class="sub">' + esc(t('h_cloud_sub')) + '</p></div></div>' +

@@ -1,14 +1,19 @@
 /* ==========================================================================
-   NetStore — Firestore güvenlik kuralları
+   NetStore — Firestore güvenlik kuralları (şablon)
 
-   Firebase konsolunda: Firestore Database > Rules > buraya yapıştır > Publish
+   Firebase konsolunda: Firestore Database > Rules > yapıştır > Publish
 
-   Aşağıdaki e-posta listesi güvenliğin GERÇEK sınırıdır. js/firebase-config.js
-   içindeki liste yalnızca arayüz içindir (kullanıcıya “erişimin yok” demek
-   için); onu değiştiren biri veriye yine ulaşamaz, çünkü sunucu bu kurallara
-   bakar.
+   Bu dosya bir ŞABLONDUR. Yürürlükteki gerçek kurallar Firebase konsolunda
+   durur ve izinli hesapların adreslerini içerir. Bu depo herkese açık
+   olduğu için adresler buraya yazılmaz: kimin girebildiğini ilan etmek,
+   saldırgana hangi hesapları hedefleyeceğini söylemek olurdu.
 
-   Liste doldurulmuştur: bu iki hesap dışında hiç kimse veriye erişemez.
+   Hesap eklemek / çıkarmak: konsoldaki Rules metnini düzenleyip Publish
+   deyin. Uygulama tarafında yapılacak bir şey yoktur — istemci artık kendi
+   listesini tutmaz, kararı sunucudan gelen yanıta bakarak verir.
+
+   Yetkisiz bir hesap girdiğinde Firestore “permission-denied” döner ve
+   uygulama “bu hesabın erişimi yok” ekranını gösterir.
    ========================================================================== */
 
 rules_version = '2';
@@ -20,13 +25,14 @@ service cloud.firestore {
       return request.auth != null
         && request.auth.token.email_verified == true
         && request.auth.token.email.lower() in [
-             'farhadyaqoobi.kunduz@gmail.com',
-             'muhammedyakubi2000@gmail.com'
+             /* Gerçek adresler yalnızca konsoldaki kopyada — küçük harfle. */
+             'birinci@gmail.com',
+             'ikinci@gmail.com'
            ];
     }
 
     /* Ortak defter: ürünler, müşteriler, personel, satışlar, tahsilatlar,
-       alışlar. İki hesap da tam yetkili. */
+       alışlar. İzinli hesaplar tam yetkilidir. */
     match /shops/{shopId}/{belge=**} {
       allow read, write: if izinli();
     }

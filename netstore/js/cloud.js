@@ -52,6 +52,20 @@ function cloudStart(cb) {
   CLOUD.on = true;
   const app = FB.initializeApp(FIREBASE);
 
+  /* App Check — anahtar girilmişse. Firestore'dan ÖNCE kurulmalı, yoksa
+     ilk istekler belirteçsiz gider. Anahtar yoksa sessizce atlanır. */
+  if (typeof RECAPTCHA_SITE_KEY === 'string' && RECAPTCHA_SITE_KEY) {
+    try {
+      FB.initializeAppCheck(app, {
+        provider: new FB.ReCaptchaV3Provider(RECAPTCHA_SITE_KEY),
+        isTokenAutoRefreshEnabled: true
+      });
+    } catch (e) {
+      /* Yanlış anahtar uygulamayı kilitlemesin; konsolda Enforce kapalıysa
+         istekler yine geçer, açıksa zaten kural katmanı uyarır. */
+    }
+  }
+
   CLOUD.auth = FB.getAuth(app);
   CLOUD.db = FB.initializeFirestore(app, {
     /* Çevrimdışı önbellek — birden çok sekme açıkken de tutarlı çalışır. */
@@ -69,22 +83,12 @@ function cloudStart(cb) {
 
     if (!user) { CLOUD.user = null; cb.onSignedOut(); return; }
 
-    if (!emailAllowed(user.email)) {
-      CLOUD.user = user;
-      cb.onDenied(user);
-      return;
-    }
-
+    /* Bu hesap girebilir mi? Kararı istemci vermez — bağlanmayı deneriz,
+       yetkisizse Firestore “permission-denied” döner (bkz. cloudSubscribe).
+       Tek doğru liste sunucudaki kurallardır. */
     CLOUD.user = user;
     cloudSubscribe(cb);
   });
-}
-
-/** E-posta izin listesinde mi? Liste boşsa hiç kimse giremez. */
-function emailAllowed(email) {
-  if (!email) return false;
-  const e = String(email).trim().toLowerCase();
-  return ALLOWED.some(function (a) { return String(a).trim().toLowerCase() === e; });
 }
 
 /**
@@ -115,6 +119,7 @@ function colPath(key) {
 function cloudSubscribe(cb) {
   const keys = Object.keys(collections());
   let firstSeen = 0;
+  let closed = false;      /* altı koleksiyon da hata verir; bir kez tepki ver */
 
   /* Altı koleksiyon da art arda gelir; her biri için ayrı çizim yapmayalım. */
   let pending = null;
@@ -142,7 +147,20 @@ function cloudSubscribe(cb) {
         scheduleRender();
       },
       function (err) {
+        if (closed) return;
+        closed = true;
         CLOUD.error = err && err.code ? err.code : 'unknown';
+
+        /* Kurallar bu hesabı kabul etmiyor: dinleyicileri kapat, belleği
+           boşalt ve “erişimin yok” ekranını göster. Yarım gelmiş kayıt
+           kalmasın diye cloudStop() şart. */
+        if (CLOUD.error === 'permission-denied') {
+          const who = CLOUD.user;
+          cloudStop();
+          CLOUD.user = who;
+          cb.onDenied(who || {});
+          return;
+        }
         cb.onError(CLOUD.error);
       }
     );
@@ -267,6 +285,6 @@ function cloudInfo() {
     photo: CLOUD.user ? CLOUD.user.photoURL : '',
     ready: CLOUD.ready,
     error: CLOUD.error,
-    peers: ALLOWED.length
+    guarded: !!(typeof RECAPTCHA_SITE_KEY === 'string' && RECAPTCHA_SITE_KEY)
   };
 }

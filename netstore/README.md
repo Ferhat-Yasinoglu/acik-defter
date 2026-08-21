@@ -35,7 +35,7 @@ Başla** ile temizleyip kendi kayıtlarınızla çalışabilirsiniz.
 | `js/cloud.js` | Ortak defter: Firestore eşitlemesi, fark bulup yazma, oturum durumu |
 | `js/auth.js` | Google giriş ekranı (giriş yok / yetkisiz / yükleniyor) |
 | `vendor/firebase.js` | Firebase SDK'nın yerel kopyası (npm'den paketlendi) |
-| `firestore.rules` | Sunucu tarafı güvenlik: veriye yalnızca izinli e-postalar erişir |
+| `firestore.rules` | Sunucu kurallarının şablonu; gerçek liste Firebase konsolunda durur |
 | `js/search.js` | Global arama: ürün, müşteri ve fatura kayıtlarında |
 | `js/icons.js` | Satır içi SVG ikon seti (CDN bağımlılığı yok, çevrimdışı çalışır) |
 | `js/data.js` | Örnek veri + **tüm türetilmiş hesaplar** (KPI, durum, bakiye, seriler) |
@@ -241,15 +241,26 @@ yakınıdır → *Enable*.
 `firestore.rules` dosyasının içeriğini yapıştırın, **e-posta listesini kendi
 hesaplarınızla değiştirin** → *Publish*.
 
-**7. E-postaları uygulamaya da yazın** — `js/firebase-config.js` içindeki
-`ALLOWED` dizisine aynı iki adresi yazın, sonra değişiklikleri gönderin.
+**7. (İsteğe bağlı) App Check'i açın** — *App Check → Apps → web
+uygulamasını seç → reCAPTCHA v3*. Konsolun verdiği **site key**'i
+`js/firebase-config.js` içindeki `RECAPTCHA_SITE_KEY` alanına yazın.
+Konsolda **Enforce**'u ancak anahtar girildikten ve uygulamanın çalıştığı
+görüldükten sonra açın — sırası ters olursa erişim kesilir.
 
-### İki listeyi de doldurmak neden gerekli?
+### Kim girebilir listesi yalnızca sunucuda
 
-| Liste | Nerede | Ne işe yarar |
-|---|---|---|
-| `firestore.rules` | Sunucuda | **Gerçek güvenlik.** Listede olmayan hesap veriyi hiçbir şekilde okuyamaz. |
-| `ALLOWED` | Uygulamada | Sadece arayüz: yetkisiz hesaba boş ekran yerine “bu hesabın erişimi yok” demek için. |
+İzinli hesaplar **sadece** Firestore kurallarında tutulur; uygulama kodunda
+böyle bir liste yoktur. Yetkisiz bir hesapla girildiğinde Firestore
+`permission-denied` döner ve uygulama “bu hesabın erişimi yok” ekranını
+gösterir.
+
+| Nerede | Ne işe yarar |
+|---|---|
+| Firebase konsolu → Firestore → Rules | **Tek ve gerçek liste.** Buradaki karar bağlayıcıdır. |
+| `netstore/firestore.rules` | Yalnızca şablon. Depo herkese açık olduğu için gerçek adresler yazılmaz. |
+
+Hesap eklemek veya çıkarmak için konsoldaki Rules metnini düzenleyip
+*Publish* demek yeterlidir; uygulamada değişiklik gerekmez.
 
 `js/firebase-config.js` içindeki `apiKey` **gizli bir anahtar değildir** — her
 web uygulamasında açıkta durur, Google da böyle tasarlamıştır. Güvenliği
