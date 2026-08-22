@@ -19,6 +19,7 @@ const NAV = [
     { id:'raporlar',    key:'nav_reports',  icon:'chart' } ] },
   { group:'grp_management', items:[
     { id:'personel', key:'nav_staff',    icon:'staff' },
+    { id:'indir',    key:'nav_download', icon:'download' },
     { id:'ayarlar',  key:'nav_settings', icon:'settings' } ] }
 ];
 
@@ -35,6 +36,7 @@ const PAGE_META = {
   borc:       { title:'nav_debt',      crumb:'grp_finance' },
   raporlar:   { title:'nav_reports',   crumb:'grp_finance' },
   personel:   { title:'nav_staff',     crumb:'grp_management' },
+  indir:      { title:'nav_download',  crumb:'grp_management' },
   ayarlar:    { title:'nav_settings',  crumb:'grp_management' }
 };
 
@@ -956,6 +958,65 @@ PAGES.personel = function () {
 };
 
 /* --- Ayarlar --- */
+/* ==========================================================================
+   İndir — kurulum dosyaları
+
+   Dosyalar GitHub Releases'ta durur; bağlantılar her zaman en son sürümü
+   gösterir. İlk sürüm yayınlanana kadar 404 döneceği için sayfa bunu
+   açıkça yazıyor ve tarayıcıdan kurulum yolunu öneriyor.
+   ========================================================================== */
+
+const RELEASE_BASE = 'https://github.com/Ferhat-Yasinoglu/acik-defter/releases/latest/download/';
+
+const DOWNLOADS = [
+  { icon:'smartphone', name:'dl_android', sub:'dl_android_sub', file:'NetStore.apk' },
+  { icon:'monitor',    name:'dl_windows', sub:'dl_windows_sub', file:'NetStore-Windows.exe' },
+  { icon:'monitor',    name:'dl_mac',     sub:'dl_mac_sub',     file:'NetStore-macOS.dmg' },
+  { icon:'monitor',    name:'dl_linux',   sub:'dl_linux_sub',   file:'NetStore-Linux.AppImage' }
+];
+
+PAGES.indir = function () {
+  const rows = DOWNLOADS.map(function (d) {
+    return '<div class="dl-row">' +
+      '<span class="dl-icon">' + icon(d.icon) + '</span>' +
+      '<div class="dl-text"><div class="dl-name">' + esc(t(d.name)) + '</div>' +
+      '<div class="dl-sub">' + esc(t(d.sub)) + '</div></div>' +
+      '<a class="btn btn-primary dl-btn" href="' + RELEASE_BASE + d.file + '">' +
+        icon('download') + esc(t('dl_get')) + '</a>' +
+    '</div>';
+  }).join('');
+
+  return {
+    html:
+      '<div class="page-head"><div><h2>' + esc(t('nav_download')) + '</h2>' +
+      '<p class="sub">' + esc(t('p_download_sub')) + '</p></div></div>' +
+
+      '<div class="grid grid-2">' +
+        '<section class="card"><div class="card-body" style="padding-top:6px">' +
+          rows +
+        '</div></section>' +
+
+        '<div class="grid" style="gap:16px;align-content:start">' +
+          '<section class="card"><div class="card-head"><div><h3>' + esc(t('dl_iphone')) + '</h3></div></div>' +
+          '<div class="card-body"><p class="hint" style="margin:0">' +
+            esc(t('dl_iphone_sub')) + '</p></div></section>' +
+
+          '<section class="card"><div class="card-body">' +
+            '<div class="alert alert-info" style="margin:0">' + icon('info') +
+            '<div><strong>' + esc(t('dl_note_head')) + '</strong>' +
+            '<span class="alert-text">' + esc(t('dl_note')) + '</span></div></div>' +
+          '</div></section>' +
+
+          '<section class="card"><div class="card-body">' +
+            '<div class="alert alert-warning" style="margin:0">' + icon('alert') +
+            '<div><strong>' + esc(t('dl_soon')) + '</strong>' +
+            '<span class="alert-text">' + esc(t('dl_soon_sub')) + '</span></div></div>' +
+          '</div></section>' +
+        '</div>' +
+      '</div>'
+  };
+};
+
 PAGES.ayarlar = function () {
   return {
     html:

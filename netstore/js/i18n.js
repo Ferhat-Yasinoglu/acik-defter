@@ -503,6 +503,25 @@ const I18N = {
   cl_local_head:   { tr:'Şu an yalnız bu cihazda', en:'Currently on this device only', fa:'فعلاً فقط روی همین دستگاه' },
   cl_local_sub:    { tr:'Ortak kullanım için js/firebase-config.js dosyasını doldurun; kurulum README’de anlatılıyor.', en:'Fill in js/firebase-config.js to share; setup is described in the README.', fa:'برای استفادهٔ مشترک js/firebase-config.js را پر کنید؛ راهنما در README است.' },
 
+  /* ---------------- indirme sayfası ---------------- */
+  nav_download:    { tr:'İndir',                 en:'Download',            fa:'دانلود' },
+  p_download_sub:  { tr:'Uygulamayı cihazınıza kurun', en:'Install the app on your device', fa:'برنامه را روی دستگاه خود نصب کنید' },
+  dl_android:      { tr:'Android',               en:'Android',             fa:'اندروید' },
+  dl_android_sub:  { tr:'Kurulum dosyası (.apk) — Play Store gerekmez', en:'Installer file (.apk) — no Play Store needed', fa:'فایل نصب (.apk) — بدون نیاز به Play Store' },
+  dl_windows:      { tr:'Windows',               en:'Windows',             fa:'ویندوز' },
+  dl_windows_sub:  { tr:'Masaüstü kurulumu (.exe)', en:'Desktop installer (.exe)', fa:'نصب دسکتاپ (.exe)' },
+  dl_mac:          { tr:'macOS',                 en:'macOS',               fa:'مک' },
+  dl_mac_sub:      { tr:'Masaüstü kurulumu (.dmg)', en:'Desktop installer (.dmg)', fa:'نصب دسکتاپ (.dmg)' },
+  dl_linux:        { tr:'Linux',                 en:'Linux',               fa:'لینوکس' },
+  dl_linux_sub:    { tr:'Taşınabilir uygulama (.AppImage)', en:'Portable app (.AppImage)', fa:'برنامهٔ قابل حمل (.AppImage)' },
+  dl_get:          { tr:'İndir',                 en:'Download',            fa:'دانلود' },
+  dl_iphone:       { tr:'iPhone / iPad',         en:'iPhone / iPad',       fa:'آیفون / آیپد' },
+  dl_iphone_sub:   { tr:'Safari’de açın → Paylaş → “Ana Ekrana Ekle”. Kurulum dosyası gerekmez; uygulama simgeden tam ekran açılır ve internetsiz çalışır.', en:'Open in Safari → Share → “Add to Home Screen”. No installer needed; it opens full screen from the icon and works offline.', fa:'در سافاری باز کنید ← اشتراک‌گذاری ← «افزودن به صفحهٔ اصلی». نیازی به فایل نصب نیست؛ از آیکن تمام‌صفحه باز می‌شود و بدون انترنت کار می‌کند.' },
+  dl_note_head:    { tr:'Hangisini kurmalıyım?', en:'Which one should I install?', fa:'کدام را نصب کنم؟' },
+  dl_note:         { tr:'Zaten tarayıcıdan “Telefona Kur” ile kurduysanız gerek yok — aynı uygulama. Kurulum dosyaları, tarayıcı olmadan kurmak ya da başkasına dosya olarak vermek isteyenler için.', en:'If you already installed it from the browser with “Install App”, you do not need these — it is the same app. The installers are for installing without a browser or sharing the app as a file.', fa:'اگر قبلاً از مرورگر با «نصب روی موبایل» نصب کرده‌اید، نیازی نیست — همان برنامه است. فایل‌های نصب برای نصب بدون مرورگر یا دادن برنامه به‌صورت فایل است.' },
+  dl_soon:         { tr:'Henüz yayınlanmadı',    en:'Not published yet',   fa:'هنوز منتشر نشده' },
+  dl_soon_sub:     { tr:'Kurulum dosyaları ilk sürüm yayınlandığında burada belirir. O zamana kadar tarayıcıdan “Telefona Kur” yolunu kullanın.', en:'Installers appear here once the first release is published. Until then use “Install App” from the browser.', fa:'فایل‌های نصب پس از انتشار نخستین نسخه اینجا ظاهر می‌شوند. تا آن زمان از «نصب روی موبایل» در مرورگر استفاده کنید.' },
+
   /* ---------------- telefona kurulum (PWA) ---------------- */
   h_app:           { tr:'Uygulama',              en:'App',                 fa:'اپلیکیشن' },
   h_app_sub:       { tr:'Telefona kur, internetsiz kullan', en:'Install on your phone, use offline', fa:'روی موبایل نصب کنید، بدون انترنت کار می‌کند' },
