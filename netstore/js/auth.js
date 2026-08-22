@@ -60,7 +60,12 @@ function authHTML(state, o) {
   return '<div class="auth-card">' + brand +
     '<p class="auth-lead">' + esc(t('au_sub')) + '</p>' +
     (o.failed ? '<div class="alert alert-warning">' + icon('alert') +
-      '<div><strong>' + esc(t('au_failed')) + '</strong></div></div>' : '') +
+      '<div><strong>' + esc(t('au_failed')) + '</strong>' +
+      /* Firebase'in döndürdüğü kod. Teşhis için şart: telefonda giriş
+         neden başarısız oldu, sebebini bilmeden anlaşılmıyor. ltr sınıfı
+         kodun RTL'de ters okunmasını engelliyor. */
+      (o.code ? '<span class="alert-text ltr">' + esc(o.code) + '</span>' : '') +
+      '</div></div>' : '') +
     '<button class="btn btn-primary auth-btn" data-act="auth-in">' +
       googleGlyph() + esc(t('au_google')) + '</button>' +
     '<p class="auth-note">' + esc(t('au_offline_note')) + '</p>' +
@@ -95,7 +100,10 @@ function authSignIn() {
     })
     .catch(function () {
       AUTH_BUSY = false;
-      showAuth('signed-out', { failed: true });
+      showAuth('signed-out', {
+        failed: true,
+        code: typeof authErrorCode === 'function' ? authErrorCode() : ''
+      });
     });
 }
 

@@ -25,6 +25,10 @@ let CLOUD = {
   error: ''
 };
 
+/* Son giriş hatasının kodu. Ekranda gösterilir: telefonda giriş
+   başarısız olduğunda sebebini bilmeden teşhis koymak imkânsız. */
+let LAST_AUTH_ERROR = '';
+
 /* Son eşitlenen hâlin parmak izi: koleksiyon -> Map(id -> imza).
    Yazarken yalnızca değişen kayıtları göndermek için kullanılır. */
 let SHADOW = {};
@@ -75,8 +79,12 @@ function cloudStart(cb) {
   /* Oturum telefonda kalsın; her açılışta yeniden giriş istenmesin. */
   FB.setPersistence(CLOUD.auth, FB.browserLocalPersistence).catch(function () {});
 
-  /* Açılır pencere engellenmişse yönlendirmeyle giriş yapılmış olabilir. */
-  FB.getRedirectResult(CLOUD.auth).catch(function () {});
+  /* Açılır pencere engellenmişse yönlendirmeyle giriş yapılmış olabilir.
+     Yönlendirme dönüşünde hata varsa sessizce yutmayalım — kullanıcı
+     "başarısız" ekranını görüp sebebini bilemez. */
+  FB.getRedirectResult(CLOUD.auth).catch(function (err) {
+    LAST_AUTH_ERROR = (err && err.code) || 'redirect-result-failed';
+  });
 
   FB.onAuthStateChanged(CLOUD.auth, function (user) {
     cloudStop();
@@ -260,15 +268,28 @@ function cloudSignIn() {
   /* Hesap seçtir: iki kişi aynı telefonu kullanabilir. */
   provider.setCustomParameters({ prompt: 'select_account' });
 
+  LAST_AUTH_ERROR = '';
+
   return FB.signInWithPopup(CLOUD.auth, provider).catch(function (err) {
-    const code = err && err.code ? err.code : '';
-    if (/popup-blocked|popup-closed|operation-not-supported|cancelled-popup/.test(code)) {
-      if (/popup-closed|cancelled-popup/.test(code)) return null;   /* kullanıcı vazgeçti */
-      return FB.signInWithRedirect(CLOUD.auth, provider);
-    }
-    throw err;
+    const code = (err && err.code) || 'unknown';
+
+    /* Kullanıcı pencereyi kendi kapattıysa yeniden denemeye gerek yok. */
+    if (/popup-closed|cancelled-popup|user-cancelled/.test(code)) return null;
+
+    /* Geri kalan her durumda yönlendirmeyle dene. Telefon tarayıcıları
+       açılır pencereyi ve üçüncü taraf çerezleri sık engelliyor; hangi
+       kodla reddettikleri tarayıcıdan tarayıcıya değişiyor, o yüzden
+       kod listesine güvenmiyoruz. */
+    LAST_AUTH_ERROR = code;
+    return FB.signInWithRedirect(CLOUD.auth, provider).catch(function (e2) {
+      LAST_AUTH_ERROR = code + ' → ' + ((e2 && e2.code) || 'redirect-failed');
+      throw e2;
+    });
   });
 }
+
+/** Son giriş hatası — giriş ekranında gösterilir. */
+function authErrorCode() { return LAST_AUTH_ERROR; }
 
 function cloudSignOut() {
   cloudStop();
