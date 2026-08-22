@@ -134,8 +134,18 @@ jobs:
           path: ${{ runner.temp }}/signing/
           retention-days: 90
 
-      - name: Surume ekle
-        if: startsWith(github.ref, 'refs/tags/')
+      # Etiketi de surumu de is akisi olusturur; elle etiket gondermek
+      # gerekmiyor. Etiketle tetiklenirse o etiket adi kullanilir.
+      - name: Surum yayinla
         uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ github.ref_type == 'tag' && github.ref_name || format('v1.0.{0}', github.run_number) }}
+          name: NetStore ${{ github.ref_type == 'tag' && github.ref_name || format('v1.0.{0}', github.run_number) }}
+          body: |
+            Android kurulum dosyasi. Telefonda indirip acmak yeterli;
+            Android "bilinmeyen kaynak" izni isterse bir kez onaylaman gerekir.
+
+            Ayni uygulama bilgisayarda da calisir: uygulamanin **Indir**
+            sayfasindaki **Kur** dugmesi Chrome/Edge ile masaustune kurar.
           files: NetStore.apk
+          make_latest: true
