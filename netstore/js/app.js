@@ -1028,9 +1028,9 @@ PAGES.indir = function () {
           '</div></section>' +
 
           '<section class="card"><div class="card-body">' +
-            '<div class="alert alert-warning" style="margin:0">' + icon('alert') +
-            '<div><strong>' + esc(t('dl_soon')) + '</strong>' +
-            '<span class="alert-text">' + esc(t('dl_soon_sub')) + '</span></div></div>' +
+            '<div class="alert alert-info" style="margin:0">' + icon('info') +
+            '<div><strong>' + esc(t('dl_apk_head')) + '</strong>' +
+            '<span class="alert-text">' + esc(t('dl_apk')) + '</span></div></div>' +
           '</div></section>' +
         '</div>' +
       '</div>'
