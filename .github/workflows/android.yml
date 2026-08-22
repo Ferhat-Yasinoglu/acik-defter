@@ -1,0 +1,103 @@
+# ==========================================================================
+# NetStore — Android kurulum dosyası (.apk) üretimi
+#
+# Yöntem: Trusted Web Activity (TWA). Uygulama, telefonda kurulu Chrome
+# motorunu kullanır — WebView değil. Bu ayrım önemlidir: Google ile giriş,
+# gömülü WebView'lerde `disallowed_useragent` hatası verir, TWA'da vermez.
+#
+# ÖNCE YAPILMASI GEREKENLER (bir kereliktir):
+#
+#   1) İmza anahtarı üret (kendi bilgisayarında):
+#        keytool -genkeypair -v -keystore netstore.keystore \
+#          -alias netstore -keyalg RSA -keysize 2048 -validity 10000
+#
+#   2) Anahtarı base64'e çevir:
+#        base64 -w0 netstore.keystore > netstore.b64      # Linux
+#        base64 -i netstore.keystore | tr -d '\n'          # macOS
+#
+#   3) Depo → Settings → Secrets and variables → Actions:
+#        ANDROID_KEYSTORE_B64   → netstore.b64 içeriği
+#        ANDROID_KEYSTORE_PASS  → keystore parolası
+#        ANDROID_KEY_PASS       → alias parolası
+#
+#   4) Parmak izini al:
+#        keytool -list -v -keystore netstore.keystore -alias netstore
+#      Çıkan SHA256 satırını `android/assetlinks.json` içine yaz ve o
+#      dosyayı https://ferhat-yasinoglu.github.io/.well-known/assetlinks.json
+#      adresinden yayınla (Ferhat-Yasinoglu.github.io deposunun kökü).
+#      Bu yapılmazsa uygulama yine kurulur ama üstte adres çubuğu görünür.
+#
+# NOT: Bu iş akışı henüz gerçek bir koşuda denenmedi. İlk çalıştırmada
+# Bubblewrap adımı ayar isteyebilir; hata çıktısı ne isterse ona göre
+# düzeltilmelidir.
+# ==========================================================================
+
+name: Android APK
+
+on:
+  workflow_dispatch:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Bubblewrap kur
+        run: npm install -g @bubblewrap/cli
+
+      - name: İmza anahtarını çöz
+        env:
+          B64: ${{ secrets.ANDROID_KEYSTORE_B64 }}
+        run: |
+          if [ -z "$B64" ]; then
+            echo "::error::ANDROID_KEYSTORE_B64 tanımlı değil. Dosyanın başındaki adımlara bak."
+            exit 1
+          fi
+          echo "$B64" | base64 -d > "$GITHUB_WORKSPACE/android/netstore.keystore"
+
+      - name: Android SDK lisanslarını kabul et
+        run: yes | bubblewrap doctor || true
+
+      - name: APK üret
+        working-directory: android
+        env:
+          BUBBLEWRAP_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASS }}
+          BUBBLEWRAP_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASS }}
+        run: |
+          bubblewrap init \
+            --manifest="https://ferhat-yasinoglu.github.io/acik-defter/netstore/manifest.webmanifest" \
+            --directory=. \
+            --skipPwaValidation
+          bubblewrap build --skipPwaValidation
+
+      - name: Dosyayı adlandır
+        run: |
+          find android -name '*.apk' -print
+          cp "$(find android -name 'app-release-signed.apk' | head -1)" NetStore.apk
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: NetStore-apk
+          path: NetStore.apk
+
+      - name: Sürüme ekle
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: NetStore.apk

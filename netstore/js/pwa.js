@@ -27,9 +27,13 @@ window.addEventListener('appinstalled', function () {
   refreshSettingsIfOpen();
 });
 
-/** Ayarlar sayfası açıksa kurulum kartını tazele. */
+/* Kurulum durumunu gösteren sayfalar — durum değişince yeniden çizilirler. */
+const INSTALL_PAGES = ['ayarlar', 'indir'];
+
+/** Kurulum durumunu gösteren bir sayfa açıksa onu tazele. */
 function refreshSettingsIfOpen() {
-  if (typeof render === 'function' && typeof STATE === 'object' && STATE.route === 'ayarlar') render();
+  if (typeof render === 'function' && typeof STATE === 'object' &&
+      INSTALL_PAGES.indexOf(STATE.route) !== -1) render();
 }
 
 /** Uygulama ana ekrandan mı açıldı? */

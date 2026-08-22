@@ -959,39 +959,59 @@ PAGES.personel = function () {
 
 /* --- Ayarlar --- */
 /* ==========================================================================
-   İndir — kurulum dosyaları
+   İndir — kurulum yolları
 
-   Dosyalar GitHub Releases'ta durur; bağlantılar her zaman en son sürümü
-   gösterir. İlk sürüm yayınlanana kadar 404 döneceği için sayfa bunu
-   açıkça yazıyor ve tarayıcıdan kurulum yolunu öneriyor.
+   İki ayrı yol var ve ikisi de aynı uygulamayı verir:
+
+   • Android — GitHub Releases'taki .apk dosyası. Bağlantı her zaman en son
+     sürümü gösterir; ilk sürüm yayınlanana kadar 404 döner, sayfa bunu
+     açıkça yazıyor.
+   • Bilgisayar — kurulum dosyası yok, gerek de yok: Chrome/Edge uygulamayı
+     kendi penceresinde masaüstüne kurar. Düğme, pwa.js'in yakaladığı
+     kurulum olayını çalıştırır. Bu yol tarayıcının kendi motorunu
+     kullandığı için Google girişi de sorunsuz çalışır.
    ========================================================================== */
 
 const RELEASE_BASE = 'https://github.com/Ferhat-Yasinoglu/acik-defter/releases/latest/download/';
-
-const DOWNLOADS = [
-  { icon:'smartphone', name:'dl_android', sub:'dl_android_sub', file:'NetStore.apk' },
-  { icon:'monitor',    name:'dl_windows', sub:'dl_windows_sub', file:'NetStore-Windows.exe' },
-  { icon:'monitor',    name:'dl_mac',     sub:'dl_mac_sub',     file:'NetStore-macOS.dmg' },
-  { icon:'monitor',    name:'dl_linux',   sub:'dl_linux_sub',   file:'NetStore-Linux.AppImage' }
-];
+const ANDROID_FILE = 'NetStore.apk';
 
 PAGES.indir = function () {
-  const rows = DOWNLOADS.map(function (d) {
-    return '<div class="dl-row">' +
-      '<span class="dl-icon">' + icon(d.icon) + '</span>' +
-      '<div class="dl-text"><div class="dl-name">' + esc(t(d.name)) + '</div>' +
-      '<div class="dl-sub">' + esc(t(d.sub)) + '</div></div>' +
-      '<a class="btn btn-primary dl-btn" href="' + RELEASE_BASE + d.file + '">' +
+  const st = installState();
+
+  /* Bilgisayar satırının açıklaması ve düğmesi kurulum durumuna göre değişir. */
+  const deskSub = st === 'installed' ? t('dl_installed_sub')
+    : st === 'ready' ? t('dl_desktop_sub')
+    : t('dl_manual_sub');
+
+  const deskBtn = st === 'installed'
+    ? '<button class="btn dl-btn" disabled>' + icon('check') + esc(t('dl_installed')) + '</button>'
+    : st === 'ready'
+      ? '<button class="btn btn-primary dl-btn" data-act="install-app">' +
+        icon('install') + esc(t('dl_install')) + '</button>'
+      : '';
+
+  const rows =
+    '<div class="dl-row">' +
+      '<span class="dl-icon">' + icon('smartphone') + '</span>' +
+      '<div class="dl-text"><div class="dl-name">' + esc(t('dl_android')) + '</div>' +
+      '<div class="dl-sub">' + esc(t('dl_android_sub')) + '</div></div>' +
+      '<a class="btn btn-primary dl-btn" href="' + RELEASE_BASE + ANDROID_FILE + '">' +
         icon('download') + esc(t('dl_get')) + '</a>' +
+    '</div>' +
+
+    '<div class="dl-row">' +
+      '<span class="dl-icon">' + icon('monitor') + '</span>' +
+      '<div class="dl-text"><div class="dl-name">' + esc(t('dl_desktop')) + '</div>' +
+      '<div class="dl-sub">' + esc(deskSub) + '</div></div>' +
+      deskBtn +
     '</div>';
-  }).join('');
 
   return {
     html:
       '<div class="page-head"><div><h2>' + esc(t('nav_download')) + '</h2>' +
       '<p class="sub">' + esc(t('p_download_sub')) + '</p></div></div>' +
 
-      '<div class="grid grid-2">' +
+      '<div class="grid grid-2" style="align-items:start">' +
         '<section class="card"><div class="card-body" style="padding-top:6px">' +
           rows +
         '</div></section>' +

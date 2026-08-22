@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "io.github.ferhatyasinoglu.netstore",
+      "sha256_cert_fingerprints": [
+        "BURAYA_KENDI_ANAHTARININ_SHA256_PARMAK_IZINI_YAZ"
+      ]
+    }
+  }
+]
