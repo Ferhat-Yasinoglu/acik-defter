@@ -35,6 +35,18 @@ android {
   }
 }
 
+/* androidbrowserhelper kotlin-stdlib-jdk7/jdk8 1.6.21, appcompat ise
+   kotlin-stdlib 1.8.22 getiriyor. Kotlin 1.8'de jdk7/jdk8 siniflari ana
+   pakete tasindigi icin ikisi cakisiyor ve derleme "Duplicate class" ile
+   duruyor. jdk7/jdk8'i 1.8.22'ye sabitlemek onlari bos kabuga cevirir. */
+configurations.all {
+  resolutionStrategy {
+    force 'org.jetbrains.kotlin:kotlin-stdlib:1.8.22'
+    force 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.22'
+    force 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.22'
+  }
+}
+
 dependencies {
   implementation 'com.google.androidbrowserhelper:androidbrowserhelper:2.5.0'
   implementation 'androidx.appcompat:appcompat:1.7.0'
