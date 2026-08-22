@@ -86,6 +86,21 @@ jobs:
           VERSION_NAME: ${{ github.ref_type == 'tag' && github.ref_name || format('1.0.{0}', github.run_number) }}
         run: gradle --no-daemon assembleRelease
 
+      - name: Manifest sinif adlarini dogrula
+        run: |
+          # Derleme, manifest'teki sinif adlarini kontrol etmez: yanlis bir ad
+          # ancak telefonda acilirken cokerek ortaya cikar. Burada AAR'in
+          # icindeki siniflari okuyup gercekten var olduklarini dogruluyoruz.
+          AAR="$(find ~/.gradle/caches -name 'androidbrowserhelper-2.5.0.aar' | head -1)"
+          echo "AAR: $AAR"
+          T="$RUNNER_TEMP/aar"; mkdir -p "$T"; unzip -o -q "$AAR" -d "$T"
+          for C in com.google.androidbrowserhelper.trusted.LauncherActivity \
+                   com.google.androidbrowserhelper.trusted.DelegationService; do
+            echo "--- $C"
+            javap -classpath "$T/classes.jar" "$C" | head -2 \
+              || { echo "::error::$C kitaplikta yok"; exit 1; }
+          done
+
       - name: Dosyayi adlandir ve dogrula
         run: |
           APK="$(find android/app/build/outputs/apk/release -name '*.apk' | head -1)"
