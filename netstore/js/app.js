@@ -1349,7 +1349,17 @@ document.addEventListener('click', function (ev) {
   if (act === 'doc-invoice')  { invoiceDoc(id); return; }
   if (act === 'doc-receipt')  { receiptDoc(id); return; }
   if (act === 'close-doc')    { closeDoc(); return; }
-  if (act === 'print-doc' || act === 'print') { window.print(); return; }
+  if (act === 'print-doc' || act === 'print') {
+    window.print();
+    /* Bazı mobil tarayıcılar JavaScript'ten gelen yazdırma isteğini sessizce
+       yok sayıyor — hata da vermiyorlar, o yüzden tespit etmenin güvenilir
+       yolu yok. Yazdırma stilleri doğru olduğu için tarayıcının kendi menüsü
+       çalışıyor; dokunmatik cihazlarda yolu hatırlatıyoruz. */
+    if (window.matchMedia && window.matchMedia('(pointer: coarse)').matches) {
+      toast(t('t_print_hint'), 'info');
+    }
+    return;
+  }
 
   /* --- modal denetimi --- */
   if (act === 'close-modal')  { ACTIVE_FORM = null; PENDING_CONFIRM = null; closeModal(); return; }

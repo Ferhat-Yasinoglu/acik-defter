@@ -485,6 +485,7 @@ const I18N = {
   au_loading:      { tr:'Defter yükleniyor…',    en:'Loading the ledger…', fa:'دفتر بارگیری می‌شود…' },
   au_failed:       { tr:'Giriş yapılamadı. Tekrar deneyin.', en:'Sign-in failed. Please try again.', fa:'ورود ناموفق بود. دوباره تلاش کنید.' },
   au_offline_note: { tr:'Bir kez girdikten sonra internetsiz de çalışır.', en:'Once signed in, it works offline too.', fa:'پس از یک بار ورود، بدون انترنت هم کار می‌کند.' },
+  t_print_hint:    { tr:'Bir şey açılmadıysa tarayıcı menüsünden ⋮ → Yazdır deyin.', en:'If nothing opened, use the browser menu ⋮ → Print.', fa:'اگر چیزی باز نشد، از منوی مرورگر ⋮ ← چاپ استفاده کنید.' },
   au_denied_head:  { tr:'Bu hesabın erişimi yok', en:'This account has no access', fa:'این حساب دسترسی ندارد' },
   au_denied:       { tr:'{e} bu deftere ekli değil. Yetkili bir hesapla girin.', en:'{e} is not on this ledger. Sign in with an authorised account.', fa:'{e} در این دفتر نیست. با حساب مجاز وارد شوید.' },
   au_other:        { tr:'Başka hesapla gir',     en:'Use another account',  fa:'با حساب دیگر وارد شوید' },
