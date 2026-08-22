@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">NetStore</string>
+  <string name="host_name">ferhat-yasinoglu.github.io</string>
+  <string name="launch_url">https://ferhat-yasinoglu.github.io/acik-defter/netstore/index.html#/dashboard</string>
+  <string name="asset_statements" translatable="false">
+    [{
+      \"relation\": [\"delegate_permission/common.handle_all_urls\"],
+      \"target\": {
+        \"namespace\": \"web\",
+        \"site\": \"https://ferhat-yasinoglu.github.io\"
+      }
+    }]
+  </string>
+</resources>

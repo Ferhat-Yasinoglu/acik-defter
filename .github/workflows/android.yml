@@ -1,35 +1,16 @@
 # ==========================================================================
-# NetStore — Android kurulum dosyası (.apk) üretimi
+# NetStore — Android kurulum dosyasi (.apk)
 #
-# Yöntem: Trusted Web Activity (TWA). Uygulama, telefonda kurulu Chrome
-# motorunu kullanır — WebView değil. Bu ayrım önemlidir: Google ile giriş,
-# gömülü WebView'lerde `disallowed_useragent` hatası verir, TWA'da vermez.
+# Uygulama Trusted Web Activity olarak paketlenir: telefondaki Chrome
+# motorunu kullanir, kendi WebView'ini tasimaz. Google girisinin calismasi
+# bu ayrima bagli — gomulu WebView'ler disallowed_useragent hatasi verir.
 #
-# ÖNCE YAPILMASI GEREKENLER (bir kereliktir):
-#
-#   1) İmza anahtarı üret (kendi bilgisayarında):
-#        keytool -genkeypair -v -keystore netstore.keystore \
-#          -alias netstore -keyalg RSA -keysize 2048 -validity 10000
-#
-#   2) Anahtarı base64'e çevir:
-#        base64 -w0 netstore.keystore > netstore.b64      # Linux
-#        base64 -i netstore.keystore | tr -d '\n'          # macOS
-#
-#   3) Depo → Settings → Secrets and variables → Actions:
-#        ANDROID_KEYSTORE_B64   → netstore.b64 içeriği
-#        ANDROID_KEYSTORE_PASS  → keystore parolası
-#        ANDROID_KEY_PASS       → alias parolası
-#
-#   4) Parmak izini al:
-#        keytool -list -v -keystore netstore.keystore -alias netstore
-#      Çıkan SHA256 satırını `android/assetlinks.json` içine yaz ve o
-#      dosyayı https://ferhat-yasinoglu.github.io/.well-known/assetlinks.json
-#      adresinden yayınla (Ferhat-Yasinoglu.github.io deposunun kökü).
-#      Bu yapılmazsa uygulama yine kurulur ama üstte adres çubuğu görünür.
-#
-# NOT: Bu iş akışı henüz gerçek bir koşuda denenmedi. İlk çalıştırmada
-# Bubblewrap adımı ayar isteyebilir; hata çıktısı ne isterse ona göre
-# düzeltilmelidir.
+# Imza anahtari:
+#   ANDROID_KEYSTORE_B64 gizli anahtari varsa o kullanilir.
+#   Yoksa is akisi kendisi bir anahtar uretir, APK'yi imzalar ve anahtari
+#   "imza-anahtari" adiyla ayri bir dosya olarak birakir. O dosyayi gizli
+#   anahtar olarak eklersen sonraki surumler ayni imzayla cikar ve
+#   guncellemeler sorunsuz olur.
 # ==========================================================================
 
 name: Android APK
@@ -54,49 +35,91 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - uses: actions/setup-node@v4
+      - uses: android-actions/setup-android@v3
+
+      - name: Android bilesenlerini kur
+        run: sdkmanager --install "platforms;android-34" "build-tools;34.0.0" > /dev/null
+
+      - uses: gradle/actions/setup-gradle@v4
         with:
-          node-version: '20'
+          gradle-version: '8.9'
 
-      - name: Bubblewrap kur
-        run: npm install -g @bubblewrap/cli
-
-      - name: İmza anahtarını çöz
+      - name: Imza anahtarini hazirla
+        id: key
         env:
-          B64: ${{ secrets.ANDROID_KEYSTORE_B64 }}
+          B64:  ${{ secrets.ANDROID_KEYSTORE_B64 }}
+          PASS: ${{ secrets.ANDROID_KEYSTORE_PASS }}
+          KPASS: ${{ secrets.ANDROID_KEY_PASS }}
         run: |
-          if [ -z "$B64" ]; then
-            echo "::error::ANDROID_KEYSTORE_B64 tanımlı değil. Dosyanın başındaki adımlara bak."
-            exit 1
+          mkdir -p "$RUNNER_TEMP/signing"
+          KS="$RUNNER_TEMP/signing/netstore.keystore"
+          if [ -n "$B64" ]; then
+            echo "$B64" | base64 -d > "$KS"
+            echo "store_pass=$PASS" >> "$GITHUB_OUTPUT"
+            echo "key_pass=${KPASS:-$PASS}" >> "$GITHUB_OUTPUT"
+            echo "generated=false" >> "$GITHUB_OUTPUT"
+            echo "Kayitli imza anahtari kullaniliyor." >> "$GITHUB_STEP_SUMMARY"
+          else
+            GEN="$(openssl rand -base64 24 | tr -d '/+=' | head -c 24)"
+            keytool -genkeypair -noprompt \
+              -keystore "$KS" -alias netstore \
+              -storepass "$GEN" -keypass "$GEN" \
+              -keyalg RSA -keysize 2048 -validity 10000 \
+              -dname "CN=NetStore, O=NetStore, C=TR"
+            echo "::add-mask::$GEN"
+            echo "store_pass=$GEN" >> "$GITHUB_OUTPUT"
+            echo "key_pass=$GEN" >> "$GITHUB_OUTPUT"
+            echo "generated=true" >> "$GITHUB_OUTPUT"
+            printf '%s' "$GEN" > "$RUNNER_TEMP/signing/parola.txt"
+            base64 -w0 "$KS" > "$RUNNER_TEMP/signing/keystore.base64.txt"
           fi
-          echo "$B64" | base64 -d > "$GITHUB_WORKSPACE/android/netstore.keystore"
+          echo "path=$KS" >> "$GITHUB_OUTPUT"
 
-      - name: Android SDK lisanslarını kabul et
-        run: yes | bubblewrap doctor || true
-
-      - name: APK üret
+      - name: APK uret
         working-directory: android
         env:
-          BUBBLEWRAP_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASS }}
-          BUBBLEWRAP_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASS }}
-        run: |
-          bubblewrap init \
-            --manifest="https://ferhat-yasinoglu.github.io/acik-defter/netstore/manifest.webmanifest" \
-            --directory=. \
-            --skipPwaValidation
-          bubblewrap build --skipPwaValidation
+          KEYSTORE_PATH: ${{ steps.key.outputs.path }}
+          KEYSTORE_PASS: ${{ steps.key.outputs.store_pass }}
+          KEY_ALIAS: netstore
+          KEY_PASS: ${{ steps.key.outputs.key_pass }}
+          VERSION_CODE: ${{ github.run_number }}
+          VERSION_NAME: ${{ github.ref_type == 'tag' && github.ref_name || format('1.0.{0}', github.run_number) }}
+        run: gradle --no-daemon assembleRelease
 
-      - name: Dosyayı adlandır
+      - name: Dosyayi adlandir ve dogrula
         run: |
-          find android -name '*.apk' -print
-          cp "$(find android -name 'app-release-signed.apk' | head -1)" NetStore.apk
+          APK="$(find android/app/build/outputs/apk/release -name '*.apk' | head -1)"
+          cp "$APK" NetStore.apk
+          ls -lh NetStore.apk
+          BT="$(ls -d $ANDROID_HOME/build-tools/* | tail -1)"
+          "$BT/apksigner" verify --print-certs NetStore.apk | tee certs.txt
+          {
+            echo "### APK hazir"
+            echo ""
+            echo "Boyut: $(du -h NetStore.apk | cut -f1)"
+            echo ""
+            echo "Adres cubugunun gizlenmesi icin asagidaki parmak izini"
+            echo '`assetlinks.json` icine yaz:'
+            echo ""
+            echo '```'
+            grep -i 'SHA-256' certs.txt || true
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
 
       - uses: actions/upload-artifact@v4
         with:
           name: NetStore-apk
           path: NetStore.apk
 
-      - name: Sürüme ekle
+      - name: Uretilen imza anahtarini birak
+        if: steps.key.outputs.generated == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: imza-anahtari
+          path: ${{ runner.temp }}/signing/
+          retention-days: 90
+
+      - name: Surume ekle
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
