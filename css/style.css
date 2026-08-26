@@ -1388,6 +1388,8 @@ body::before {
   flex-wrap: wrap;
 }
 .footer-copy { font-size: 0.85rem; color: var(--text-muted); }
+.footer-copy a { text-decoration: underline; text-underline-offset: 2px; }
+.footer-copy a:hover { color: var(--gold); }
 .footer-quote {
   font-family: var(--font-serif);
   font-style: italic;

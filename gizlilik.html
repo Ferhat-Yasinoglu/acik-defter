@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="tr" dir="ltr" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gizlilik Politikası — Farhad Yaqoobi</title>
+  <meta name="robots" content="noindex" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .legal-page { max-width: 760px; margin: 0 auto; padding: 40px 0 100px; }
+    .legal-page h2 {
+      font-family: var(--font-serif);
+      color: var(--text-primary);
+      font-size: 1.3rem;
+      margin: 2.2em 0 0.6em;
+    }
+    .legal-page h2:first-child { margin-top: 0; }
+    .legal-page p, .legal-page li {
+      color: var(--text-secondary);
+      line-height: 1.7;
+      font-size: 0.96rem;
+    }
+    .legal-page ul { padding-left: 1.2em; margin: 0.6em 0; }
+    .legal-page li { margin: 0.3em 0; }
+    .legal-page strong { color: var(--text-primary); }
+    .legal-page .meta {
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      margin-bottom: 2em;
+    }
+    .legal-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 3em 0;
+    }
+    .legal-lang-label {
+      display: inline-block;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--gold);
+      border: 1px solid var(--gold-border);
+      background: var(--gold-dim);
+      border-radius: 999px;
+      padding: 3px 10px;
+      margin-bottom: 1.2em;
+    }
+  </style>
+</head>
+<body data-page="privacy">
+
+  <header class="navbar">
+    <div class="container navbar-inner">
+      <a href="index.html" class="logo">FY<span>.</span></a>
+
+      <nav class="nav-links">
+        <a href="index.html" data-page-link="home" data-i18n="nav_home">Ana Sayfa</a>
+        <a href="yolculugum.html" data-page-link="journey" data-i18n="nav_journey">Yolculuğum</a>
+        <a href="projeler.html" data-page-link="projects" data-i18n="nav_projects">Projeler</a>
+        <a href="ogrenme.html" data-page-link="learning" data-i18n="nav_learning">Öğrenme</a>
+        <a href="notlar.html" data-page-link="notes" data-i18n="nav_notes">Notlar</a>
+        <a href="hakkimda.html" data-page-link="about" data-i18n="nav_about">Hakkımda</a>
+        <a href="iletisim.html" data-page-link="contact" data-i18n="nav_contact">İletişim</a>
+      </nav>
+
+      <div class="nav-actions">
+        <div class="status-pill">
+          <span class="status-dot"></span>
+          <span class="label">10:14 gece</span>
+        </div>
+
+        <button class="icon-btn theme-toggle" aria-label="Temayı değiştir">
+          <svg class="icon-moon" data-lucide="moon"></svg>
+          <svg class="icon-sun" data-lucide="sun" style="display:none"></svg>
+        </button>
+
+        <div class="appearance-switch">
+          <button class="icon-btn appearance-trigger" data-i18n-aria-label="aria_appearance" aria-label="Görünümü özelleştir">
+            <svg data-lucide="palette"></svg>
+          </button>
+          <div class="appearance-menu">
+            <div class="appearance-section">
+              <span class="appearance-label" data-i18n="appearance_theme">Tema</span>
+              <div class="appearance-options">
+                <button type="button" class="theme-choice" data-theme-choice="dark">
+                  <svg data-lucide="moon"></svg><span data-i18n="appearance_theme_dark">Koyu</span>
+                </button>
+                <button type="button" class="theme-choice" data-theme-choice="light">
+                  <svg data-lucide="sun"></svg><span data-i18n="appearance_theme_light">Açık</span>
+                </button>
+                <button type="button" class="theme-choice" data-theme-choice="system">
+                  <svg data-lucide="monitor"></svg><span data-i18n="appearance_theme_system">Sistem</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="appearance-section">
+              <span class="appearance-label" data-i18n="appearance_accent">Vurgu Rengi</span>
+              <div class="accent-swatches">
+                <button type="button" class="accent-swatch" data-accent-choice="gold" style="--swatch:#dba55a" data-i18n-aria-label="accent_gold" aria-label="Altın"></button>
+                <button type="button" class="accent-swatch" data-accent-choice="blue" style="--swatch:#5b9bd5" data-i18n-aria-label="accent_blue" aria-label="Mavi"></button>
+                <button type="button" class="accent-swatch" data-accent-choice="purple" style="--swatch:#a78bfa" data-i18n-aria-label="accent_purple" aria-label="Mor"></button>
+                <button type="button" class="accent-swatch" data-accent-choice="green" style="--swatch:#4fd694" data-i18n-aria-label="accent_green" aria-label="Yeşil"></button>
+              </div>
+            </div>
+
+            <div class="appearance-section">
+              <span class="appearance-label" data-i18n="appearance_glass">Cam Yoğunluğu</span>
+              <input type="range" class="glass-slider" min="0" max="32" value="20" data-i18n-aria-label="appearance_glass" aria-label="Cam Yoğunluğu" />
+            </div>
+          </div>
+        </div>
+
+        <div class="lang-switch">
+          <button class="lang-trigger">
+            <span class="name">TR</span>
+            <svg data-lucide="chevron-down"></svg>
+          </button>
+          <div class="lang-menu">
+            <button class="lang-option" data-lang="tr">
+              <span class="name" data-i18n="lang_tr">Türkçe</span>
+              <svg class="check" data-lucide="check"></svg>
+            </button>
+            <button class="lang-option" data-lang="fa">
+              <span class="name" data-i18n="lang_fa">فارسی</span>
+              <svg class="check" data-lucide="check"></svg>
+            </button>
+            <button class="lang-option" data-lang="de">
+              <span class="name" data-i18n="lang_de">Deutsch</span>
+              <svg class="check" data-lucide="check"></svg>
+            </button>
+            <button class="lang-option" data-lang="en">
+              <span class="name" data-i18n="lang_en">English</span>
+              <svg class="check" data-lucide="check"></svg>
+            </button>
+          </div>
+        </div>
+
+        <button class="menu-toggle" aria-label="Menüyü aç">
+          <svg data-lucide="menu"></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <p class="eyebrow">
+          <span class="rule"></span>
+          <svg data-lucide="shield-check"></svg>
+          <span>Santral — Instagram otomasyonu</span>
+        </p>
+        <h1>Gizlilik Politikası</h1>
+        <p>Santral adlı Instagram yorum/DM otomasyonunun hangi verileri, ne amaçla işlediğini anlatır.</p>
+      </div>
+    </section>
+
+    <div class="container legal-page">
+
+      <span class="legal-lang-label">English</span>
+      <p class="meta">Last updated: August 26, 2026</p>
+
+      <h2>Who we are</h2>
+      <p>"Santral" is a small automation tool built and operated by Farhad Yaqoobi (contact: <a href="mailto:ferhatyasinoglu@gmail.com">ferhatyasinoglu@gmail.com</a>) for a single personal Instagram professional account. It connects to that account's own comments and direct messages through Meta's official Instagram Graph API, in order to send an automatic reply when a visitor's comment or message contains a specific keyword (for example, sending a link when someone comments "prompt").</p>
+
+      <h2>Information we collect</h2>
+      <ul>
+        <li>The text of a comment left on a post belonging to the connected Instagram account, and the Instagram-scoped ID of the commenter.</li>
+        <li>The text of a direct message or story reply sent to the connected account, and the Instagram-scoped ID of the sender.</li>
+      </ul>
+      <p>We do not collect names, email addresses, phone numbers, location data, or any information beyond what Instagram includes in the comment/message webhook event itself. We do not use tracking pixels, analytics SDKs, or cookies as part of this automation.</p>
+
+      <h2>How we use this information</h2>
+      <p>The text is compared, in memory, against a short list of keywords configured by the account owner. If it matches, the server sends back a pre-written reply — either a public reply under the comment, a direct message, or both — using the same Graph API. Nothing else is done with the content: no profiling, no advertising, no analysis beyond this keyword match.</p>
+
+      <h2>Data retention</h2>
+      <p>The server does not write comment or message content to any database, file, or log that persists between restarts. The only thing it keeps is a short-lived, in-memory set of comment IDs that have already received a reply, so the same comment is never messaged twice (this mirrors a rule Meta itself enforces). That set exists only in server RAM and is discarded whenever the server process restarts.</p>
+
+      <h2>Sharing</h2>
+      <p>Data is exchanged only with Meta's Graph API (graph.instagram.com) to deliver the reply. It is never sold, rented, or shared with any other third party or service.</p>
+
+      <h2>Children</h2>
+      <p>This automation is not directed at children and is not knowingly used to process data from users under 13.</p>
+
+      <h2>Your choices</h2>
+      <p>Since no comment or message content is stored beyond the momentary in-memory check described above, there is generally nothing to delete. If you have questions about a specific interaction, or want to stop receiving automated replies, you can simply avoid using the trigger keywords, or contact us at the email below and we will address it.</p>
+
+      <h2>Changes to this policy</h2>
+      <p>If what data is collected or how it is used changes, this page will be updated and the "Last updated" date above will change accordingly.</p>
+
+      <h2>Contact</h2>
+      <p>Questions about this policy or this automation can be sent to <a href="mailto:ferhatyasinoglu@gmail.com">ferhatyasinoglu@gmail.com</a>.</p>
+
+      <hr class="legal-divider">
+
+      <span class="legal-lang-label">Türkçe</span>
+      <p class="meta">Son güncelleme: 26 Ağustos 2026</p>
+
+      <h2>Kim olduğumuz</h2>
+      <p>"Santral", Farhad Yaqoobi (iletişim: <a href="mailto:ferhatyasinoglu@gmail.com">ferhatyasinoglu@gmail.com</a>) tarafından, tek bir kişisel Instagram profesyonel hesabı için kurulan ve işletilen küçük bir otomasyon aracıdır. Meta'nın resmi Instagram Graph API'si üzerinden bu hesaba gelen yorum ve doğrudan mesajlara bağlanır; bir ziyaretçinin yorumu ya da mesajı belirli bir anahtar kelimeyi içerdiğinde otomatik bir yanıt gönderir (örneğin "prompt" yazan birine bir bağlantı göndermek gibi).</p>
+
+      <h2>Topladığımız bilgiler</h2>
+      <ul>
+        <li>Bağlı Instagram hesabının bir gönderisine bırakılan yorumun metni ve yorumu yazan kişinin Instagram'a özgü kimliği.</li>
+        <li>Bağlı hesaba gönderilen doğrudan mesajın veya hikaye yanıtının metni ve gönderenin Instagram'a özgü kimliği.</li>
+      </ul>
+      <p>İsim, e-posta adresi, telefon numarası, konum bilgisi ya da Instagram'ın yorum/mesaj webhook olayında zaten yer alanın ötesinde hiçbir bilgi toplanmaz. Bu otomasyon kapsamında takip pikseli, analiz SDK'sı veya çerez kullanılmaz.</p>
+
+      <h2>Bu bilgiyi nasıl kullanıyoruz</h2>
+      <p>Gelen metin, hesap sahibinin belirlediği kısa bir anahtar kelime listesiyle sunucu belleğinde karşılaştırılır. Eşleşme olursa, aynı Graph API üzerinden önceden yazılmış bir yanıt gönderilir — yorumun altına açık bir yanıt, bir doğrudan mesaj ya da ikisi birden. İçerikle bu eşleştirmenin dışında hiçbir şey yapılmaz: profil oluşturma, reklam ya da başka bir analiz söz konusu değildir.</p>
+
+      <h2>Veri saklama</h2>
+      <p>Sunucu, yorum veya mesaj içeriğini yeniden başlatmalar arasında kalıcı olan hiçbir veritabanına, dosyaya veya günlüğe yazmaz. Tuttuğu tek şey, aynı yoruma iki kez yanıt gitmesini önlemek için (bu, Meta'nın kendisinin de zorunlu tuttuğu bir kural) zaten yanıtlanmış yorumların kimliklerinden oluşan, kısa ömürlü ve yalnızca bellekte tutulan bir listedir. Bu liste yalnızca sunucunun RAM'inde durur ve sunucu süreci her yeniden başladığında silinir.</p>
+
+      <h2>Paylaşım</h2>
+      <p>Veriler yalnızca yanıtı iletmek için Meta'nın Graph API'si (graph.instagram.com) ile alışverişe girer. Hiçbir veri satılmaz, kiralanmaz ya da başka bir üçüncü tarafla paylaşılmaz.</p>
+
+      <h2>Çocuklar</h2>
+      <p>Bu otomasyon çocuklara yönelik değildir ve bilerek 13 yaşın altındaki kullanıcılardan veri işlemek için kullanılmaz.</p>
+
+      <h2>Seçenekleriniz</h2>
+      <p>Yukarıda anlatılan anlık bellek kontrolü dışında hiçbir yorum veya mesaj içeriği saklanmadığından, genellikle silinecek bir şey bulunmuyor. Belirli bir etkileşimle ilgili sorunuz varsa ya da otomatik yanıt almak istemiyorsanız, tetikleyici anahtar kelimeleri kullanmaktan kaçınabilir ya da aşağıdaki e-postadan bize ulaşabilirsiniz.</p>
+
+      <h2>Bu politikadaki değişiklikler</h2>
+      <p>Hangi verinin toplandığı ya da nasıl kullanıldığı değişirse, bu sayfa güncellenir ve yukarıdaki "Son güncelleme" tarihi buna göre değişir.</p>
+
+      <h2>İletişim</h2>
+      <p>Bu politika ya da bu otomasyon hakkındaki sorularınızı <a href="mailto:ferhatyasinoglu@gmail.com">ferhatyasinoglu@gmail.com</a> adresine gönderebilirsiniz.</p>
+
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p class="footer-copy">© 2026 Farhad Yaqoobi. <span data-i18n="footer_rights">Tüm hakları saklıdır.</span></p>
+      <p class="footer-quote">"<span data-i18n="footer_quote">Büyük hedefler, küçük adımlarla başlar.</span>"</p>
+      <div class="footer-social">
+        <a class="icon-btn" href="https://github.com/" target="_blank" rel="noopener"><svg data-lucide="github"></svg></a>
+        <a class="icon-btn" href="https://linkedin.com/" target="_blank" rel="noopener"><svg data-lucide="linkedin"></svg></a>
+        <a class="icon-btn" href="mailto:ferhatyasinoglu@gmail.com"><svg data-lucide="mail"></svg></a>
+        <a class="icon-btn up" href="#top"><svg data-lucide="arrow-up"></svg></a>
+      </div>
+    </div>
+  </footer>
+
+  <div class="mobile-overlay">
+    <div class="mobile-overlay-head">
+      <a href="index.html" class="logo">FY<span>.</span></a>
+      <button class="mobile-close" aria-label="Menüyü kapat"><svg data-lucide="x"></svg></button>
+    </div>
+    <nav class="mobile-nav">
+      <a href="index.html" data-page-link="home"><svg data-lucide="home"></svg><span data-i18n="nav_home">Ana Sayfa</span></a>
+      <a href="yolculugum.html" data-page-link="journey"><svg data-lucide="compass"></svg><span data-i18n="nav_journey">Yolculuğum</span></a>
+      <a href="projeler.html" data-page-link="projects"><svg data-lucide="folder"></svg><span data-i18n="nav_projects">Projeler</span></a>
+      <a href="ogrenme.html" data-page-link="learning"><svg data-lucide="graduation-cap"></svg><span data-i18n="nav_learning">Öğrenme</span></a>
+      <a href="notlar.html" data-page-link="notes"><svg data-lucide="notebook-pen"></svg><span data-i18n="nav_notes">Notlar</span></a>
+      <a href="hakkimda.html" data-page-link="about"><svg data-lucide="user-round"></svg><span data-i18n="nav_about">Hakkımda</span></a>
+      <a href="iletisim.html" data-page-link="contact"><svg data-lucide="send"></svg><span data-i18n="nav_contact">İletişim</span></a>
+    </nav>
+    <div class="mobile-divider"></div>
+    <div class="mobile-social">
+      <a href="https://github.com/" target="_blank" rel="noopener"><svg data-lucide="github"></svg><span>GitHub</span></a>
+      <a href="https://linkedin.com/" target="_blank" rel="noopener"><svg data-lucide="linkedin"></svg><span>LinkedIn</span></a>
+      <a href="mailto:ferhatyasinoglu@gmail.com"><svg data-lucide="mail"></svg><span>E-posta</span></a>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/main.js"></script>
+  <script src="js/mouse-glow.js"></script>
+  <script src="js/toast.js"></script>
+  <script src="js/appearance.js"></script>
+  <script src="js/cursor.js"></script>
+  <script src="js/navbar-scroll.js"></script>
+</body>
+</html>
