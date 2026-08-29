@@ -1,0 +1,35 @@
+# Sitenin sağlık kontrolü. Derleme yok — tutarlılık ve davranış denetimi.
+# Ne bakıldığı tools/check.mjs ve tools/test.mjs dosyalarının başında yazıyor.
+
+name: Kontrol
+
+on:
+  push:
+    branches: ['**']
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  check:
+    name: Tutarlılık
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node tools/check.mjs
+
+  test:
+    name: Tarayıcı
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Playwright kur
+        run: |
+          npm install --no-save playwright@1
+          npx playwright install --with-deps chromium
+      - run: node tools/test.mjs

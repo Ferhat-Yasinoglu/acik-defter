@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://ferhat-yasinoglu.github.io/acik-defter/sitemap.xml

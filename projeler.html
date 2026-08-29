@@ -1,226 +1,194 @@
 <!DOCTYPE html>
-<html lang="tr" dir="ltr" data-theme="dark">
+<html lang="tr" dir="ltr" data-theme="light">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Projeler — Farhad Yaqoobi</title>
-  <link rel="stylesheet" href="css/style.css" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>(function(){var d=document.documentElement,ok={tr:1,en:1,de:1,fa:1};try{
+var t=localStorage.getItem("ad-theme");
+d.dataset.theme=(t==="light"||t==="dark")?t:(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");
+var l=localStorage.getItem("ad-lang");
+if(!ok[l]){l=(navigator.language||"tr").slice(0,2).toLowerCase();if(!ok[l])l="tr";}
+d.lang=l;d.dir=(l==="fa")?"rtl":"ltr";
+}catch(e){}})();</script>
+<title>Projeler — Açık Defter</title>
+<meta name="description" content="NetStore, reply-bot, botflow-mcp ve bu site: kaynağı açık, çalışan projeler.">
+<link rel="canonical" href="https://ferhat-yasinoglu.github.io/acik-defter/projeler.html">
+<meta name="author" content="Farhad Yaqoobi">
+<meta name="theme-color" content="#fbfaf7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#131211" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Açık Defter">
+<meta property="og:locale" content="tr_TR">
+<meta property="og:title" content="Projeler — Açık Defter">
+<meta property="og:description" content="NetStore, reply-bot, botflow-mcp ve bu site: kaynağı açık, çalışan projeler.">
+<meta property="og:url" content="https://ferhat-yasinoglu.github.io/acik-defter/projeler.html">
+<meta property="og:image" content="https://ferhat-yasinoglu.github.io/acik-defter/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Vazirmatn:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body data-page="projects">
 
-  <header class="navbar">
-    <div class="container navbar-inner">
-      <a href="index.html" class="logo">FY<span>.</span></a>
+  <a class="skip-link" href="#main" data-i18n="skip">İçeriğe geç</a>
 
-      <nav class="nav-links">
-        <a href="index.html" data-page-link="home" data-i18n="nav_home">Ana Sayfa</a>
-        <a href="yolculugum.html" data-page-link="journey" data-i18n="nav_journey">Yolculuğum</a>
-        <a href="projeler.html" data-page-link="projects" data-i18n="nav_projects">Projeler</a>
-        <a href="ogrenme.html" data-page-link="learning" data-i18n="nav_learning">Öğrenme</a>
-        <a href="notlar.html" data-page-link="notes" data-i18n="nav_notes">Notlar</a>
-        <a href="hakkimda.html" data-page-link="about" data-i18n="nav_about">Hakkımda</a>
-        <a href="iletisim.html" data-page-link="contact" data-i18n="nav_contact">İletişim</a>
+  <header class="masthead">
+    <div class="wrap masthead-inner">
+      <a class="wordmark" href="index.html">Farhad Yaqoobi<span class="dot">.</span></a>
+
+      <nav class="nav">
+        <a href="index.html" data-i18n="nav_home">Ana Sayfa</a>
+        <a href="yolculugum.html" data-i18n="nav_journey">Yolculuğum</a>
+        <a href="projeler.html" aria-current="page" data-i18n="nav_projects">Projeler</a>
+        <a href="notlar.html" data-i18n="nav_notes">Notlar</a>
+        <a href="hakkimda.html" data-i18n="nav_about">Hakkımda</a>
       </nav>
 
-      <div class="nav-actions">
-        <div class="status-pill">
-          <span class="status-dot"></span>
-          <span class="label">10:14 gece</span>
-        </div>
-
-        <button class="icon-btn theme-toggle" aria-label="Temayı değiştir">
-          <svg class="icon-moon" data-lucide="moon"></svg>
-          <svg class="icon-sun" data-lucide="sun" style="display:none"></svg>
+      <div class="tools">
+        <button type="button" class="tool theme-toggle" aria-pressed="false" data-i18n-aria-label="aria_theme" aria-label="Temayı değiştir">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="i-moon"><path d="M13.5 9.6A5.7 5.7 0 0 1 6.4 2.5a5.8 5.8 0 1 0 7.1 7.1Z"/></svg>
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="i-sun" hidden><circle cx="8" cy="8" r="3"/><path d="M8 1v1.4M8 13.6V15M15 8h-1.4M2.4 8H1M12.9 3.1l-1 1M4.1 11.9l-1 1M12.9 12.9l-1-1M4.1 4.1l-1-1"/></svg>
         </button>
 
-        <div class="appearance-switch">
-          <button class="icon-btn appearance-trigger" data-i18n-aria-label="aria_appearance" aria-label="Görünümü özelleştir">
-            <svg data-lucide="palette"></svg>
-          </button>
-          <div class="appearance-menu">
-            <div class="appearance-section">
-              <span class="appearance-label" data-i18n="appearance_theme">Tema</span>
-              <div class="appearance-options">
-                <button type="button" class="theme-choice" data-theme-choice="dark">
-                  <svg data-lucide="moon"></svg><span data-i18n="appearance_theme_dark">Koyu</span>
-                </button>
-                <button type="button" class="theme-choice" data-theme-choice="light">
-                  <svg data-lucide="sun"></svg><span data-i18n="appearance_theme_light">Açık</span>
-                </button>
-                <button type="button" class="theme-choice" data-theme-choice="system">
-                  <svg data-lucide="monitor"></svg><span data-i18n="appearance_theme_system">Sistem</span>
-                </button>
-              </div>
-            </div>
-
-            <div class="appearance-section">
-              <span class="appearance-label" data-i18n="appearance_accent">Vurgu Rengi</span>
-              <div class="accent-swatches">
-                <button type="button" class="accent-swatch" data-accent-choice="gold" style="--swatch:#dba55a" data-i18n-aria-label="accent_gold" aria-label="Altın"></button>
-                <button type="button" class="accent-swatch" data-accent-choice="blue" style="--swatch:#5b9bd5" data-i18n-aria-label="accent_blue" aria-label="Mavi"></button>
-                <button type="button" class="accent-swatch" data-accent-choice="purple" style="--swatch:#a78bfa" data-i18n-aria-label="accent_purple" aria-label="Mor"></button>
-                <button type="button" class="accent-swatch" data-accent-choice="green" style="--swatch:#4fd694" data-i18n-aria-label="accent_green" aria-label="Yeşil"></button>
-              </div>
-            </div>
-
-            <div class="appearance-section">
-              <span class="appearance-label" data-i18n="appearance_glass">Cam Yoğunluğu</span>
-              <input type="range" class="glass-slider" min="0" max="32" value="20" data-i18n-aria-label="appearance_glass" aria-label="Cam Yoğunluğu" />
-            </div>
+        <details class="langpick">
+          <summary class="tool" data-i18n-aria-label="aria_lang" aria-label="Dili değiştir"><span data-lang-short>TR</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 6.5 4 4 4-4"/></svg></summary>
+          <div class="langpick-menu">
+          <button type="button" data-lang="tr" aria-current="true"><span data-i18n="lang_tr">Türkçe</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="tick"><path d="m3 8.5 3.2 3.2L13 4.9"/></svg></button>
+          <button type="button" data-lang="en" aria-current="false"><span data-i18n="lang_en">English</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="tick"><path d="m3 8.5 3.2 3.2L13 4.9"/></svg></button>
+          <button type="button" data-lang="de" aria-current="false"><span data-i18n="lang_de">Deutsch</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="tick"><path d="m3 8.5 3.2 3.2L13 4.9"/></svg></button>
+          <button type="button" data-lang="fa" aria-current="false"><span data-i18n="lang_fa">فارسی</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="tick"><path d="m3 8.5 3.2 3.2L13 4.9"/></svg></button>
           </div>
-        </div>
-
-        <div class="lang-switch">
-          <button class="lang-trigger">
-            <span class="name">TR</span>
-            <svg data-lucide="chevron-down"></svg>
-          </button>
-          <div class="lang-menu">
-            <button class="lang-option" data-lang="tr">
-              <span class="name" data-i18n="lang_tr">Türkçe</span>
-              <svg class="check" data-lucide="check"></svg>
-            </button>
-            <button class="lang-option" data-lang="fa">
-              <span class="name" data-i18n="lang_fa">فارسی</span>
-              <svg class="check" data-lucide="check"></svg>
-            </button>
-            <button class="lang-option" data-lang="de">
-              <span class="name" data-i18n="lang_de">Deutsch</span>
-              <svg class="check" data-lucide="check"></svg>
-            </button>
-            <button class="lang-option" data-lang="en">
-              <span class="name" data-i18n="lang_en">English</span>
-              <svg class="check" data-lucide="check"></svg>
-            </button>
-          </div>
-        </div>
-
-        <button class="menu-toggle" aria-label="Menüyü aç">
-          <svg data-lucide="menu"></svg>
-        </button>
+        </details>
       </div>
     </div>
   </header>
 
-  <main>
-    <section class="page-hero">
-      <div class="container">
-        <p class="eyebrow">
-          <span class="rule"></span>
-          <svg data-lucide="folder"></svg>
-          <span data-i18n="eyebrow">Bir IT Öğrencisinin Açık Defteri</span>
-        </p>
-        <h1 data-i18n="page_projects_title">Projeler</h1>
-        <p data-i18n="page_projects_desc">Üzerinde çalıştığım ve öğrenirken geliştirdiğim projeler.</p>
-      </div>
+  <main id="main">
+    <section class="wrap page-head">
+      <span class="label" data-i18n="nav_projects">Projeler</span>
+      <h1 data-i18n="nav_projects">Projeler</h1>
+      <p class="lead" data-i18n="projects_lead">Hepsi öğrenmek için başladı, hepsi çalışıyor. Kaynakları açık.</p>
     </section>
 
-    <div class="container projects-page">
-      <div class="projects-page-grid">
-
-        <div class="project-card">
-          <div class="project-thumb">
-            <span class="num">01</span>
-            <div class="mock-ui"><div class="bar"></div></div>
-          </div>
-          <div class="project-info">
-            <h3 data-i18n="proj1_title">Kişisel Web Sitesi</h3>
-            <p class="project-desc" data-i18n="proj1_full_desc">Öğrendiklerimi paylaştığım bu kişisel web sitesi; çoklu dil desteği, açık/koyu tema ve duyarlı tasarımla sıfırdan kodlandı.</p>
-            <div class="project-tags">
-              <span>HTML</span><span>CSS</span><span>JavaScript</span>
+    <section class="wrap section">
+      <article class="rail-item">
+        <div class="rail-meta" data-i18n="p1_when">19–28 Ağu 2026</div>
+        <div>
+          <h3>NetStore</h3>
+          <p data-i18n="p1_tag">Çevrimdışı çalışan mağaza paneli</p>
+          <p data-i18n="p1_desc">İki kişinin aynı defteri Google hesabıyla paylaştığı bir satış ve stok paneli. Kayıtlar Firestore'da eşitleniyor, ağ gidince uygulama çalışmaya devam ediyor, telefona kurulabiliyor. Afgani desteği ve basılabilir fatura var.</p>
+          <p class="meta-line">Firestore<span class="sep">·</span>PWA<span class="sep">·</span>Service Worker<span class="sep">·</span>JavaScript</p>
+          <details class="disclosure">
+            <summary><span data-i18n="proj_learned">Öğrendiklerim</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="chev"><path d="m4 6.5 4 4 4-4"/></svg></summary>
+            <div class="disclosure-body">
+              <ul class="points"><li data-i18n="p1_learn">Firestore güvenlik kuralları, App Check, service worker önbellek stratejileri — ve izin listesinin istemcide durmayacağı.</li></ul>
             </div>
-            <div class="project-links">
-              <a href="index.html">
-                <svg data-lucide="external-link"></svg>
-                <span data-i18n="proj_live">Siteyi Görüntüle</span>
-              </a>
-              <a href="https://github.com/" target="_blank" rel="noopener">
-                <svg data-lucide="github"></svg>
-                <span data-i18n="proj_source">Kaynak Kodu</span>
-              </a>
-            </div>
+          </details>
+          <div class="links-line">
+          <a href="https://github.com/Ferhat-Yasinoglu/NetStore" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.7-.3-5.5-1.4-5.5-6 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.4 4.6 18.4 5 18.4 5c.6 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3Z"/></svg><span data-i18n="link_source">Kaynak</span></a>
           </div>
         </div>
-
-        <div class="project-card">
-          <div class="project-thumb">
-            <span class="num">02</span>
-            <svg data-lucide="cloud-sun" style="position:absolute; inset-inline-end:12px; top:12px; width:24px; height:24px; color:#f0c583;"></svg>
-            <span class="weather-temp">24°</span>
-          </div>
-          <div class="project-info">
-            <h3 data-i18n="proj2_title">Hava Durumu Uygulaması</h3>
-            <p class="project-desc" data-i18n="proj2_full_desc">Girilen şehir için gerçek zamanlı hava durumu verisini bir API'den çekip ekranda gösteren basit bir uygulama.</p>
-            <div class="project-tags">
-              <span>JavaScript</span><span>API</span><span>Fetch</span>
+      </article>
+      <article class="rail-item">
+        <div class="rail-meta" data-i18n="p2_when">29 Ağu 2026</div>
+        <div>
+          <h3>reply-bot</h3>
+          <p data-i18n="p2_tag">Instagram yorumlarına ve WhatsApp mesajlarına kendi başına cevap veriyor</p>
+          <p data-i18n="p2_desc">Meta'nın webhook'u imzalı geliyor. Tekrar eden sorulara bir kural dosyası cevap veriyor — neyle yazıldığı, kaynağın nerede olduğu, öğrenmeye nereden başlanacağı — kalanı Claude'a gidiyor ve Claude emin olmadığında susuyor. Dört dil, çünkü mesajlar dört dilde geliyor. Tek kural motoru, iki oda: bir yorum gizlenebilir, bir WhatsApp cevabının 24 saati vardır.</p>
+          <p class="meta-line">TypeScript<span class="sep">·</span>Node.js<span class="sep">·</span>Express<span class="sep">·</span>Claude API</p>
+          <details class="disclosure">
+            <summary><span data-i18n="proj_learned">Öğrendiklerim</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="chev"><path d="m4 6.5 4 4 4-4"/></svg></summary>
+            <div class="disclosure-body">
+              <ul class="points"><li data-i18n="p2_learn">HMAC webhook imzaları, Meta Graph API, ve webhook'a işi yapmadan önce cevap vermek.</li></ul>
             </div>
-            <div class="project-links">
-              <a href="https://github.com/" target="_blank" rel="noopener">
-                <svg data-lucide="github"></svg>
-                <span data-i18n="proj_source">Kaynak Kodu</span>
-              </a>
-            </div>
+          </details>
+          <div class="links-line">
+          <a href="https://github.com/Ferhat-Yasinoglu/ferhat-yasinoglu/tree/main/reply-bot" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.7-.3-5.5-1.4-5.5-6 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.4 4.6 18.4 5 18.4 5c.6 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3Z"/></svg><span data-i18n="link_source">Kaynak</span></a>
           </div>
         </div>
-
-        <div class="project-card">
-          <div class="project-thumb coming">
-            <svg data-lucide="moon"></svg>
-            <span class="tag">COMING SOON</span>
-          </div>
-          <div class="project-info">
-            <h3 data-i18n="proj3_title">Yakında</h3>
-            <p class="project-desc" data-i18n="proj3_full_desc">Backend ve veritabanlarını öğrenirken üçüncü projemi burada paylaşacağım.</p>
+      </article>
+      <article class="rail-item">
+        <div class="rail-meta" data-i18n="p3_when">23–29 Ağu 2026</div>
+        <div>
+          <h3>botflow-mcp</h3>
+          <p data-i18n="p3_tag">Telegram akışlarını panelden değil, modele anlatarak kuruyorsun</p>
+          <p data-i18n="p3_desc">Botu bağla, akışı düz adımlarla anlat; sunucu konuşmayı yürütüyor — soru soruyor, cevapları saklıyor, buton basışına göre dallanıyor, insanları etiketliyor ve o etiketlerden çıkan gruplara duyuru yapıyor. MCP konuştuğu için akışı baştan sona model sürüyor; Telegram'a uzun yoklamayla bağlandığından açık bir adrese gerek kalmıyor.</p>
+          <p class="meta-line">TypeScript<span class="sep">·</span>MCP<span class="sep">·</span>SQLite<span class="sep">·</span>Telegram Bot API</p>
+          <details class="disclosure">
+            <summary><span data-i18n="proj_learned">Öğrendiklerim</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="chev"><path d="m4 6.5 4 4 4-4"/></svg></summary>
+            <div class="disclosure-body">
+              <ul class="points"><li data-i18n="p3_learn">Model Context Protocol, kaldığı yerden devam eden arka plan işleri, ve şemayı yerinde taşımak.</li></ul>
+            </div>
+          </details>
+          <div class="links-line">
+          <a href="https://github.com/Ferhat-Yasinoglu/ferhat-yasinoglu/tree/main/botflow-mcp" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.7-.3-5.5-1.4-5.5-6 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.4 4.6 18.4 5 18.4 5c.6 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3Z"/></svg><span data-i18n="link_source">Kaynak</span></a>
           </div>
         </div>
-
-      </div>
-    </div>
+      </article>
+      <article class="rail-item">
+        <div class="rail-meta" data-i18n="p4_when">18 Ağu 2026'dan beri</div>
+        <div>
+          <h3>Açık Defter</h3>
+          <p data-i18n="p4_tag">Bu site</p>
+          <p data-i18n="p4_desc">Çerçeve yok, derleme adımı yok — düz HTML, CSS ve JavaScript. Dört dil aynı arayüzde, Farsça'ya geçince yön sağdan sola dönüyor. Bir kez açtıktan sonra ağ olmadan da okunuyor.</p>
+          <p class="meta-line">HTML<span class="sep">·</span>CSS<span class="sep">·</span>JavaScript<span class="sep">·</span>Service Worker</p>
+          <details class="disclosure">
+            <summary><span data-i18n="proj_learned">Öğrendiklerim</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="chev"><path d="m4 6.5 4 4 4-4"/></svg></summary>
+            <div class="disclosure-body">
+              <ul class="points"><li data-i18n="p4_learn">Mantıksal CSS ölçüleriyle RTL, tercihleri sayfa boyanmadan önce uygulamak, ve tekrar eden HTML'i bir denetim script'iyle hizada tutmak.</li></ul>
+            </div>
+          </details>
+          <div class="links-line">
+          <a href="https://github.com/Ferhat-Yasinoglu/acik-defter" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.7-.3-5.5-1.4-5.5-6 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.4 4.6 18.4 5 18.4 5c.6 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3Z"/></svg><span data-i18n="link_source">Kaynak</span></a>
+          </div>
+        </div>
+      </article>
+      <article class="rail-item">
+        <div class="rail-meta" data-i18n="p5_when">23 Ağu 2026'dan beri</div>
+        <div>
+          <h3 data-i18n="p5_name">Profil kartları</h3>
+          <p data-i18n="p5_tag">GitHub profilimdeki grafikler</p>
+          <p data-i18n="p5_desc">Profilimin üstündeki başlık, terminal, dil grafiği ve katkı takvimi üçüncü parti bir servisten gelmiyor. Bir Node script'i GitHub API'sini sorguluyor, SVG'leri çizip depoya yazıyor; bir workflow altı saatte bir yeniliyor.</p>
+          <p class="meta-line">Node.js<span class="sep">·</span>SVG<span class="sep">·</span>GitHub Actions</p>
+          <details class="disclosure">
+            <summary><span data-i18n="proj_learned">Öğrendiklerim</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="chev"><path d="m4 6.5 4 4 4-4"/></svg></summary>
+            <div class="disclosure-body">
+              <ul class="points"><li data-i18n="p5_learn">GitHub API'siyle çalışmak, SVG'yi elle yazmak, zamanlanmış workflow'lar.</li></ul>
+            </div>
+          </details>
+          <div class="links-line">
+          <a href="https://github.com/Ferhat-Yasinoglu/ferhat-yasinoglu/blob/main/.github/scripts/cards.mjs" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.7-.3-5.5-1.4-5.5-6 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.4 4.6 18.4 5 18.4 5c.6 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3Z"/></svg><span data-i18n="link_source">Kaynak</span></a>
+          <a href="https://github.com/Ferhat-Yasinoglu" target="_blank" rel="noopener"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 3H3.5v9.5H13V9M9.5 3H13v3.5M13 3 7.5 8.5"/></svg><span data-i18n="link_live">Canlı</span></a>
+          </div>
+        </div>
+      </article>
+    </section>
   </main>
 
   <footer class="site-footer">
-    <div class="container footer-inner">
-      <p class="footer-copy">© 2026 Farhad Yaqoobi. <span data-i18n="footer_rights">Tüm hakları saklıdır.</span></p>
-      <p class="footer-quote">"<span data-i18n="footer_quote">Büyük hedefler, küçük adımlarla başlar.</span>"</p>
-      <div class="footer-social">
-        <a class="icon-btn" href="https://github.com/" target="_blank" rel="noopener"><svg data-lucide="github"></svg></a>
-        <a class="icon-btn" href="https://linkedin.com/" target="_blank" rel="noopener"><svg data-lucide="linkedin"></svg></a>
-        <a class="icon-btn" href="mailto:hello@example.com"><svg data-lucide="mail"></svg></a>
-        <a class="icon-btn up" href="#top"><svg data-lucide="arrow-up"></svg></a>
+    <div class="wrap footer-inner">
+      <div>
+        <p data-i18n="footer_tagline">Bir IT öğrencisinin açık defteri.</p>
+        <p class="footer-note" data-i18n="footer_built">Çerçevesiz, derleme adımsız. Kaynağı açık.</p>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/Ferhat-Yasinoglu" rel="me noopener" target="_blank">GitHub</a>
+        <a href="https://www.linkedin.com/in/ferhat-yasinoglu" rel="me noopener" target="_blank">LinkedIn</a>
+        <a href="https://www.instagram.com/farhad___yaqoobi" rel="me noopener" target="_blank">Instagram</a>
+        <a href="mailto:farhadyaqoobi.kunduz@gmail.com" data-i18n="footer_email">E-posta</a>
+        <a href="https://github.com/Ferhat-Yasinoglu/acik-defter" rel="noopener" target="_blank" data-i18n="footer_source">Bu sitenin kaynağı</a>
       </div>
     </div>
   </footer>
 
-  <div class="mobile-overlay">
-    <div class="mobile-overlay-head">
-      <a href="index.html" class="logo">FY<span>.</span></a>
-      <button class="mobile-close" aria-label="Menüyü kapat"><svg data-lucide="x"></svg></button>
-    </div>
-    <nav class="mobile-nav">
-      <a href="index.html" data-page-link="home"><svg data-lucide="home"></svg><span data-i18n="nav_home">Ana Sayfa</span></a>
-      <a href="yolculugum.html" data-page-link="journey"><svg data-lucide="compass"></svg><span data-i18n="nav_journey">Yolculuğum</span></a>
-      <a href="projeler.html" data-page-link="projects"><svg data-lucide="folder"></svg><span data-i18n="nav_projects">Projeler</span></a>
-      <a href="ogrenme.html" data-page-link="learning"><svg data-lucide="graduation-cap"></svg><span data-i18n="nav_learning">Öğrenme</span></a>
-      <a href="notlar.html" data-page-link="notes"><svg data-lucide="notebook-pen"></svg><span data-i18n="nav_notes">Notlar</span></a>
-      <a href="hakkimda.html" data-page-link="about"><svg data-lucide="user-round"></svg><span data-i18n="nav_about">Hakkımda</span></a>
-      <a href="iletisim.html" data-page-link="contact"><svg data-lucide="send"></svg><span data-i18n="nav_contact">İletişim</span></a>
-    </nav>
-    <div class="mobile-divider"></div>
-    <div class="mobile-social">
-      <a href="https://github.com/" target="_blank" rel="noopener"><svg data-lucide="github"></svg><span>GitHub</span></a>
-      <a href="https://linkedin.com/" target="_blank" rel="noopener"><svg data-lucide="linkedin"></svg><span>LinkedIn</span></a>
-      <a href="mailto:hello@example.com"><svg data-lucide="mail"></svg><span>E-posta</span></a>
-    </div>
-  </div>
-
-  <script src="https://unpkg.com/lucide@latest"></script>
   <script src="js/i18n.js"></script>
-  <script src="js/main.js"></script>
-  <script src="js/tilt.js"></script>
-  <script src="js/mouse-glow.js"></script>
-  <script src="js/toast.js"></script>
-  <script src="js/appearance.js"></script>
-  <script src="js/cursor.js"></script>
-  <script src="js/navbar-scroll.js"></script>
+  <script src="js/site.js"></script>
+  <script>if("serviceWorker" in navigator)addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})});</script>
 </body>
 </html>

@@ -1,261 +1,161 @@
 <!DOCTYPE html>
-<html lang="tr" dir="ltr" data-theme="dark">
+<html lang="tr" dir="ltr" data-theme="light">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Yolculuğum — Farhad Yaqoobi</title>
-  <link rel="stylesheet" href="css/style.css" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>(function(){var d=document.documentElement,ok={tr:1,en:1,de:1,fa:1};try{
+var t=localStorage.getItem("ad-theme");
+d.dataset.theme=(t==="light"||t==="dark")?t:(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");
+var l=localStorage.getItem("ad-lang");
+if(!ok[l]){l=(navigator.language||"tr").slice(0,2).toLowerCase();if(!ok[l])l="tr";}
+d.lang=l;d.dir=(l==="fa")?"rtl":"ltr";
+}catch(e){}})();</script>
+<title>Yolculuğum — Açık Defter</title>
+<meta name="description" content="Ağustos 2026'dan bu yana ne yaptım — commit geçmişinden çıkarılmış bir zaman çizgisi.">
+<link rel="canonical" href="https://ferhat-yasinoglu.github.io/acik-defter/yolculugum.html">
+<meta name="author" content="Farhad Yaqoobi">
+<meta name="theme-color" content="#fbfaf7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#131211" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Açık Defter">
+<meta property="og:locale" content="tr_TR">
+<meta property="og:title" content="Yolculuğum — Açık Defter">
+<meta property="og:description" content="Ağustos 2026'dan bu yana ne yaptım — commit geçmişinden çıkarılmış bir zaman çizgisi.">
+<meta property="og:url" content="https://ferhat-yasinoglu.github.io/acik-defter/yolculugum.html">
+<meta property="og:image" content="https://ferhat-yasinoglu.github.io/acik-defter/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Vazirmatn:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body data-page="journey">
 
-  <header class="navbar">
-    <div class="container navbar-inner">
-      <a href="index.html" class="logo">FY<span>.</span></a>
+  <a class="skip-link" href="#main" data-i18n="skip">İçeriğe geç</a>
 
-      <nav class="nav-links">
-        <a href="index.html" data-page-link="home" data-i18n="nav_home">Ana Sayfa</a>
-        <a href="yolculugum.html" data-page-link="journey" data-i18n="nav_journey">Yolculuğum</a>
-        <a href="projeler.html" data-page-link="projects" data-i18n="nav_projects">Projeler</a>
-        <a href="ogrenme.html" data-page-link="learning" data-i18n="nav_learning">Öğrenme</a>
-        <a href="notlar.html" data-page-link="notes" data-i18n="nav_notes">Notlar</a>
-        <a href="hakkimda.html" data-page-link="about" data-i18n="nav_about">Hakkımda</a>
-        <a href="iletisim.html" data-page-link="contact" data-i18n="nav_contact">İletişim</a>
+  <header class="masthead">
+    <div class="wrap masthead-inner">
+      <a class="wordmark" href="index.html">Farhad Yaqoobi<span class="dot">.</span></a>
+
+      <nav class="nav">
+        <a href="index.html" data-i18n="nav_home">Ana Sayfa</a>
+        <a href="yolculugum.html" aria-current="page" data-i18n="nav_journey">Yolculuğum</a>
+        <a href="projeler.html" data-i18n="nav_projects">Projeler</a>
+        <a href="notlar.html" data-i18n="nav_notes">Notlar</a>
+        <a href="hakkimda.html" data-i18n="nav_about">Hakkımda</a>
       </nav>
 
-      <div class="nav-actions">
-        <div class="status-pill">
-          <span class="status-dot"></span>
-          <span class="label">10:14 gece</span>
-        </div>
-
-        <button class="icon-btn theme-toggle" aria-label="Temayı değiştir">
-          <svg class="icon-moon" data-lucide="moon"></svg>
-          <svg class="icon-sun" data-lucide="sun" style="display:none"></svg>
+      <div class="tools">
+        <button type="button" class="tool theme-toggle" aria-pressed="false" data-i18n-aria-label="aria_theme" aria-label="Temayı değiştir">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="i-moon"><path d="M13.5 9.6A5.7 5.7 0 0 1 6.4 2.5a5.8 5.8 0 1 0 7.1 7.1Z"/></svg>
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="i-sun" hidden><circle cx="8" cy="8" r="3"/><path d="M8 1v1.4M8 13.6V15M15 8h-1.4M2.4 8H1M12.9 3.1l-1 1M4.1 11.9l-1 1M12.9 12.9l-1-1M4.1 4.1l-1-1"/></svg>
         </button>
 
-        <div class="appearance-switch">
-          <button class="icon-btn appearance-trigger" data-i18n-aria-label="aria_appearance" aria-label="Görünümü özelleştir">
-            <svg data-lucide="palette"></svg>
-          </button>
-          <div class="appearance-menu">
-            <div class="appearance-section">
-              <span class="appearance-label" data-i18n="appearance_theme">Tema</span>
-              <div class="appearance-options">
-                <button type="button" class="theme-choice" data-theme-choice="dark">
-                  <svg data-lucide="moon"></svg><span data-i18n="appearance_theme_dark">Koyu</span>
-                </button>
-                <button type="button" class="theme-choice" data-theme-choice="light">
-                  <svg data-lucide="sun"></svg><span data-i18n="appearance_theme_light">Açık</span>
-                </button>
-                <button type="button" class="theme-choice" data-theme-choice="system">
-                  <svg data-lucide="monitor"></svg><span data-i18n="appearance_theme_system">Sistem</span>
-                </button>
-              </div>
-            </div>
-
-            <div class="appearance-section">
-              <span class="appearance-label" data-i18n="appearance_accent">Vurgu Rengi</span>
-              <div class="accent-swatches">
-                <button type="button" class="accent-swatch" data-accent-choice="gold" style="--swatch:#dba55a" data-i18n-aria-label="accent_gold" aria-label="Altın"></button>
-                <button type="button" class="accent-swatch" data-accent-choice="blue" style="--swatch:#5b9bd5" data-i18n-aria-label="accent_blue" aria-label="Mavi"></button>
-                <button type="button" class="accent-swatch" data-accent-choice="purple" style="--swatch:#a78bfa" data-i18n-aria-label="accent_purple" aria-label="Mor"></button>
-                <button type="button" class="accent-swatch" data-accent-choice="green" style="--swatch:#4fd694" data-i18n-aria-label="accent_green" aria-label="Yeşil"></button>
-              </div>
-            </div>
-
-            <div class="appearance-section">
-              <span class="appearance-label" data-i18n="appearance_glass">Cam Yoğunluğu</span>
-              <input type="range" class="glass-slider" min="0" max="32" value="20" data-i18n-aria-label="appearance_glass" aria-label="Cam Yoğunluğu" />
-            </div>
+        <details class="langpick">
+          <summary class="tool" data-i18n-aria-label="aria_lang" aria-label="Dili değiştir"><span data-lang-short>TR</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 6.5 4 4 4-4"/></svg></summary>
+          <div class="langpick-menu">
+          <button type="button" data-lang="tr" aria-current="true"><span data-i18n="lang_tr">Türkçe</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="tick"><path d="m3 8.5 3.2 3.2L13 4.9"/></svg></button>
+          <button type="button" data-lang="en" aria-current="false"><span data-i18n="lang_en">English</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="tick"><path d="m3 8.5 3.2 3.2L13 4.9"/></svg></button>
+          <button type="button" data-lang="de" aria-current="false"><span data-i18n="lang_de">Deutsch</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="tick"><path d="m3 8.5 3.2 3.2L13 4.9"/></svg></button>
+          <button type="button" data-lang="fa" aria-current="false"><span data-i18n="lang_fa">فارسی</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="tick"><path d="m3 8.5 3.2 3.2L13 4.9"/></svg></button>
           </div>
-        </div>
-
-        <div class="lang-switch">
-          <button class="lang-trigger">
-            <span class="name">TR</span>
-            <svg data-lucide="chevron-down"></svg>
-          </button>
-          <div class="lang-menu">
-            <button class="lang-option" data-lang="tr">
-              <span class="name" data-i18n="lang_tr">Türkçe</span>
-              <svg class="check" data-lucide="check"></svg>
-            </button>
-            <button class="lang-option" data-lang="fa">
-              <span class="name" data-i18n="lang_fa">فارسی</span>
-              <svg class="check" data-lucide="check"></svg>
-            </button>
-            <button class="lang-option" data-lang="de">
-              <span class="name" data-i18n="lang_de">Deutsch</span>
-              <svg class="check" data-lucide="check"></svg>
-            </button>
-            <button class="lang-option" data-lang="en">
-              <span class="name" data-i18n="lang_en">English</span>
-              <svg class="check" data-lucide="check"></svg>
-            </button>
-          </div>
-        </div>
-
-        <button class="menu-toggle" aria-label="Menüyü aç">
-          <svg data-lucide="menu"></svg>
-        </button>
+        </details>
       </div>
     </div>
   </header>
 
-  <main>
-    <section class="page-hero">
-      <div class="container">
-        <p class="eyebrow">
-          <span class="rule"></span>
-          <svg data-lucide="compass"></svg>
-          <span data-i18n="eyebrow">Bir IT Öğrencisinin Açık Defteri</span>
-        </p>
-        <h1 data-i18n="page_journey_title">Yolculuğum</h1>
-        <p data-i18n="page_journey_desc">Yazılım öğrenme yolculuğumdaki dönüm noktaları ve adımlar.</p>
-      </div>
+  <main id="main">
+    <section class="wrap page-head">
+      <span class="label" data-i18n="nav_journey">Yolculuğum</span>
+      <h1 data-i18n="nav_journey">Yolculuğum</h1>
+      <p class="lead" data-i18n="journey_lead">Aşağıdaki tarihler uydurma değil; depolarımın commit geçmişinden geliyor.</p>
     </section>
 
-    <div class="container">
+    <section class="wrap section">
       <div class="timeline">
-
-        <div class="timeline-item">
-          <div class="timeline-marker"><svg data-lucide="flag"></svg></div>
-          <button type="button" class="timeline-card" aria-expanded="false">
-            <span class="timeline-date" data-i18n="journey_tl1_date">Ağustos 2025</span>
-            <h3><span data-i18n="journey_tl1_title">Yolun Başlangıcı</span><svg data-lucide="chevron-down" class="timeline-toggle-icon"></svg></h3>
-            <div class="timeline-detail">
-              <div class="timeline-detail-inner">
-                <p data-i18n="journey_tl1_desc">Kod yazmaya karar verdim ve ilk "Merhaba Dünya" programımı çalıştırdım. İşte o an bu yolculuk başladı.</p>
-              </div>
-            </div>
-          </button>
+      <article class="rail-item">
+        <div class="rail-meta"><time datetime="2026-08-17" data-i18n="j1_date">17 Ağustos 2026</time></div>
+        <div>
+          <h3 data-i18n="j1_title">Defteri açtım</h3>
+          <p data-i18n="j1_text">acik-defter deposunu oluşturdum. O gün elimde bir index.html ve bir stil dosyası vardı, o kadar.</p>
         </div>
-
-        <div class="timeline-item">
-          <div class="timeline-marker"><svg data-lucide="code"></svg></div>
-          <button type="button" class="timeline-card" aria-expanded="false">
-            <span class="timeline-date" data-i18n="journey_tl2_date">Eylül 2025</span>
-            <h3><span data-i18n="journey_tl2_title">HTML & CSS ile Temeller</span><svg data-lucide="chevron-down" class="timeline-toggle-icon"></svg></h3>
-            <div class="timeline-detail">
-              <div class="timeline-detail-inner">
-                <p data-i18n="journey_tl2_desc">Web sayfalarının nasıl inşa edildiğini öğrendim; ilk statik sayfalarımı sıfırdan kodladım.</p>
-              </div>
-            </div>
-          </button>
+      </article>
+      <article class="rail-item">
+        <div class="rail-meta"><time datetime="2026-08-18" data-i18n="j2_date">18 Ağustos 2026</time></div>
+        <div>
+          <h3 data-i18n="j2_title">İlk yayın</h3>
+          <p data-i18n="j2_text">Site GitHub Pages'te yayına girdi. İlk kez kendi yazdığım bir şeyin adresi oldu.</p>
         </div>
-
-        <div class="timeline-item">
-          <div class="timeline-marker"><svg data-lucide="braces"></svg></div>
-          <button type="button" class="timeline-card" aria-expanded="false">
-            <span class="timeline-date" data-i18n="journey_tl3_date">Kasım 2025</span>
-            <h3><span data-i18n="journey_tl3_title">JavaScript'e İlk Adım</span><svg data-lucide="chevron-down" class="timeline-toggle-icon"></svg></h3>
-            <div class="timeline-detail">
-              <div class="timeline-detail-inner">
-                <p data-i18n="journey_tl3_desc">Değişkenler, fonksiyonlar ve döngülerle tanıştım. Sayfalara hayat vermenin keyfini keşfettim.</p>
-              </div>
-            </div>
-          </button>
+      </article>
+      <article class="rail-item">
+        <div class="rail-meta"><time datetime="2026-08-19" data-i18n="j3_date">19–20 Ağustos 2026</time></div>
+        <div>
+          <h3 data-i18n="j3_title">NetStore paneli</h3>
+          <p data-i18n="j3_text">Bir mağaza yönetim paneli yazmaya başladım: gösterge paneli, üç dil, basılabilir fatura. Sonra Google girişi ve Firestore ile iki kişilik ortak kullanım ekledim; en sonunda telefona kurulabilir hale getirdim.</p>
         </div>
-
-        <div class="timeline-item">
-          <div class="timeline-marker"><svg data-lucide="rocket"></svg></div>
-          <button type="button" class="timeline-card" aria-expanded="false">
-            <span class="timeline-date" data-i18n="journey_tl4_date">Ocak 2026</span>
-            <h3><span data-i18n="journey_tl4_title">İlk Projem: Kişisel Web Sitesi</span><svg data-lucide="chevron-down" class="timeline-toggle-icon"></svg></h3>
-            <div class="timeline-detail">
-              <div class="timeline-detail-inner">
-                <p data-i18n="journey_tl4_desc">Öğrendiklerimi bir araya getirip ilk gerçek projemi yayınladım — şu an üzerinde çalıştığım bu site.</p>
-              </div>
-            </div>
-          </button>
+      </article>
+      <article class="rail-item">
+        <div class="rail-meta"><time datetime="2026-08-21" data-i18n="j4_date">21 Ağustos 2026</time></div>
+        <div>
+          <h3 data-i18n="j4_title">Güvenliği ciddiye aldım</h3>
+          <p data-i18n="j4_text">İzin listesini istemciden sunucuya taşıdım ve App Check'i devreye aldım. Bir şeyi çalışır hale getirmekle güvenli hale getirmenin ayrı işler olduğunu burada anladım.</p>
         </div>
-
-        <div class="timeline-item">
-          <div class="timeline-marker"><svg data-lucide="cloud-sun"></svg></div>
-          <button type="button" class="timeline-card" aria-expanded="false">
-            <span class="timeline-date" data-i18n="journey_tl5_date">Nisan 2026</span>
-            <h3><span data-i18n="journey_tl5_title">API'lerle Tanışma: Hava Durumu Uygulaması</span><svg data-lucide="chevron-down" class="timeline-toggle-icon"></svg></h3>
-            <div class="timeline-detail">
-              <div class="timeline-detail-inner">
-                <p data-i18n="journey_tl5_desc">Harici bir API'den veri çekmeyi ve JavaScript ile dinamik olarak göstermeyi öğrendim.</p>
-              </div>
-            </div>
-          </button>
+      </article>
+      <article class="rail-item">
+        <div class="rail-meta"><time datetime="2026-08-23" data-i18n="j5_date">23 Ağustos 2026</time></div>
+        <div>
+          <h3 data-i18n="j5_title">MCP ile tanışma</h3>
+          <p data-i18n="j5_text">botflow-mcp'yi yazmaya başladım. Model Context Protocol'ü ilk kez burada kullandım — bir sunucu yazıp onu modelin sürmesini izlemek tuhaf bir histi.</p>
         </div>
-
-        <div class="timeline-item active expanded">
-          <div class="timeline-marker"><svg data-lucide="layout-grid"></svg></div>
-          <button type="button" class="timeline-card" aria-expanded="true">
-            <span class="timeline-date" data-i18n="journey_tl6_date">Ağustos 2026</span>
-            <h3><span data-i18n="journey_tl6_title">DOM ve CSS Grid ile Derinleşiyorum</span><svg data-lucide="chevron-down" class="timeline-toggle-icon"></svg></h3>
-            <div class="timeline-detail">
-              <div class="timeline-detail-inner">
-                <p data-i18n="journey_tl6_desc">DOM manipülasyonu ve modern grid düzenleriyle daha esnek, etkileşimli arayüzler kuruyorum. Şu anda buradayım.</p>
-              </div>
-            </div>
-          </button>
+      </article>
+      <article class="rail-item">
+        <div class="rail-meta"><time datetime="2026-08-28" data-i18n="j6_date">28 Ağustos 2026</time></div>
+        <div>
+          <h3 data-i18n="j6_title">NetStore'u kendi evine taşıdım</h3>
+          <p data-i18n="j6_text">NetStore bu deponun içinde büyümüştü. git subtree split ile geçmişiyle birlikte ayırıp kendi deposuna taşıdım; bu defter yeniden sadece defter oldu.</p>
         </div>
-
-        <div class="timeline-item upcoming">
-          <div class="timeline-marker"><svg data-lucide="target"></svg></div>
-          <button type="button" class="timeline-card" aria-expanded="false">
-            <span class="timeline-date" data-i18n="journey_tl7_date">Sıradaki Hedef</span>
-            <h3><span data-i18n="journey_tl7_title">Backend & Veritabanlarına Giriş</span><svg data-lucide="chevron-down" class="timeline-toggle-icon"></svg></h3>
-            <div class="timeline-detail">
-              <div class="timeline-detail-inner">
-                <p data-i18n="journey_tl7_desc">Node.js ve veritabanlarını öğrenerek tam yığın (full-stack) bir geliştirici olma yolunda ilerlemek istiyorum.</p>
-              </div>
-            </div>
-          </button>
+      </article>
+      <article class="rail-item">
+        <div class="rail-meta"><time datetime="2026-08-29" data-i18n="j7_date">29 Ağustos 2026</time></div>
+        <div>
+          <h3 data-i18n="j7_title">reply-bot</h3>
+          <p data-i18n="j7_text">Instagram yorumlarına cevap veren botu yazdım, sonra aynı kural motoruna WhatsApp'ı bağladım. Webhook imzaları ve Meta Graph API bu günün konusuydu.</p>
         </div>
-
+      </article>
+      <article class="rail-item">
+        <div class="rail-meta"><span data-i18n="j8_date">Sırada</span></div>
+        <div>
+          <h3 data-i18n="j8_title">Backend temelleri</h3>
+          <p data-i18n="j8_text">Node.js tarafını düzgün öğrenmek istiyorum: veritabanı, kimlik doğrulama, test. Bir de React'e bakacağım.</p>
+        </div>
+      </article>
       </div>
-    </div>
+    </section>
   </main>
 
   <footer class="site-footer">
-    <div class="container footer-inner">
-      <p class="footer-copy">© 2026 Farhad Yaqoobi. <span data-i18n="footer_rights">Tüm hakları saklıdır.</span></p>
-      <p class="footer-quote">"<span data-i18n="footer_quote">Büyük hedefler, küçük adımlarla başlar.</span>"</p>
-      <div class="footer-social">
-        <a class="icon-btn" href="https://github.com/" target="_blank" rel="noopener"><svg data-lucide="github"></svg></a>
-        <a class="icon-btn" href="https://linkedin.com/" target="_blank" rel="noopener"><svg data-lucide="linkedin"></svg></a>
-        <a class="icon-btn" href="mailto:hello@example.com"><svg data-lucide="mail"></svg></a>
-        <a class="icon-btn up" href="#top"><svg data-lucide="arrow-up"></svg></a>
+    <div class="wrap footer-inner">
+      <div>
+        <p data-i18n="footer_tagline">Bir IT öğrencisinin açık defteri.</p>
+        <p class="footer-note" data-i18n="footer_built">Çerçevesiz, derleme adımsız. Kaynağı açık.</p>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/Ferhat-Yasinoglu" rel="me noopener" target="_blank">GitHub</a>
+        <a href="https://www.linkedin.com/in/ferhat-yasinoglu" rel="me noopener" target="_blank">LinkedIn</a>
+        <a href="https://www.instagram.com/farhad___yaqoobi" rel="me noopener" target="_blank">Instagram</a>
+        <a href="mailto:farhadyaqoobi.kunduz@gmail.com" data-i18n="footer_email">E-posta</a>
+        <a href="https://github.com/Ferhat-Yasinoglu/acik-defter" rel="noopener" target="_blank" data-i18n="footer_source">Bu sitenin kaynağı</a>
       </div>
     </div>
   </footer>
 
-  <div class="mobile-overlay">
-    <div class="mobile-overlay-head">
-      <a href="index.html" class="logo">FY<span>.</span></a>
-      <button class="mobile-close" aria-label="Menüyü kapat"><svg data-lucide="x"></svg></button>
-    </div>
-    <nav class="mobile-nav">
-      <a href="index.html" data-page-link="home"><svg data-lucide="home"></svg><span data-i18n="nav_home">Ana Sayfa</span></a>
-      <a href="yolculugum.html" data-page-link="journey"><svg data-lucide="compass"></svg><span data-i18n="nav_journey">Yolculuğum</span></a>
-      <a href="projeler.html" data-page-link="projects"><svg data-lucide="folder"></svg><span data-i18n="nav_projects">Projeler</span></a>
-      <a href="ogrenme.html" data-page-link="learning"><svg data-lucide="graduation-cap"></svg><span data-i18n="nav_learning">Öğrenme</span></a>
-      <a href="notlar.html" data-page-link="notes"><svg data-lucide="notebook-pen"></svg><span data-i18n="nav_notes">Notlar</span></a>
-      <a href="hakkimda.html" data-page-link="about"><svg data-lucide="user-round"></svg><span data-i18n="nav_about">Hakkımda</span></a>
-      <a href="iletisim.html" data-page-link="contact"><svg data-lucide="send"></svg><span data-i18n="nav_contact">İletişim</span></a>
-    </nav>
-    <div class="mobile-divider"></div>
-    <div class="mobile-social">
-      <a href="https://github.com/" target="_blank" rel="noopener"><svg data-lucide="github"></svg><span>GitHub</span></a>
-      <a href="https://linkedin.com/" target="_blank" rel="noopener"><svg data-lucide="linkedin"></svg><span>LinkedIn</span></a>
-      <a href="mailto:hello@example.com"><svg data-lucide="mail"></svg><span>E-posta</span></a>
-    </div>
-  </div>
-
-  <script src="https://unpkg.com/lucide@latest"></script>
   <script src="js/i18n.js"></script>
-  <script src="js/main.js"></script>
-  <script src="js/timeline.js"></script>
-  <script src="js/mouse-glow.js"></script>
-  <script src="js/toast.js"></script>
-  <script src="js/appearance.js"></script>
-  <script src="js/cursor.js"></script>
-  <script src="js/navbar-scroll.js"></script>
+  <script src="js/site.js"></script>
+  <script>if("serviceWorker" in navigator)addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})});</script>
 </body>
 </html>

@@ -1,61 +1,58 @@
 /* ==========================================================================
-   Notes page — category filter + accordion detail
+   Notlar sayfası — kategori süzgeci.
+
+   JavaScript kapalıysa hiçbir şey olmaz: bütün notlar görünür kalır ve
+   ayrıntılar <details> olduğu için yine açılıp kapanır. Süzgeç yalnızca
+   bir kolaylık.
    ========================================================================== */
 
 (function () {
+  "use strict";
+
   function init() {
-    const toolbar = document.querySelector(".notes-filters");
-    if (!toolbar) return;
+    var bar = document.querySelector(".filters");
+    if (!bar) return;
 
-    const pills = Array.from(toolbar.querySelectorAll(".filter-pill"));
-    const groups = Array.from(document.querySelectorAll(".notes-month-group"));
-    const countNum = document.querySelector(".notes-count .num");
-    const emptyState = document.querySelector(".notes-empty");
+    var buttons = Array.prototype.slice.call(bar.querySelectorAll("[data-filter]"));
+    var notes = Array.prototype.slice.call(document.querySelectorAll("[data-cat]"));
+    var countEl = document.querySelector(".filter-count .num");
+    var countLabel = document.querySelector(".filter-count .word");
+    var empty = document.querySelector(".empty");
+    var active = "all";
 
-    function applyFilter(filter) {
-      let visible = 0;
+    function render() {
+      var visible = 0;
 
-      groups.forEach((group) => {
-        const cards = Array.from(group.querySelectorAll(".note-card"));
-        let groupVisible = 0;
-
-        cards.forEach((card) => {
-          const match = filter === "all" || card.getAttribute("data-category") === filter;
-          card.classList.toggle("is-hidden", !match);
-          if (match) {
-            groupVisible++;
-            visible++;
-          }
-        });
-
-        group.classList.toggle("is-hidden", groupVisible === 0);
+      notes.forEach(function (note) {
+        var match = active === "all" || note.getAttribute("data-cat") === active;
+        note.classList.toggle("is-hidden", !match);
+        if (match) visible++;
       });
 
-      if (countNum) countNum.textContent = String(visible);
-      if (emptyState) emptyState.classList.toggle("show", visible === 0);
+      buttons.forEach(function (b) {
+        b.setAttribute("aria-pressed", String(b.getAttribute("data-filter") === active));
+      });
+
+      if (countEl) countEl.textContent = String(visible);
+      if (countLabel) {
+        var dict = translations[document.documentElement.getAttribute("lang")] || {};
+        var key = visible === 1 ? "notes_count_one" : "notes_count_many";
+        if (dict[key]) countLabel.textContent = dict[key];
+      }
+      if (empty) empty.hidden = visible !== 0;
     }
 
-    pills.forEach((pill) => {
-      pill.addEventListener("click", () => {
-        pills.forEach((p) => {
-          p.classList.remove("active");
-          p.setAttribute("aria-pressed", "false");
-        });
-        pill.classList.add("active");
-        pill.setAttribute("aria-pressed", "true");
-        applyFilter(pill.getAttribute("data-filter"));
+    buttons.forEach(function (b) {
+      b.addEventListener("click", function () {
+        active = b.getAttribute("data-filter");
+        render();
       });
     });
 
-    document.querySelectorAll(".note-summary").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const card = btn.closest(".note-card");
-        const expanded = card.classList.toggle("expanded");
-        btn.setAttribute("aria-expanded", String(expanded));
-      });
-    });
+    /* Dil değişince tekil/çoğul etiketi de yenilenmeli. */
+    document.addEventListener("site:lang", render);
 
-    applyFilter("all");
+    render();
   }
 
   if (document.readyState === "loading") {

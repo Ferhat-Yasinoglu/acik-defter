@@ -1,322 +1,258 @@
 <!DOCTYPE html>
-<html lang="tr" dir="ltr" data-theme="dark">
+<html lang="tr" dir="ltr" data-theme="light">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Notlar — Farhad Yaqoobi</title>
-  <link rel="stylesheet" href="css/style.css" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>(function(){var d=document.documentElement,ok={tr:1,en:1,de:1,fa:1};try{
+var t=localStorage.getItem("ad-theme");
+d.dataset.theme=(t==="light"||t==="dark")?t:(matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light");
+var l=localStorage.getItem("ad-lang");
+if(!ok[l]){l=(navigator.language||"tr").slice(0,2).toLowerCase();if(!ok[l])l="tr";}
+d.lang=l;d.dir=(l==="fa")?"rtl":"ltr";
+}catch(e){}})();</script>
+<title>Notlar — Açık Defter</title>
+<meta name="description" content="Öğrenirken tuttuğum kısa notlar: webhook imzaları, Firestore kuralları, service worker önbelleği, RTL.">
+<link rel="canonical" href="https://ferhat-yasinoglu.github.io/acik-defter/notlar.html">
+<meta name="author" content="Farhad Yaqoobi">
+<meta name="theme-color" content="#fbfaf7" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#131211" media="(prefers-color-scheme: dark)">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Açık Defter">
+<meta property="og:locale" content="tr_TR">
+<meta property="og:title" content="Notlar — Açık Defter">
+<meta property="og:description" content="Öğrenirken tuttuğum kısa notlar: webhook imzaları, Firestore kuralları, service worker önbelleği, RTL.">
+<meta property="og:url" content="https://ferhat-yasinoglu.github.io/acik-defter/notlar.html">
+<meta property="og:image" content="https://ferhat-yasinoglu.github.io/acik-defter/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Vazirmatn:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body data-page="notes">
 
-  <header class="navbar">
-    <div class="container navbar-inner">
-      <a href="index.html" class="logo">FY<span>.</span></a>
+  <a class="skip-link" href="#main" data-i18n="skip">İçeriğe geç</a>
 
-      <nav class="nav-links">
-        <a href="index.html" data-page-link="home" data-i18n="nav_home">Ana Sayfa</a>
-        <a href="yolculugum.html" data-page-link="journey" data-i18n="nav_journey">Yolculuğum</a>
-        <a href="projeler.html" data-page-link="projects" data-i18n="nav_projects">Projeler</a>
-        <a href="ogrenme.html" data-page-link="learning" data-i18n="nav_learning">Öğrenme</a>
-        <a href="notlar.html" data-page-link="notes" data-i18n="nav_notes">Notlar</a>
-        <a href="hakkimda.html" data-page-link="about" data-i18n="nav_about">Hakkımda</a>
-        <a href="iletisim.html" data-page-link="contact" data-i18n="nav_contact">İletişim</a>
+  <header class="masthead">
+    <div class="wrap masthead-inner">
+      <a class="wordmark" href="index.html">Farhad Yaqoobi<span class="dot">.</span></a>
+
+      <nav class="nav">
+        <a href="index.html" data-i18n="nav_home">Ana Sayfa</a>
+        <a href="yolculugum.html" data-i18n="nav_journey">Yolculuğum</a>
+        <a href="projeler.html" data-i18n="nav_projects">Projeler</a>
+        <a href="notlar.html" aria-current="page" data-i18n="nav_notes">Notlar</a>
+        <a href="hakkimda.html" data-i18n="nav_about">Hakkımda</a>
       </nav>
 
-      <div class="nav-actions">
-        <div class="status-pill">
-          <span class="status-dot"></span>
-          <span class="label">10:14 gece</span>
-        </div>
-
-        <button class="icon-btn theme-toggle" aria-label="Temayı değiştir">
-          <svg class="icon-moon" data-lucide="moon"></svg>
-          <svg class="icon-sun" data-lucide="sun" style="display:none"></svg>
+      <div class="tools">
+        <button type="button" class="tool theme-toggle" aria-pressed="false" data-i18n-aria-label="aria_theme" aria-label="Temayı değiştir">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="i-moon"><path d="M13.5 9.6A5.7 5.7 0 0 1 6.4 2.5a5.8 5.8 0 1 0 7.1 7.1Z"/></svg>
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="i-sun" hidden><circle cx="8" cy="8" r="3"/><path d="M8 1v1.4M8 13.6V15M15 8h-1.4M2.4 8H1M12.9 3.1l-1 1M4.1 11.9l-1 1M12.9 12.9l-1-1M4.1 4.1l-1-1"/></svg>
         </button>
 
-        <div class="appearance-switch">
-          <button class="icon-btn appearance-trigger" data-i18n-aria-label="aria_appearance" aria-label="Görünümü özelleştir">
-            <svg data-lucide="palette"></svg>
-          </button>
-          <div class="appearance-menu">
-            <div class="appearance-section">
-              <span class="appearance-label" data-i18n="appearance_theme">Tema</span>
-              <div class="appearance-options">
-                <button type="button" class="theme-choice" data-theme-choice="dark">
-                  <svg data-lucide="moon"></svg><span data-i18n="appearance_theme_dark">Koyu</span>
-                </button>
-                <button type="button" class="theme-choice" data-theme-choice="light">
-                  <svg data-lucide="sun"></svg><span data-i18n="appearance_theme_light">Açık</span>
-                </button>
-                <button type="button" class="theme-choice" data-theme-choice="system">
-                  <svg data-lucide="monitor"></svg><span data-i18n="appearance_theme_system">Sistem</span>
-                </button>
-              </div>
-            </div>
-
-            <div class="appearance-section">
-              <span class="appearance-label" data-i18n="appearance_accent">Vurgu Rengi</span>
-              <div class="accent-swatches">
-                <button type="button" class="accent-swatch" data-accent-choice="gold" style="--swatch:#dba55a" data-i18n-aria-label="accent_gold" aria-label="Altın"></button>
-                <button type="button" class="accent-swatch" data-accent-choice="blue" style="--swatch:#5b9bd5" data-i18n-aria-label="accent_blue" aria-label="Mavi"></button>
-                <button type="button" class="accent-swatch" data-accent-choice="purple" style="--swatch:#a78bfa" data-i18n-aria-label="accent_purple" aria-label="Mor"></button>
-                <button type="button" class="accent-swatch" data-accent-choice="green" style="--swatch:#4fd694" data-i18n-aria-label="accent_green" aria-label="Yeşil"></button>
-              </div>
-            </div>
-
-            <div class="appearance-section">
-              <span class="appearance-label" data-i18n="appearance_glass">Cam Yoğunluğu</span>
-              <input type="range" class="glass-slider" min="0" max="32" value="20" data-i18n-aria-label="appearance_glass" aria-label="Cam Yoğunluğu" />
-            </div>
+        <details class="langpick">
+          <summary class="tool" data-i18n-aria-label="aria_lang" aria-label="Dili değiştir"><span data-lang-short>TR</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 6.5 4 4 4-4"/></svg></summary>
+          <div class="langpick-menu">
+          <button type="button" data-lang="tr" aria-current="true"><span data-i18n="lang_tr">Türkçe</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="tick"><path d="m3 8.5 3.2 3.2L13 4.9"/></svg></button>
+          <button type="button" data-lang="en" aria-current="false"><span data-i18n="lang_en">English</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="tick"><path d="m3 8.5 3.2 3.2L13 4.9"/></svg></button>
+          <button type="button" data-lang="de" aria-current="false"><span data-i18n="lang_de">Deutsch</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="tick"><path d="m3 8.5 3.2 3.2L13 4.9"/></svg></button>
+          <button type="button" data-lang="fa" aria-current="false"><span data-i18n="lang_fa">فارسی</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="tick"><path d="m3 8.5 3.2 3.2L13 4.9"/></svg></button>
           </div>
-        </div>
-
-        <div class="lang-switch">
-          <button class="lang-trigger">
-            <span class="name">TR</span>
-            <svg data-lucide="chevron-down"></svg>
-          </button>
-          <div class="lang-menu">
-            <button class="lang-option" data-lang="tr">
-              <span class="name" data-i18n="lang_tr">Türkçe</span>
-              <svg class="check" data-lucide="check"></svg>
-            </button>
-            <button class="lang-option" data-lang="fa">
-              <span class="name" data-i18n="lang_fa">فارسی</span>
-              <svg class="check" data-lucide="check"></svg>
-            </button>
-            <button class="lang-option" data-lang="de">
-              <span class="name" data-i18n="lang_de">Deutsch</span>
-              <svg class="check" data-lucide="check"></svg>
-            </button>
-            <button class="lang-option" data-lang="en">
-              <span class="name" data-i18n="lang_en">English</span>
-              <svg class="check" data-lucide="check"></svg>
-            </button>
-          </div>
-        </div>
-
-        <button class="menu-toggle" aria-label="Menüyü aç">
-          <svg data-lucide="menu"></svg>
-        </button>
+        </details>
       </div>
     </div>
   </header>
 
-  <main>
-    <section class="page-hero">
-      <div class="container">
-        <p class="eyebrow">
-          <span class="rule"></span>
-          <svg data-lucide="notebook-pen"></svg>
-          <span data-i18n="eyebrow">Bir IT Öğrencisinin Açık Defteri</span>
-        </p>
-        <h1 data-i18n="page_notes_title">Notlar</h1>
-        <p data-i18n="page_notes_desc">Öğrendiklerimi kayıt altına aldığım günlük notlarım.</p>
-      </div>
+  <main id="main">
+    <section class="wrap page-head">
+      <span class="label" data-i18n="nav_notes">Notlar</span>
+      <h1 data-i18n="nav_notes">Notlar</h1>
+      <p class="lead" data-i18n="notes_lead">Bir şeyi çözdüğümde ya da bir şeye takıldığımda buraya yazıyorum. Çoğu kısa; amaç altı ay sonra kendime hatırlatmak.</p>
     </section>
 
-    <div class="container notes-page">
-
-      <div class="notes-toolbar">
-        <div class="notes-filters" aria-label="Not kategorisi filtrele">
-          <button type="button" class="filter-pill active" data-filter="all" aria-pressed="true" data-i18n="filter_all">Tümü</button>
-          <button type="button" class="filter-pill" data-filter="js" aria-pressed="false" data-i18n="filter_js">JavaScript</button>
-          <button type="button" class="filter-pill" data-filter="css" aria-pressed="false" data-i18n="filter_css">CSS</button>
-          <button type="button" class="filter-pill" data-filter="git" aria-pressed="false" data-i18n="filter_git">Git</button>
-          <button type="button" class="filter-pill" data-filter="api" aria-pressed="false" data-i18n="filter_api">API</button>
-          <button type="button" class="filter-pill" data-filter="design" aria-pressed="false" data-i18n="filter_design">Tasarım</button>
-        </div>
-        <span class="notes-count"><span class="num">6</span> <span data-i18n="notes_count_label">not</span></span>
+    <section class="wrap section">
+      <div class="filters">
+        <button type="button" data-filter="all" aria-pressed="true" data-i18n="filter_all">Tümü</button>
+        <button type="button" data-filter="bot" aria-pressed="false" data-i18n="filter_bot">Botlar</button>
+        <button type="button" data-filter="web" aria-pressed="false" data-i18n="filter_web">Web</button>
+        <button type="button" data-filter="data" aria-pressed="false" data-i18n="filter_data">Veri &amp; güvenlik</button>
+        <span class="filter-count" aria-live="polite"><span class="num">9</span> <span class="word" data-i18n="notes_count_many">not</span></span>
       </div>
 
-      <div class="notes-timeline">
-
-        <div class="notes-month-group">
-          <h2 class="notes-month-label" data-i18n="month_aug_full">Ağustos 2026</h2>
-          <div class="notes-list">
-
-            <article class="note-card" data-category="js">
-              <button type="button" class="note-summary" aria-expanded="false">
-                <div class="note-date"><div class="d">14</div><div class="m" data-i18n="month_aug">Ağu</div></div>
-                <div class="note-body">
-                  <h3><span class="note-cat" data-i18n="filter_js">JavaScript</span><span data-i18n="note1_title">JavaScript Döngüler</span></h3>
-                  <p data-i18n="note1_desc">For, while ve do while döngülerini anladım ve örneklerle pekiştirdim.</p>
-                </div>
-                <svg data-lucide="chevron-down" class="note-toggle-icon"></svg>
-              </button>
-              <div class="note-detail">
-                <div class="note-detail-inner">
-                  <ul class="note-points">
-                    <li><svg data-lucide="check"></svg><span data-i18n="note1_point1">for döngüsüyle belirli sayıda tekrar eden işlemler yazdım.</span></li>
-                    <li><svg data-lucide="check"></svg><span data-i18n="note1_point2">while ve do-while arasındaki farkı, koşulun ne zaman kontrol edildiğini görerek anladım.</span></li>
-                    <li><svg data-lucide="check"></svg><span data-i18n="note1_point3">break ve continue ile döngü akışını nasıl kontrol edeceğimi öğrendim.</span></li>
-                  </ul>
-                </div>
-              </div>
-            </article>
-
-            <article class="note-card" data-category="css">
-              <button type="button" class="note-summary" aria-expanded="false">
-                <div class="note-date"><div class="d">13</div><div class="m" data-i18n="month_aug">Ağu</div></div>
-                <div class="note-body">
-                  <h3><span class="note-cat" data-i18n="filter_css">CSS</span><span data-i18n="note2_title">CSS Grid Öğreniyorum</span></h3>
-                  <p data-i18n="note2_desc">Grid sistemi ile modern ve esnek tasarım yapmayı öğrendim.</p>
-                </div>
-                <svg data-lucide="chevron-down" class="note-toggle-icon"></svg>
-              </button>
-              <div class="note-detail">
-                <div class="note-detail-inner">
-                  <ul class="note-points">
-                    <li><svg data-lucide="check"></svg><span data-i18n="note2_point1">grid-template-columns ile sütun sayısını ve genişliklerini kontrol etmeyi öğrendim.</span></li>
-                    <li><svg data-lucide="check"></svg><span data-i18n="note2_point2">fr birimiyle esnek, oranlı sütunlar oluşturmayı keşfettim.</span></li>
-                    <li><svg data-lucide="check"></svg><span data-i18n="note2_point3">gap özelliğiyle hücreler arası boşlukları kolayca ayarladım.</span></li>
-                  </ul>
-                </div>
-              </div>
-            </article>
-
-            <article class="note-card" data-category="js">
-              <button type="button" class="note-summary" aria-expanded="false">
-                <div class="note-date"><div class="d">12</div><div class="m" data-i18n="month_aug">Ağu</div></div>
-                <div class="note-body">
-                  <h3><span class="note-cat" data-i18n="filter_js">JavaScript</span><span data-i18n="note3_title">DOM Manipülasyonu</span></h3>
-                  <p data-i18n="note3_desc">Javascript ile sayfa içeriğini değiştirmeyi öğrendim.</p>
-                </div>
-                <svg data-lucide="chevron-down" class="note-toggle-icon"></svg>
-              </button>
-              <div class="note-detail">
-                <div class="note-detail-inner">
-                  <ul class="note-points">
-                    <li><svg data-lucide="check"></svg><span data-i18n="note3_point1">querySelector ve querySelectorAll ile sayfadaki elementleri seçmeyi öğrendim.</span></li>
-                    <li><svg data-lucide="check"></svg><span data-i18n="note3_point2">classList ile elementlere stil sınıfı ekleyip kaldırmayı denedim.</span></li>
-                    <li><svg data-lucide="check"></svg><span data-i18n="note3_point3">addEventListener ile buton tıklamalarına tepki veren küçük etkileşimler yazdım.</span></li>
-                  </ul>
-                </div>
-              </div>
-            </article>
-
-            <article class="note-card" data-category="git">
-              <button type="button" class="note-summary" aria-expanded="false">
-                <div class="note-date"><div class="d">05</div><div class="m" data-i18n="month_aug">Ağu</div></div>
-                <div class="note-body">
-                  <h3><span class="note-cat" data-i18n="filter_git">Git</span><span data-i18n="note4_title">Git ve GitHub'a Giriş</span></h3>
-                  <p data-i18n="note4_desc">Versiyon kontrolünün ne işe yaradığını öğrendim; ilk commit'imi attım ve GitHub'a bir repo yükledim.</p>
-                </div>
-                <svg data-lucide="chevron-down" class="note-toggle-icon"></svg>
-              </button>
-              <div class="note-detail">
-                <div class="note-detail-inner">
-                  <ul class="note-points">
-                    <li><svg data-lucide="check"></svg><span data-i18n="note4_point1">git init, add ve commit komutlarıyla temel bir versiyon geçmişi oluşturdum.</span></li>
-                    <li><svg data-lucide="check"></svg><span data-i18n="note4_point2">Değişiklikleri git status ve git log ile takip etmeyi öğrendim.</span></li>
-                    <li><svg data-lucide="check"></svg><span data-i18n="note4_point3">İlk repomu GitHub'a push ederek uzak depo kavramını anladım.</span></li>
-                  </ul>
-                </div>
-              </div>
-            </article>
-
+      <article class="rail-item" data-cat="bot">
+        <div class="rail-meta"><time datetime="2026-08-29" data-i18n="n1_date">29 Ağu 2026</time></div>
+        <div>
+          <h3 data-i18n="n1_title">Webhook'a önce cevap ver, işi sonra yap</h3>
+          <p data-i18n="n1_sum">Meta'nın webhook'u yanıt bekliyor. Claude'a sorup beklersen aynı olay tekrar tekrar geliyor.</p>
+        <details class="disclosure">
+          <summary><span data-i18n="detail_open">Ayrıntı</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="chev"><path d="m4 6.5 4 4 4-4"/></svg></summary>
+          <div class="disclosure-body">
+            <ul class="points">
+              <li data-i18n="n1_p1">İlk sürümde önce cevabı üretip sonra 200 dönüyordum. Meta zaman aşımına düşünce aynı yorumu tekrar gönderiyor, bot da aynı şeye iki kez cevap veriyordu.</li>
+              <li data-i18n="n1_p2">Doğrusu: imzayı doğrula, hemen 200 dön, işi ondan sonra yap. Ayrı bir kuyruk kurmak gerekmedi — işi await etmemek yetti.</li>
+            </ul>
           </div>
+        </details>
         </div>
-
-        <div class="notes-month-group">
-          <h2 class="notes-month-label" data-i18n="month_jul_full">Temmuz 2026</h2>
-          <div class="notes-list">
-
-            <article class="note-card" data-category="api">
-              <button type="button" class="note-summary" aria-expanded="false">
-                <div class="note-date"><div class="d">28</div><div class="m" data-i18n="month_jul">Tem</div></div>
-                <div class="note-body">
-                  <h3><span class="note-cat" data-i18n="filter_api">API</span><span data-i18n="note5_title">Fetch API ile Veri Çekmek</span></h3>
-                  <p data-i18n="note5_desc">JavaScript'in fetch fonksiyonuyla dış kaynaklardan veri çekmeyi ve Promise'leri anladım.</p>
-                </div>
-                <svg data-lucide="chevron-down" class="note-toggle-icon"></svg>
-              </button>
-              <div class="note-detail">
-                <div class="note-detail-inner">
-                  <ul class="note-points">
-                    <li><svg data-lucide="check"></svg><span data-i18n="note5_point1">fetch() fonksiyonuyla bir API'den JSON verisi çekmeyi öğrendim.</span></li>
-                    <li><svg data-lucide="check"></svg><span data-i18n="note5_point2">then() zincirleriyle asenkron sonuçları işlemeyi denedim.</span></li>
-                    <li><svg data-lucide="check"></svg><span data-i18n="note5_point3">async/await kullanarak kodu daha okunabilir hale getirdim.</span></li>
-                  </ul>
-                </div>
-              </div>
-            </article>
-
-            <article class="note-card" data-category="design">
-              <button type="button" class="note-summary" aria-expanded="false">
-                <div class="note-date"><div class="d">20</div><div class="m" data-i18n="month_jul">Tem</div></div>
-                <div class="note-body">
-                  <h3><span class="note-cat" data-i18n="filter_design">Tasarım</span><span data-i18n="note6_title">Duyarlı Tasarım Temelleri</span></h3>
-                  <p data-i18n="note6_desc">Medya sorguları ve esnek birimlerle farklı ekran boyutlarına uyum sağlayan sayfalar tasarlamayı öğrendim.</p>
-                </div>
-                <svg data-lucide="chevron-down" class="note-toggle-icon"></svg>
-              </button>
-              <div class="note-detail">
-                <div class="note-detail-inner">
-                  <ul class="note-points">
-                    <li><svg data-lucide="check"></svg><span data-i18n="note6_point1">@media sorgularıyla farklı ekran genişliklerine özel stiller yazdım.</span></li>
-                    <li><svg data-lucide="check"></svg><span data-i18n="note6_point2">rem ve % gibi esnek birimlerin px'e göre avantajlarını gördüm.</span></li>
-                    <li><svg data-lucide="check"></svg><span data-i18n="note6_point3">Mobile-first yaklaşımla önce küçük ekranı, sonra büyük ekranı tasarladım.</span></li>
-                  </ul>
-                </div>
-              </div>
-            </article>
-
+      </article>
+      <article class="rail-item" data-cat="bot">
+        <div class="rail-meta"><time datetime="2026-08-29" data-i18n="n3_date">29 Ağu 2026</time></div>
+        <div>
+          <h3 data-i18n="n3_title">HMAC imzasını ham gövde üzerinden doğrula</h3>
+          <p data-i18n="n3_sum">Ayrıştırılmış JSON'u tekrar metne çevirip imzalarsan imza hiçbir zaman tutmaz.</p>
+        <details class="disclosure">
+          <summary><span data-i18n="detail_open">Ayrıntı</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="chev"><path d="m4 6.5 4 4 4-4"/></svg></summary>
+          <div class="disclosure-body">
+            <ul class="points">
+              <li data-i18n="n3_p1">Express'in json() ara katmanı gövdeyi ayrıştırıyor. JSON.stringify ile geri ürettiğim metin, Meta'nın imzaladığı baytların aynısı değil — boşluk ve anahtar sırası değişebiliyor.</li>
+              <li data-i18n="n3_p2">Çözüm, ham gövdeyi ayrıştırma sırasında ayrıca saklamak ve karşılaştırmayı timingSafeEqual ile yapmak; normal eşitlik karşılaştırması imzayı harf harf sızdırabiliyor.</li>
+            </ul>
           </div>
+        </details>
         </div>
-
-        <div class="notes-empty">
-          <svg data-lucide="search-x"></svg>
-          <p data-i18n="notes_empty_text">Bu kategoride henüz not yok.</p>
+      </article>
+      <article class="rail-item" data-cat="data">
+        <div class="rail-meta"><time datetime="2026-08-28" data-i18n="n2_date">28 Ağu 2026</time></div>
+        <div>
+          <h3 data-i18n="n2_title">İzin listesi istemcide durmaz</h3>
+          <p data-i18n="n2_sum">Kimin girebileceğini tarayıcıdaki bir dizide tutuyordum. Kaynağa bakan herkes listeyi görüyor.</p>
+        <details class="disclosure">
+          <summary><span data-i18n="detail_open">Ayrıntı</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="chev"><path d="m4 6.5 4 4 4-4"/></svg></summary>
+          <div class="disclosure-body">
+            <ul class="points">
+              <li data-i18n="n2_p1">Listeyi Firestore kurallarının içine taşıdım. Artık kararı sunucu veriyor, istemci sadece sonucu görüyor.</li>
+              <li data-i18n="n2_p2">Kuralları yazarken fark ettim: kural veri modelinden sonra yazılmıyor. Önce 'kim neyi okuyabilir' sorusunu cevaplayıp modeli ona göre kurmak gerekiyor.</li>
+            </ul>
+          </div>
+        </details>
         </div>
+      </article>
+      <article class="rail-item" data-cat="bot">
+        <div class="rail-meta"><time datetime="2026-08-25" data-i18n="n4_date">25 Ağu 2026</time></div>
+        <div>
+          <h3 data-i18n="n4_title">Bir MCP sunucusu başka bir sunucunun istemcisi olabiliyor</h3>
+          <p data-i18n="n4_sum">botflow-mcp'ye dışarıdaki bir sunucunun araçlarını devraldırdım.</p>
+        <details class="disclosure">
+          <summary><span data-i18n="detail_open">Ayrıntı</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="chev"><path d="m4 6.5 4 4 4-4"/></svg></summary>
+          <div class="disclosure-body">
+            <ul class="points">
+              <li data-i18n="n4_p1">MCP'de sunucu ve istemci ayrı roller, ama aynı süreç ikisini birden üstlenebiliyor.</li>
+              <li data-i18n="n4_p2">Böylece dışarıdan gelen araçlar kendi araçlarımın yanına diziliyor; modelin tarafından bakınca tek bir sunucu görünüyor.</li>
+            </ul>
+          </div>
+        </details>
+        </div>
+      </article>
+      <article class="rail-item" data-cat="bot">
+        <div class="rail-meta"><time datetime="2026-08-23" data-i18n="n5_date">23 Ağu 2026</time></div>
+        <div>
+          <h3 data-i18n="n5_title">Uzun işi arka plana al, hız sınırına saygı duy</h3>
+          <p data-i18n="n5_sum">Bir duyuruyu tek istekte göndermeye çalışmak hem zaman aşımı hem 429 demek.</p>
+        <details class="disclosure">
+          <summary><span data-i18n="detail_open">Ayrıntı</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="chev"><path d="m4 6.5 4 4 4-4"/></svg></summary>
+          <div class="disclosure-body">
+            <ul class="points">
+              <li data-i18n="n5_p1">Gönderimi, kaldığı yerden devam edebilen bir arka plan işine çevirdim; nereye kadar gittiği veritabanında duruyor, süreç yeniden başlasa da baştan almıyor.</li>
+              <li data-i18n="n5_p2">Telegram'ın saniyelik sınırına takılmamak için mesajların arasına bekleme koydum. Yavaş, ama bitiyor.</li>
+            </ul>
+          </div>
+        </details>
+        </div>
+      </article>
+      <article class="rail-item" data-cat="data">
+        <div class="rail-meta"><time datetime="2026-08-21" data-i18n="n6_date">21 Ağu 2026</time></div>
+        <div>
+          <h3 data-i18n="n6_title">App Check: anahtarın görünmesi sorun değil</h3>
+          <p data-i18n="n6_sum">Firebase yapılandırması istemcide açıkta duruyor — ve durması normal.</p>
+        <details class="disclosure">
+          <summary><span data-i18n="detail_open">Ayrıntı</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="chev"><path d="m4 6.5 4 4 4-4"/></svg></summary>
+          <div class="disclosure-body">
+            <ul class="points">
+              <li data-i18n="n6_p1">Web API anahtarı bir parola değil, projeyi adresleyen bir kimlik. Asıl koruma güvenlik kurallarından geliyor.</li>
+              <li data-i18n="n6_p2">App Check bunun üstüne 'bu çağrı gerçekten benim sitemden mi geliyor' sorusunu ekliyor. Kuralların yerine geçmiyor, onlarla birlikte çalışıyor.</li>
+            </ul>
+          </div>
+        </details>
+        </div>
+      </article>
+      <article class="rail-item" data-cat="web">
+        <div class="rail-meta"><time datetime="2026-08-20" data-i18n="n7_date">20 Ağu 2026</time></div>
+        <div>
+          <h3 data-i18n="n7_title">Service worker'da neyi önbelleğe alacağına önceden karar ver</h3>
+          <p data-i18n="n7_sum">Her şeyi önbellekten verirsen güncelleme kullanıcıya hiç ulaşmıyor.</p>
+        <details class="disclosure">
+          <summary><span data-i18n="detail_open">Ayrıntı</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="chev"><path d="m4 6.5 4 4 4-4"/></svg></summary>
+          <div class="disclosure-body">
+            <ul class="points">
+              <li data-i18n="n7_p1">HTML'i önce ağdan denemek, CSS/JS/font'u önbellekten vermek dengeyi kurdu: içerik taze kalıyor, sayfa yine de anında açılıyor.</li>
+              <li data-i18n="n7_p2">Önbelleğe bir sürüm adı verip eskisini activate sırasında silmek gerekiyor. Yoksa kullanıcının tarayıcısında iki sürüm birden birikiyor.</li>
+            </ul>
+          </div>
+        </details>
+        </div>
+      </article>
+      <article class="rail-item" data-cat="web">
+        <div class="rail-meta"><time datetime="2026-08-19" data-i18n="n8_date">19 Ağu 2026</time></div>
+        <div>
+          <h3 data-i18n="n8_title">Dil değişince yön de değişiyor</h3>
+          <p data-i18n="n8_sum">Farsça'ya geçince sayfa dağılıyordu. Sebep, her yere left ve right yazmamdı.</p>
+        <details class="disclosure">
+          <summary><span data-i18n="detail_open">Ayrıntı</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="chev"><path d="m4 6.5 4 4 4-4"/></svg></summary>
+          <div class="disclosure-body">
+            <ul class="points">
+              <li data-i18n="n8_p1">margin-left yerine margin-inline-start, left yerine inset-inline-start yazınca RTL kendiliğinden çalıştı — tek tek düzeltmeye gerek kalmadı.</li>
+              <li data-i18n="n8_p2">Elle çevrilmesi gereken tek şey yön belirten ikonlar oldu; onlara scaleX(-1) veren tek bir sınıf yetti.</li>
+            </ul>
+          </div>
+        </details>
+        </div>
+      </article>
+      <article class="rail-item" data-cat="web">
+        <div class="rail-meta"><time datetime="2026-08-18" data-i18n="n9_date">18 Ağu 2026</time></div>
+        <div>
+          <h3 data-i18n="n9_title">İlk yayın</h3>
+          <p data-i18n="n9_sum">GitHub Pages'e ilk kez bir şey koydum.</p>
+        <details class="disclosure">
+          <summary><span data-i18n="detail_open">Ayrıntı</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="chev"><path d="m4 6.5 4 4 4-4"/></svg></summary>
+          <div class="disclosure-body">
+            <ul class="points">
+              <li data-i18n="n9_p1">Depoyu Pages'e bağladıktan sonra dosyaları itmek yayınlamak demek oldu; ayrı bir dağıtım adımı yok.</li>
+              <li data-i18n="n9_p2">Proje sayfası kök adreste değil, depo adının altında duruyor. Bu yüzden bağlantıları göreli yazmak gerekiyor — kökten yazılan yollar burada kırılıyor.</li>
+            </ul>
+          </div>
+        </details>
+        </div>
+      </article>
 
-      </div>
-    </div>
+      <p class="empty" data-i18n="notes_empty" hidden>Bu süzgeçte not yok.</p>
+    </section>
   </main>
 
   <footer class="site-footer">
-    <div class="container footer-inner">
-      <p class="footer-copy">© 2026 Farhad Yaqoobi. <span data-i18n="footer_rights">Tüm hakları saklıdır.</span></p>
-      <p class="footer-quote">"<span data-i18n="footer_quote">Büyük hedefler, küçük adımlarla başlar.</span>"</p>
-      <div class="footer-social">
-        <a class="icon-btn" href="https://github.com/" target="_blank" rel="noopener"><svg data-lucide="github"></svg></a>
-        <a class="icon-btn" href="https://linkedin.com/" target="_blank" rel="noopener"><svg data-lucide="linkedin"></svg></a>
-        <a class="icon-btn" href="mailto:hello@example.com"><svg data-lucide="mail"></svg></a>
-        <a class="icon-btn up" href="#top"><svg data-lucide="arrow-up"></svg></a>
+    <div class="wrap footer-inner">
+      <div>
+        <p data-i18n="footer_tagline">Bir IT öğrencisinin açık defteri.</p>
+        <p class="footer-note" data-i18n="footer_built">Çerçevesiz, derleme adımsız. Kaynağı açık.</p>
+      </div>
+      <div class="footer-links">
+        <a href="https://github.com/Ferhat-Yasinoglu" rel="me noopener" target="_blank">GitHub</a>
+        <a href="https://www.linkedin.com/in/ferhat-yasinoglu" rel="me noopener" target="_blank">LinkedIn</a>
+        <a href="https://www.instagram.com/farhad___yaqoobi" rel="me noopener" target="_blank">Instagram</a>
+        <a href="mailto:farhadyaqoobi.kunduz@gmail.com" data-i18n="footer_email">E-posta</a>
+        <a href="https://github.com/Ferhat-Yasinoglu/acik-defter" rel="noopener" target="_blank" data-i18n="footer_source">Bu sitenin kaynağı</a>
       </div>
     </div>
   </footer>
 
-  <div class="mobile-overlay">
-    <div class="mobile-overlay-head">
-      <a href="index.html" class="logo">FY<span>.</span></a>
-      <button class="mobile-close" aria-label="Menüyü kapat"><svg data-lucide="x"></svg></button>
-    </div>
-    <nav class="mobile-nav">
-      <a href="index.html" data-page-link="home"><svg data-lucide="home"></svg><span data-i18n="nav_home">Ana Sayfa</span></a>
-      <a href="yolculugum.html" data-page-link="journey"><svg data-lucide="compass"></svg><span data-i18n="nav_journey">Yolculuğum</span></a>
-      <a href="projeler.html" data-page-link="projects"><svg data-lucide="folder"></svg><span data-i18n="nav_projects">Projeler</span></a>
-      <a href="ogrenme.html" data-page-link="learning"><svg data-lucide="graduation-cap"></svg><span data-i18n="nav_learning">Öğrenme</span></a>
-      <a href="notlar.html" data-page-link="notes"><svg data-lucide="notebook-pen"></svg><span data-i18n="nav_notes">Notlar</span></a>
-      <a href="hakkimda.html" data-page-link="about"><svg data-lucide="user-round"></svg><span data-i18n="nav_about">Hakkımda</span></a>
-      <a href="iletisim.html" data-page-link="contact"><svg data-lucide="send"></svg><span data-i18n="nav_contact">İletişim</span></a>
-    </nav>
-    <div class="mobile-divider"></div>
-    <div class="mobile-social">
-      <a href="https://github.com/" target="_blank" rel="noopener"><svg data-lucide="github"></svg><span>GitHub</span></a>
-      <a href="https://linkedin.com/" target="_blank" rel="noopener"><svg data-lucide="linkedin"></svg><span>LinkedIn</span></a>
-      <a href="mailto:hello@example.com"><svg data-lucide="mail"></svg><span>E-posta</span></a>
-    </div>
-  </div>
-
-  <script src="https://unpkg.com/lucide@latest"></script>
   <script src="js/i18n.js"></script>
-  <script src="js/main.js"></script>
+  <script src="js/site.js"></script>
   <script src="js/notes.js"></script>
-  <script src="js/mouse-glow.js"></script>
-  <script src="js/toast.js"></script>
-  <script src="js/appearance.js"></script>
-  <script src="js/cursor.js"></script>
-  <script src="js/navbar-scroll.js"></script>
+  <script>if("serviceWorker" in navigator)addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})});</script>
 </body>
 </html>
