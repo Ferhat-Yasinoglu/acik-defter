@@ -29,8 +29,12 @@ const notes = [];
 const fail = (m) => problems.push(m);
 const note = (m) => notes.push(m);
 
-/* Gezinmede yer alan sayfalar. Yönlendirme sayfaları ve 404 hariç. */
+/* Gezinmede yer alan sayfalar — yalnızca bunlar aria-current taşır. */
 const PAGES = ["index.html", "yolculugum.html", "projeler.html", "notlar.html", "hakkimda.html"];
+
+/* Ortak çerçeveyi taşıyan bütün sayfalar. Gizlilik ve 404 gezinmede
+   görünmez ama başlıkları ve altbilgileri yine birebir aynı olmalı. */
+const CHROME = [...PAGES, "gizlilik.html", "404.html"];
 const ALL_HTML = readdirSync(ROOT).filter((f) => f.endsWith(".html"));
 const read = (f) => readFileSync(join(ROOT, f), "utf8");
 
@@ -48,7 +52,7 @@ const normalise = (s) => s.replace(/\s*aria-current="page"/g, "");
 let refHeader = null;
 let refFooter = null;
 
-for (const file of PAGES) {
+for (const file of CHROME) {
   const html = read(file);
   const header = slice(html, '<header class="masthead">', "</header>");
   const footer = slice(html, '<footer class="site-footer">', "</footer>");
@@ -57,8 +61,8 @@ for (const file of PAGES) {
   if (!footer) { fail(`${file}: <footer class="site-footer"> bulunamadı`); continue; }
 
   if (refHeader === null) { refHeader = normalise(header); refFooter = footer; continue; }
-  if (normalise(header) !== refHeader) fail(`${file}: başlık ${PAGES[0]} ile aynı değil`);
-  if (footer !== refFooter) fail(`${file}: altbilgi ${PAGES[0]} ile aynı değil`);
+  if (normalise(header) !== refHeader) fail(`${file}: başlık ${CHROME[0]} ile aynı değil`);
+  if (footer !== refFooter) fail(`${file}: altbilgi ${CHROME[0]} ile aynı değil`);
 }
 
 /* Her sayfa kendi gezinme bağlantısını işaretlemeli. */
@@ -178,7 +182,7 @@ for (const p of PAGES) {
 /* --------------------------------------------------- service worker kabuğu */
 
 const sw = read("sw.js");
-for (const p of [...PAGES, "css/style.css", "js/i18n.js", "js/site.js"]) {
+for (const p of [...CHROME, "css/style.css", "js/i18n.js", "js/site.js"]) {
   if (!sw.includes(`"${p}"`)) fail(`sw.js: önbellek listesinde ${p} yok`);
 }
 

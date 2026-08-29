@@ -32,6 +32,7 @@ const translations = {
     title_projects: "Projeler — Açık Defter",
     title_notes: "Notlar — Açık Defter",
     title_about: "Hakkımda — Açık Defter",
+    title_privacy: "Gizlilik — Açık Defter",
 
     footer_tagline: "Bir IT öğrencisinin açık defteri.",
     footer_built: "Çerçevesiz, derleme adımsız. Kaynağı açık.",
@@ -198,6 +199,52 @@ const translations = {
     about_v_next: "Backend temelleri, React",
     about_k_tools: "Alet çantası",
     about_v_tools: "JavaScript, TypeScript, Firebase, Git",
+
+    /* gizlilik */
+    footer_privacy: "Gizlilik",
+    priv_title: "Gizlilik",
+    priv_lead: "Bu sitenin ve Instagram/WhatsApp otomatik yanıt botunun hangi veriyi, neden işlediği.",
+    priv_updated: "Son güncelleme: 29 Ağustos 2026",
+
+    priv_h_who: "Kim",
+    priv_who: "Bu siteyi ve aşağıda anlatılan otomatik yanıt botunu Farhad Yaqoobi kişisel olarak yürütüyor (Kuzey Ren-Vestfalya, Almanya). Bir şirket değil. Sorular için adres en altta.",
+
+    priv_h_site: "Bu sitede",
+    priv_site1: "Site, GitHub Pages üzerinde duran statik dosyalardan ibaret. Analitik yok, takip pikseli yok, reklam çerezi yok, hesap yok, form yok.",
+    priv_site2: "Tarayıcının yerel deposunda yalnızca iki şey tutuluyor: seçtiğin tema ve dil. İkisi de cihazından çıkmıyor, bana ulaşmıyor. Sayfaları çevrimdışı okunur kılan service worker da her şeyi senin tarayıcında saklıyor.",
+    priv_site3: "Sayfa açılırken yazı tipleri Google Fonts'tan (fonts.googleapis.com ve fonts.gstatic.com) çekiliyor; bu istek sırasında Google IP adresini ve tarayıcı bilgini görüyor. Siteyi yayınlayan GitHub da istekleri kendi kayıtlarında tutuyor. İkisi de kendi gizlilik politikalarına tabi.",
+
+    priv_h_bot: "Otomatik yanıt botu",
+    priv_bot_scope: "reply-bot yalnızca benim kendi Instagram hesabıma (@farhad___yaqoobi) gelen yorumlar ve bağlı WhatsApp numarasına gelen mesajlar için çalışıyor. Bu bölüm sadece onu anlatıyor.",
+    priv_bot_collect: "Meta'nın webhook'u üzerinden şunlar geliyor:",
+    priv_bot_i1: "Yorumun ya da mesajın metni.",
+    priv_bot_i2: "Gönderenin platforma özgü kimliği ve Meta'nın ilettiği durumlarda görünen kullanıcı adı.",
+    priv_bot_i3: "Mesajın kimliği, hangi kanaldan geldiği ve zamanı.",
+    priv_bot_none: "İsim, e-posta, telefon numarası, konum ya da webhook olayının kendisinde zaten bulunmayan hiçbir bilgi toplanmıyor.",
+
+    priv_h_use: "Nasıl kullanılıyor",
+    priv_use1: "Gelen metin önce sunucu belleğindeki bir anahtar kelime listesiyle karşılaştırılıyor. Sık gelen sorular — neyle yazıldı, kaynak kod nerede, öğrenmeye nereden başlanır — doğrudan o listeden cevaplanıyor.",
+    priv_use2: "Hiçbir kural uymazsa mesajın metni, gönderenin kullanıcı adı ve hangi kanal olduğu Anthropic'in Claude API'sine gönderilip bir cevap taslağı isteniyor; model emin olmadığında hiç cevap yazmıyor. Sonuç yorumun altına açık bir yanıt, bir Instagram mesajı, yorumun gizlenmesi ya da bir WhatsApp cevabı oluyor. Profil çıkarma, reklam ya da başka bir analiz yapılmıyor.",
+
+    priv_h_keep: "Ne kadar saklanıyor",
+    priv_keep1: "Veritabanı yok. Sunucunun tuttuğu tek şey, aynı mesaja iki kez cevap gitmesin diye bellekte duran en fazla 5000 mesaj kimliğinden oluşan bir liste. Sunucu her yeniden başladığında bu liste siliniyor.",
+    priv_keep2: "Mesajın metni ve gönderenin adı, sunucunun çalışma günlüğünde görünüyor. Bu günlükleri barındırma sağlayıcısı sınırlı bir süre tutuyor, sonra döngüyle siliyor. Bunun dışında içerik hiçbir yere yazılmıyor.",
+
+    priv_h_share: "Paylaşım",
+    priv_share: "Veri yalnızca iki yere gidiyor: cevabı iletmek için Meta'nın Graph API'si, ve kural eşleşmediğinde cevap taslağı için Anthropic'in Claude API'si. Başka hiçbir üçüncü tarafla paylaşılmıyor, satılmıyor, kiralanmıyor.",
+
+    priv_h_children: "Çocuklar",
+    priv_children: "Ne site ne de bot çocuklara yönelik; bilerek çocuklardan veri işlemek için kullanılmıyor.",
+
+    priv_h_rights: "Hakların",
+    priv_rights: "Almanya'da yaşadığım için GDPR geçerli: hakkında işlenen veriye erişmeyi, silinmesini ya da işlenmesine itiraz etmeyi isteyebilirsin. Yukarıda anlatılan kısa ömürlü kayıtların dışında saklanan bir şey olmadığından çoğu zaman silinecek bir veri bulunmuyor. Otomatik yanıt almak istemiyorsan bana yazman yeterli.",
+
+    priv_h_changes: "Değişiklikler",
+    priv_changes: "Toplanan veri ya da kullanım şekli değişirse bu sayfa güncellenir ve yukarıdaki tarih değişir. Sayfanın geçmişi deponun commit kayıtlarında açık duruyor.",
+
+    priv_h_contact: "İletişim",
+    priv_contact: "Bu politikayla ya da belirli bir etkileşimle ilgili her soru için:",
+
     contact_title: "Bana yaz",
     contact_text: "Web, Firebase ya da bot işleriyle ilgili bir şey sormak istersen e-posta en hızlısı. Genellikle bir iki gün içinde dönüyorum.",
     contact_email: "E-posta gönder"
@@ -223,6 +270,7 @@ const translations = {
     title_projects: "Projects — Open Notebook",
     title_notes: "Notes — Open Notebook",
     title_about: "About — Open Notebook",
+    title_privacy: "Privacy — Open Notebook",
 
     footer_tagline: "An IT student's open notebook.",
     footer_built: "No framework, no build step. Source is open.",
@@ -384,6 +432,52 @@ const translations = {
     about_v_next: "Backend fundamentals, React",
     about_k_tools: "Toolbox",
     about_v_tools: "JavaScript, TypeScript, Firebase, Git",
+
+    /* privacy */
+    footer_privacy: "Privacy",
+    priv_title: "Privacy",
+    priv_lead: "What data this site and the Instagram/WhatsApp auto-reply bot process, and why.",
+    priv_updated: "Last updated: 29 August 2026",
+
+    priv_h_who: "Who",
+    priv_who: "This site and the auto-reply bot described below are run personally by Farhad Yaqoobi (North Rhine-Westphalia, Germany). Not a company. The contact address is at the bottom.",
+
+    priv_h_site: "On this site",
+    priv_site1: "The site is nothing but static files on GitHub Pages. No analytics, no tracking pixels, no advertising cookies, no accounts, no forms.",
+    priv_site2: "Two things are kept in your browser's local storage: the theme and the language you picked. Neither leaves your device or reaches me. The service worker that makes the pages readable offline also stores everything in your own browser.",
+    priv_site3: "When a page loads, the fonts are fetched from Google Fonts (fonts.googleapis.com and fonts.gstatic.com), and Google sees your IP address and browser details as part of that request. GitHub, which serves the site, also keeps request records of its own. Both are governed by their own privacy policies.",
+
+    priv_h_bot: "The auto-reply bot",
+    priv_bot_scope: "reply-bot runs only for comments on my own Instagram account (@farhad___yaqoobi) and messages to the connected WhatsApp number. This section is about that bot alone.",
+    priv_bot_collect: "Meta's webhook delivers:",
+    priv_bot_i1: "The text of the comment or message.",
+    priv_bot_i2: "The sender's platform-scoped ID, and the visible username where Meta includes it.",
+    priv_bot_i3: "The message ID, which channel it arrived on, and when.",
+    priv_bot_none: "No names, email addresses, phone numbers, location data, or anything beyond what the webhook event itself already carries is collected.",
+
+    priv_h_use: "How it is used",
+    priv_use1: "The incoming text is first matched, in server memory, against a list of keywords. The questions that keep coming back — what it's built with, where the source is, where to start learning — are answered straight from that list.",
+    priv_use2: "If no rule matches, the message text, the sender's username and which channel it is are sent to Anthropic's Claude API to draft a reply; the model stays silent when it isn't sure. The result is a public reply under the comment, an Instagram message, hiding the comment, or a WhatsApp reply. No profiling, no advertising, no other analysis.",
+
+    priv_h_keep: "How long it is kept",
+    priv_keep1: "There is no database. The only thing the server holds on to is an in-memory list of at most 5,000 message IDs, so the same message is never answered twice. That list is erased whenever the server restarts.",
+    priv_keep2: "The message text and the sender's name do appear in the server's runtime log. The hosting provider keeps those logs for a limited time and then rotates them away. Beyond that, content is not written anywhere.",
+
+    priv_h_share: "Sharing",
+    priv_share: "Data goes to two places only: Meta's Graph API, to deliver the reply, and Anthropic's Claude API, to draft one when no rule matches. It is not shared with any other third party, and never sold or rented.",
+
+    priv_h_children: "Children",
+    priv_children: "Neither the site nor the bot is directed at children, and neither is knowingly used to process data from them.",
+
+    priv_h_rights: "Your rights",
+    priv_rights: "Because I live in Germany, the GDPR applies: you can ask what data about you is processed, ask for it to be deleted, or object to the processing. Since nothing is stored beyond the short-lived records described above, there is usually nothing to delete. If you would rather not receive automated replies, just write to me.",
+
+    priv_h_changes: "Changes",
+    priv_changes: "If what is collected or how it is used changes, this page is updated and the date above changes with it. The page's history is open in the repository's commit log.",
+
+    priv_h_contact: "Contact",
+    priv_contact: "Any question about this policy or about a specific interaction:",
+
     contact_title: "Write to me",
     contact_text: "If you want to ask something about the web, Firebase or bots, email is the fastest way. I usually reply within a day or two.",
     contact_email: "Send an email"
@@ -409,6 +503,7 @@ const translations = {
     title_projects: "Projekte — Offenes Heft",
     title_notes: "Notizen — Offenes Heft",
     title_about: "Über mich — Offenes Heft",
+    title_privacy: "Datenschutz — Offenes Heft",
 
     footer_tagline: "Das offene Heft eines IT-Studenten.",
     footer_built: "Kein Framework, kein Build-Schritt. Quellcode offen.",
@@ -570,6 +665,52 @@ const translations = {
     about_v_next: "Backend-Grundlagen, React",
     about_k_tools: "Werkzeuge",
     about_v_tools: "JavaScript, TypeScript, Firebase, Git",
+
+    /* Datenschutz */
+    footer_privacy: "Datenschutz",
+    priv_title: "Datenschutz",
+    priv_lead: "Welche Daten diese Seite und der Instagram/WhatsApp-Antwortbot verarbeiten, und warum.",
+    priv_updated: "Zuletzt aktualisiert: 29. August 2026",
+
+    priv_h_who: "Wer",
+    priv_who: "Diese Seite und der unten beschriebene Antwortbot werden privat von Farhad Yaqoobi betrieben (Nordrhein-Westfalen, Deutschland). Kein Unternehmen. Die Kontaktadresse steht ganz unten.",
+
+    priv_h_site: "Auf dieser Seite",
+    priv_site1: "Die Seite besteht aus nichts als statischen Dateien auf GitHub Pages. Keine Analyse, keine Tracking-Pixel, keine Werbe-Cookies, keine Konten, keine Formulare.",
+    priv_site2: "Im lokalen Speicher des Browsers liegen genau zwei Dinge: das gewählte Design und die gewählte Sprache. Beides verlässt dein Gerät nicht und erreicht mich nicht. Auch der Service Worker, der die Seiten offline lesbar macht, legt alles in deinem eigenen Browser ab.",
+    priv_site3: "Beim Laden einer Seite werden die Schriften von Google Fonts (fonts.googleapis.com und fonts.gstatic.com) geholt; dabei sieht Google deine IP-Adresse und Browserangaben. GitHub, das die Seite ausliefert, führt ebenfalls eigene Zugriffsaufzeichnungen. Für beide gelten deren eigene Datenschutzerklärungen.",
+
+    priv_h_bot: "Der Antwortbot",
+    priv_bot_scope: "reply-bot läuft ausschließlich für Kommentare auf meinem eigenen Instagram-Konto (@farhad___yaqoobi) und Nachrichten an die verbundene WhatsApp-Nummer. Dieser Abschnitt betrifft nur diesen Bot.",
+    priv_bot_collect: "Über Metas Webhook kommen an:",
+    priv_bot_i1: "Der Text des Kommentars oder der Nachricht.",
+    priv_bot_i2: "Die plattformbezogene Kennung der absendenden Person und, wo Meta sie mitliefert, der sichtbare Benutzername.",
+    priv_bot_i3: "Die Kennung der Nachricht, über welchen Kanal sie kam und wann.",
+    priv_bot_none: "Es werden keine Namen, E-Mail-Adressen, Telefonnummern, Standortdaten oder sonstigen Angaben erhoben, die nicht ohnehin im Webhook-Ereignis selbst enthalten sind.",
+
+    priv_h_use: "Wie sie verwendet werden",
+    priv_use1: "Der eingehende Text wird zuerst im Arbeitsspeicher des Servers mit einer Liste von Stichwörtern abgeglichen. Die Fragen, die immer wiederkommen — womit es gebaut ist, wo der Quellcode liegt, wo man mit dem Lernen anfängt — werden direkt aus dieser Liste beantwortet.",
+    priv_use2: "Passt keine Regel, gehen der Nachrichtentext, der Benutzername der absendenden Person und der Kanal an die Claude-API von Anthropic, um eine Antwort zu entwerfen; ist sich das Modell nicht sicher, schweigt es. Das Ergebnis ist eine öffentliche Antwort unter dem Kommentar, eine Instagram-Nachricht, das Verbergen des Kommentars oder eine WhatsApp-Antwort. Kein Profiling, keine Werbung, keine weitere Auswertung.",
+
+    priv_h_keep: "Wie lange sie bleiben",
+    priv_keep1: "Es gibt keine Datenbank. Das Einzige, was der Server behält, ist eine Liste von höchstens 5.000 Nachrichtenkennungen im Arbeitsspeicher, damit dieselbe Nachricht nie zweimal beantwortet wird. Diese Liste wird bei jedem Neustart des Servers gelöscht.",
+    priv_keep2: "Der Nachrichtentext und der Name der absendenden Person erscheinen im Laufzeitprotokoll des Servers. Der Hosting-Anbieter hält diese Protokolle eine begrenzte Zeit vor und rotiert sie dann weg. Darüber hinaus werden Inhalte nirgendwo gespeichert.",
+
+    priv_h_share: "Weitergabe",
+    priv_share: "Daten gehen an genau zwei Stellen: an Metas Graph-API, um die Antwort zuzustellen, und an die Claude-API von Anthropic, um eine zu entwerfen, wenn keine Regel greift. An keine weiteren Dritten, und niemals verkauft oder vermietet.",
+
+    priv_h_children: "Kinder",
+    priv_children: "Weder die Seite noch der Bot richten sich an Kinder, und beide werden nicht wissentlich dazu verwendet, Daten von Kindern zu verarbeiten.",
+
+    priv_h_rights: "Deine Rechte",
+    priv_rights: "Da ich in Deutschland lebe, gilt die DSGVO: Du kannst Auskunft über die zu dir verarbeiteten Daten verlangen, ihre Löschung fordern oder der Verarbeitung widersprechen. Da außer den oben beschriebenen kurzlebigen Aufzeichnungen nichts gespeichert wird, gibt es meistens nichts zu löschen. Wenn du keine automatischen Antworten möchtest, schreib mir einfach.",
+
+    priv_h_changes: "Änderungen",
+    priv_changes: "Ändert sich, was erhoben wird oder wie es verwendet wird, wird diese Seite aktualisiert und das Datum oben ändert sich mit. Die Historie der Seite liegt offen im Commit-Verlauf des Repositories.",
+
+    priv_h_contact: "Kontakt",
+    priv_contact: "Jede Frage zu dieser Erklärung oder zu einer bestimmten Interaktion:",
+
     contact_title: "Schreib mir",
     contact_text: "Wenn du etwas zu Web, Firebase oder Bots fragen möchtest, geht es per E-Mail am schnellsten. Meistens antworte ich innerhalb von ein bis zwei Tagen.",
     contact_email: "E-Mail schreiben"
@@ -595,6 +736,7 @@ const translations = {
     title_projects: "پروژه‌ها — دفتر باز",
     title_notes: "یادداشت‌ها — دفتر باز",
     title_about: "درباره من — دفتر باز",
+    title_privacy: "حریم خصوصی — دفتر باز",
 
     footer_tagline: "دفتر بازِ یک دانشجوی آی‌تی.",
     footer_built: "بدون فریم‌ورک، بدون مرحله‌ی بیلد. کدش باز است.",
@@ -756,6 +898,52 @@ const translations = {
     about_v_next: "مبانی بک‌اند، React",
     about_k_tools: "جعبه‌ابزار",
     about_v_tools: "JavaScript، TypeScript، Firebase، Git",
+
+    /* حریم خصوصی */
+    footer_privacy: "حریم خصوصی",
+    priv_title: "حریم خصوصی",
+    priv_lead: "این سایت و ربات پاسخ خودکار اینستاگرام/واتس‌اپ چه داده‌ای را و چرا پردازش می‌کنند.",
+    priv_updated: "آخرین به‌روزرسانی: ۲۹ اوت ۲۰۲۶",
+
+    priv_h_who: "چه کسی",
+    priv_who: "این سایت و ربات پاسخ خودکاری که پایین‌تر توضیح داده شده را شخصاً فرهاد یعقوبی اداره می‌کند (نوردراین-وستفالن، آلمان). شرکت نیست. نشانی تماس در پایین صفحه است.",
+
+    priv_h_site: "در این سایت",
+    priv_site1: "سایت چیزی جز فایل‌های ثابت روی GitHub Pages نیست. نه ابزار تحلیل، نه پیکسل ردیابی، نه کوکی تبلیغاتی، نه حساب کاربری، نه فرم.",
+    priv_site2: "در حافظه‌ی محلی مرورگر فقط دو چیز نگه داشته می‌شود: پوسته و زبانی که انتخاب کرده‌ای. هیچ‌کدام از دستگاه تو بیرون نمی‌رود و به من نمی‌رسد. سرویس‌ورکری هم که صفحه‌ها را آفلاین خواندنی می‌کند، همه چیز را در مرورگر خودت نگه می‌دارد.",
+    priv_site3: "هنگام باز شدن صفحه، فونت‌ها از Google Fonts (نشانی‌های fonts.googleapis.com و fonts.gstatic.com) گرفته می‌شوند و گوگل در جریان همین درخواست نشانی IP و مشخصات مرورگر تو را می‌بیند. گیت‌هاب هم که سایت را سرو می‌کند، سوابق درخواست‌ها را نزد خود نگه می‌دارد. هر دو تابع سیاست حریم خصوصی خودشان هستند.",
+
+    priv_h_bot: "ربات پاسخ خودکار",
+    priv_bot_scope: "reply-bot فقط برای کامنت‌های حساب اینستاگرام خودم (@farhad___yaqoobi) و پیام‌های شماره‌ی واتس‌اپ متصل کار می‌کند. این بخش تنها درباره‌ی همان ربات است.",
+    priv_bot_collect: "از طریق وب‌هوک متا این‌ها می‌رسد:",
+    priv_bot_i1: "متن کامنت یا پیام.",
+    priv_bot_i2: "شناسه‌ی مخصوصِ پلتفرمِ فرستنده و، جایی که متا آن را می‌فرستد، نام کاربری قابل مشاهده.",
+    priv_bot_i3: "شناسه‌ی پیام، اینکه از کدام کانال آمده و زمان آن.",
+    priv_bot_none: "هیچ نام، نشانی ایمیل، شماره تلفن، داده‌ی مکانی یا چیزی فراتر از آنچه خودِ رویداد وب‌هوک دارد جمع‌آوری نمی‌شود.",
+
+    priv_h_use: "چطور استفاده می‌شود",
+    priv_use1: "متن ورودی نخست در حافظه‌ی سرور با فهرستی از کلیدواژه‌ها مقایسه می‌شود. پرسش‌هایی که مدام تکرار می‌شوند — با چه ساخته شده، کد کجاست، از کجا شروع کنم — مستقیم از همان فهرست پاسخ می‌گیرند.",
+    priv_use2: "اگر هیچ قاعده‌ای جور نشود، متن پیام، نام کاربری فرستنده و اینکه کدام کانال است به Claude API شرکت Anthropic فرستاده می‌شود تا پیش‌نویس پاسخ ساخته شود؛ و مدل وقتی مطمئن نیست ساکت می‌ماند. نتیجه یک پاسخ عمومی زیر کامنت، یک پیام اینستاگرام، پنهان کردن کامنت یا یک پاسخ واتس‌اپ است. نه پروفایل‌سازی، نه تبلیغات، نه تحلیل دیگری.",
+
+    priv_h_keep: "چه مدت نگه داشته می‌شود",
+    priv_keep1: "پایگاه داده‌ای در کار نیست. تنها چیزی که سرور نگه می‌دارد فهرستی حداکثر ۵۰۰۰ شناسه‌ی پیام در حافظه است تا به یک پیام دو بار پاسخ داده نشود. این فهرست با هر بار راه‌اندازی دوباره‌ی سرور پاک می‌شود.",
+    priv_keep2: "متن پیام و نام فرستنده در گزارش اجرای سرور دیده می‌شود. ارائه‌دهنده‌ی میزبانی این گزارش‌ها را مدت محدودی نگه می‌دارد و بعد می‌چرخاند و پاک می‌کند. جز این، محتوا هیچ‌جا نوشته نمی‌شود.",
+
+    priv_h_share: "اشتراک‌گذاری",
+    priv_share: "داده فقط به دو جا می‌رود: Graph API متا برای رساندن پاسخ، و Claude API شرکت Anthropic برای نوشتن پیش‌نویس وقتی هیچ قاعده‌ای جور نمی‌شود. با هیچ شخص ثالث دیگری به اشتراک گذاشته نمی‌شود و هرگز فروخته یا اجاره داده نمی‌شود.",
+
+    priv_h_children: "کودکان",
+    priv_children: "نه سایت و نه ربات برای کودکان نیست و هیچ‌کدام آگاهانه برای پردازش داده‌ی کودکان به کار نمی‌رود.",
+
+    priv_h_rights: "حقوق تو",
+    priv_rights: "چون در آلمان زندگی می‌کنم، GDPR اعمال می‌شود: می‌توانی بپرسی چه داده‌ای درباره‌ات پردازش شده، حذفش را بخواهی یا به پردازش اعتراض کنی. چون جز همان سوابق کوتاه‌مدتی که بالا گفته شد چیزی ذخیره نمی‌شود، معمولاً چیزی برای حذف کردن نیست. اگر ترجیح می‌دهی پاسخ خودکار نگیری، کافی است برایم بنویسی.",
+
+    priv_h_changes: "تغییرات",
+    priv_changes: "اگر آنچه جمع‌آوری می‌شود یا شیوه‌ی استفاده تغییر کند، این صفحه به‌روز می‌شود و تاریخ بالا هم با آن عوض می‌شود. تاریخچه‌ی صفحه در گزارش کامیت‌های مخزن باز است.",
+
+    priv_h_contact: "تماس",
+    priv_contact: "هر پرسشی درباره‌ی این سیاست یا درباره‌ی یک تعامل مشخص:",
+
     contact_title: "برایم بنویس",
     contact_text: "اگر درباره‌ی وب، Firebase یا ربات‌ها سؤالی داری، ایمیل سریع‌ترین راه است. معمولاً ظرف یکی دو روز جواب می‌دهم.",
     contact_email: "فرستادن ایمیل"

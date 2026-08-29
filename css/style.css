@@ -162,6 +162,17 @@ a.link:hover { color: var(--accent); text-decoration-color: currentColor; }
 
 .prose p + p { margin-block-start: 1em; }
 
+/* Uzun metin — gizlilik gibi bölümlü sayfalar */
+.legal h2 {
+  margin-block: 2.4rem 0.75rem;
+  font-size: 1.35rem;
+  padding-block-start: 1.6rem;
+  border-block-start: 1px solid var(--rule-soft);
+}
+.legal > h2:first-child { margin-block-start: 0; padding-block-start: 0; border-block-start: 0; }
+.legal .points { margin-block: 0.9rem; }
+.legal .links-line { margin-block-start: 1rem; }
+
 /* ==========================================================================
    İskelet
    ========================================================================== */
