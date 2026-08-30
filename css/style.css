@@ -255,7 +255,6 @@ main { flex: 1 0 auto; }
   display: flex;
   gap: 0.35rem 1.15rem;
   flex-wrap: wrap;
-  margin-inline-end: auto;
 }
 
 .nav a {
@@ -272,7 +271,23 @@ main { flex: 1 0 auto; }
   border-block-end-color: var(--accent);
 }
 
-.tools { display: flex; align-items: center; gap: 0.4rem; }
+/* Boşluğu araçlardan ÖNCE yiyoruz, gezinmeden sonra değil. Fark, başlık
+   satırı sardığında ortaya çıkıyor: araçlar hangi satıra düşerse düşsün
+   o satırın sonuna yaslanıyor. Dil menüsü onlara göre konumlandığı için
+   ekranın dışına taşamıyor. */
+.tools {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-inline-start: auto;
+}
+
+/* Dar ekranda gezinmeyi kendi satırına al: üstte ad ve araçlar,
+   altta bağlantılar. Üç satır yerine iki satır. */
+@media (max-width: 760px) {
+  .masthead-inner { row-gap: 0.6rem; }
+  .nav { order: 3; width: 100%; }
+}
 
 .tool {
   display: inline-flex;

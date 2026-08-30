@@ -126,6 +126,47 @@ const browser = await chromium.launch();
   await ctx.close();
 }
 
+/* ------------------------------------------- dil menüsü ekranda kalıyor mu
+
+   Bir kez ters gitti: dar ekranda başlık satırı sarınca araç grubu sola
+   düşüyor, menü ise sağa hizalı açıldığı için ekranın solundan taşıyordu —
+   dil adları yarım görünüyordu. Farsça'da aynısı sağdan oluyordu. Dört dili
+   de bir dizi genişlikte açıp kutunun görünür alanın içinde kaldığına
+   bakıyoruz. */
+{
+  const WIDTHS = [1280, 1024, 900, 820, 760, 700, 640, 600, 560, 480, 430, 390, 360, 320];
+  const LANGS = ["tr", "en", "de", "fa"];
+  const spills = [];
+
+  /* Dil başına tek sayfa açıp yalnızca pencereyi yeniden boyutlandırıyoruz:
+     her genişlik için ayrı bağlam açmak testi dakikalarca sürdürüyordu. */
+  for (const lang of LANGS) {
+    const ctx = await browser.newContext({ viewport: { width: WIDTHS[0], height: 800 } });
+    const page = await ctx.newPage();
+    await page.goto(BASE, { waitUntil: "domcontentloaded" });
+    await page.evaluate((l) => localStorage.setItem("ad-lang", l), lang);
+    await page.reload({ waitUntil: "domcontentloaded" });
+    await page.waitForSelector(".langpick > summary");
+
+    for (const width of WIDTHS) {
+      await page.setViewportSize({ width, height: 800 });
+      await page.evaluate(() => { document.querySelector(".langpick").open = true; });
+      const box = await page.locator(".langpick-menu").boundingBox();
+
+      if (box.x < -0.5) spills.push(`${lang} ${width}px: soldan ${Math.round(-box.x)}px`);
+      else if (box.x + box.width > width + 0.5) spills.push(`${lang} ${width}px: sağdan ${Math.round(box.x + box.width - width)}px`);
+    }
+
+    await ctx.close();
+  }
+
+  ok(
+    spills.length === 0,
+    `dil menüsü 4 dil × ${WIDTHS.length} genişlikte ekranda kalıyor` +
+      (spills.length ? ` — taşanlar: ${spills.slice(0, 4).join(", ")}` : "")
+  );
+}
+
 /* ----------------------------------------------------------- klavye */
 {
   const ctx = await browser.newContext();
