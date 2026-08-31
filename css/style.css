@@ -18,6 +18,8 @@
   --accent:     #a4382a;
   --accent-2:   #872c20;
   --accent-dim: rgba(164, 56, 42, 0.09);
+  --pen:        rgba(164, 56, 42, 0.30);   /* kenar boşluğu çizgisi */
+  --grain:      0.05;                       /* kâğıt dokusunun gücü */
 
   --sans:  'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
   --serif: 'Newsreader', Georgia, 'Times New Roman', serif;
@@ -26,22 +28,26 @@
   --wrap: 1080px;
   --rail: 9rem;        /* tarih sütunu — en uzun tarih biçimini almalı */
   --rail-gap: 1.75rem;
+  --ease: cubic-bezier(0.2, 0.7, 0.3, 1);
 
   color-scheme: light;
 }
 
+/* Koyu tema masa lambası altındaki defter: mavi-siyah değil, sıcak. */
 :root[data-theme='dark'] {
-  --paper:      #131211;
-  --paper-2:    #1a1917;
-  --paper-3:    #22201d;
-  --ink:        #ece8e0;
-  --ink-2:      #b3ada2;
-  --ink-3:      #837d73;
-  --rule:       #2c2926;
-  --rule-soft:  #221f1d;
-  --accent:     #e3765f;
-  --accent-2:   #f0917d;
-  --accent-dim: rgba(227, 118, 95, 0.13);
+  --paper:      #14120f;
+  --paper-2:    #1c1a16;
+  --paper-3:    #24211c;
+  --ink:        #efe9dd;
+  --ink-2:      #b8b1a3;
+  --ink-3:      #8a8274;
+  --rule:       #302c26;
+  --rule-soft:  #242119;
+  --accent:     #e87a5c;
+  --accent-2:   #f2957a;
+  --accent-dim: rgba(232, 122, 92, 0.14);
+  --pen:        rgba(232, 122, 92, 0.32);
+  --grain:      0.07;
 
   color-scheme: dark;
 }
@@ -72,6 +78,24 @@ body {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+}
+
+/* Kâğıt dokusu. Düz bir renk ekranda plastik durur; çok ince bir gürültü
+   yüzeye kâğıt hissi veriyor. Bakmadan görünmeyecek kadar hafif — SVG
+   olarak gömülü, ek istek yok. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: var(--grain);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+body > * { position: relative; z-index: 1; }
+
+@media print {
+  body::before { display: none; }
 }
 
 html[lang='fa'] body { font-family: 'Vazirmatn', var(--sans); line-height: 1.85; }
@@ -109,9 +133,13 @@ h1, h2, h3 {
   text-wrap: balance;
 }
 
-h1 { font-size: clamp(2.1rem, 1.5rem + 2.6vw, 3.1rem); }
-h2 { font-size: clamp(1.5rem, 1.25rem + 1vw, 1.85rem); }
-h3 { font-size: 1.2rem; }
+h1 {
+  font-size: clamp(2.4rem, 1.5rem + 3.6vw, 4rem);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+}
+h2 { font-size: clamp(1.55rem, 1.25rem + 1.2vw, 2rem); }
+h3 { font-size: 1.22rem; }
 
 p { text-wrap: pretty; }
 
@@ -189,24 +217,51 @@ main { flex: 1 0 auto; }
 .section { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
 .section + .section { border-block-start: 1px solid var(--rule-soft); }
 
+/* Başlık, aradaki boşluğu dolduran ince bir çizgi, sonra bağlantı.
+   Dergilerde bölüm başlıklarının klasik kuruluşu. */
 .section-head {
   display: flex;
   align-items: baseline;
-  justify-content: space-between;
-  gap: 1rem;
-  flex-wrap: wrap;
-  margin-block-end: 1.75rem;
+  gap: 1.1rem;
+  margin-block-end: 1.9rem;
 }
-
+.section-head h2 { flex: none; }
+/* Çizgi ::after olduğu için kaynakta en sonda; flex sırası ile başlıkla
+   bağlantının arasına alınıyor. */
+.section-head::after {
+  content: '';
+  order: 2;
+  flex: 1 1 auto;
+  height: 1px;
+  background: var(--rule);
+  transform: translateY(-0.35em);
+}
 .section-head a {
-  font-size: 0.875rem;
-  color: var(--ink-2);
+  order: 3;
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-3);
   text-decoration: none;
-  border-block-end: 1px solid var(--rule);
-  padding-block-end: 1px;
-  transition: color 0.12s ease, border-color 0.12s ease;
+  transition: color 0.12s ease;
 }
-.section-head a:hover { color: var(--accent); border-block-end-color: var(--accent); }
+.section-head a::after {
+  content: '→';
+  transition: transform 0.15s var(--ease, ease);
+}
+[dir='rtl'] .section-head a::after { content: '←'; }
+.section-head a:hover { color: var(--accent); }
+.section-head a:hover::after { transform: translateX(3px); }
+[dir='rtl'] .section-head a:hover::after { transform: translateX(-3px); }
+
+@media (prefers-reduced-motion: reduce) {
+  .section-head a::after { transition: none; }
+}
 
 .skip-link {
   position: absolute;
@@ -345,15 +400,32 @@ main { flex: 1 0 auto; }
    Giriş bloğu
    ========================================================================== */
 
-.intro { padding-block: clamp(3rem, 8vw, 5.5rem) clamp(2.5rem, 6vw, 4rem); }
+/* Sayfa açılışları. Etiketin üstündeki kısa kırmızı çizgi kalem
+   darbesi gibi duruyor ve her sayfayı aynı yerden başlatıyor. */
+.intro .label,
+.page-head .label {
+  display: block;
+  position: relative;
+  margin-block-end: 1.15rem;
+  padding-block-start: 1.15rem;
+}
+.intro .label::before,
+.page-head .label::before {
+  content: '';
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline-start: 0;
+  width: 2.25rem;
+  height: 2px;
+  background: var(--accent);
+}
 
-.intro .label { display: block; margin-block-end: 1.1rem; }
-.intro h1 { margin-block-end: 1.1rem; }
-.intro .lead { max-width: 56ch; }
+.intro { padding-block: clamp(3.5rem, 9vw, 6.5rem) clamp(2.5rem, 6vw, 4rem); }
+.intro h1 { margin-block-end: 1.3rem; max-width: 17ch; }
+.intro .lead { max-width: 54ch; font-size: 1.2rem; }
 
-.page-head { padding-block: clamp(2.5rem, 6vw, 4rem) clamp(1.5rem, 4vw, 2.5rem); }
-.page-head .label { display: block; margin-block-end: 0.9rem; }
-.page-head h1 { margin-block-end: 0.85rem; }
+.page-head { padding-block: clamp(3rem, 7vw, 4.75rem) clamp(1.5rem, 4vw, 2.5rem); }
+.page-head h1 { margin-block-end: 1rem; }
 .page-head .lead { max-width: 58ch; }
 
 .intro-actions {
@@ -402,7 +474,8 @@ main { flex: 1 0 auto; }
   display: grid;
   grid-template-columns: 1fr;
   gap: 0.35rem var(--rail-gap);
-  padding-block: 1.6rem;
+  padding-block: 1.75rem;
+  position: relative;
 }
 
 .rail-meta {
@@ -410,13 +483,38 @@ main { flex: 1 0 auto; }
   font-size: 0.74rem;
   letter-spacing: 0.05em;
   color: var(--ink-3);
-  padding-block-start: 0.3rem;
+  padding-block-start: 0.35rem;
+}
+
+/* Girdi numarası — kenar boşluğunda, tarihin üstünde. */
+.entry-num {
+  display: block;
+  font-size: 0.78rem;
+  color: var(--accent);
+  opacity: 0.75;
+  margin-block-end: 0.3rem;
+  font-variant-numeric: tabular-nums;
 }
 
 /* Sütun genişliği en uzun tarihe göre seçildi; yine de taşarsa sarsın —
    sabit bir nowrap komşu sütunun üstüne biner. */
 @media (min-width: 820px) {
   .rail-item { grid-template-columns: var(--rail) minmax(0, 1fr); }
+
+  /* Kenar boşluğu çizgisi: okul defterindeki kırmızı marj çizgisi.
+     Girdiler bitişik olduğu için parçalar birleşip kesintisiz bir çizgi
+     oluyor. Tarih solunda, yazı sağında kalıyor. */
+  .ruled .rail-item::before {
+    content: '';
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: calc(var(--rail) + var(--rail-gap) / 2);
+    width: 1px;
+    margin-inline-start: -0.5px;
+    background: var(--pen);
+  }
+  .ruled .rail-item:first-child::before { inset-block-start: 0.6rem; }
+  .ruled .rail-item:last-child::before { inset-block-end: 0.6rem; }
 }
 
 .rail-item h3 { margin-block-end: 0.35rem; }
@@ -556,22 +654,13 @@ main { flex: 1 0 auto; }
 
 /* Çizgi, tarih sütunu ile metin sütununun arasındaki boşluğun ortasından
    geçer: rail + gap/2. Noktalar da aynı eksene oturur. */
+/* Zaman çizgisi, kenar boşluğu çizgisinin üstüne oturan noktalar. Çizgiyi
+   .ruled zaten çiziyor; burada yalnızca noktalar var. */
 @media (min-width: 820px) {
-  .timeline { position: relative; }
-  .timeline::before {
+  .timeline .rail-item::after {
     content: '';
     position: absolute;
-    inset-block: 2.3rem;
-    inset-inline-start: calc(var(--rail) + var(--rail-gap) / 2);
-    width: 1px;
-    margin-inline-start: -0.5px;
-    background: var(--rule);
-  }
-  .timeline .rail-item { position: relative; }
-  .timeline .rail-item::before {
-    content: '';
-    position: absolute;
-    inset-block-start: 2.1rem;
+    inset-block-start: 2.25rem;
     inset-inline-start: calc(var(--rail) + var(--rail-gap) / 2);
     margin-inline-start: -4px;
     width: 8px; height: 8px;
@@ -655,6 +744,13 @@ main { flex: 1 0 auto; }
 .footer-links a:hover { color: var(--accent); border-block-end-color: var(--accent); }
 
 .footer-note { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.03em; }
+
+.footer-mark {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+}
+.footer-mark svg { width: 26px; height: 26px; flex: none; border-radius: 6px; }
 
 /* ==========================================================================
    Yön düzeltmeleri — mantıksal ölçülerin yetmediği yerler
