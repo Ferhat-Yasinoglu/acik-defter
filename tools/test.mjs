@@ -89,8 +89,7 @@ const browser = await chromium.launch();
   ok(before !== after, `tema değişiyor (${before} → ${after})`);
   ok((await page.locator(".theme-toggle svg:visible").count()) === 1, "tema düğmesinde tek ikon görünüyor");
 
-  await page.click(".langpick > summary");
-  await page.click('[data-lang="de"]');
+  await page.click('.langs [data-lang="de"]');
   await page.waitForTimeout(200);
   ok((await page.getAttribute("html", "lang")) === "de", "dil Almanca'ya geçiyor");
   ok((await page.title()).includes("Offenes Heft"), "sekme başlığı da çevriliyor");
@@ -103,8 +102,7 @@ const browser = await chromium.launch();
     "tercihler sayfa boyanmadan önce uygulanmış"
   );
 
-  await page.click(".langpick > summary");
-  await page.click('[data-lang="fa"]');
+  await page.click('.langs [data-lang="fa"]');
   await page.waitForTimeout(200);
   ok((await page.getAttribute("html", "dir")) === "rtl", "Farsça'da yön rtl oluyor");
 
@@ -126,13 +124,12 @@ const browser = await chromium.launch();
   await ctx.close();
 }
 
-/* ------------------------------------------- dil menüsü ekranda kalıyor mu
+/* ------------------------------------------ dil seçici ekranda kalıyor mu
 
-   Bir kez ters gitti: dar ekranda başlık satırı sarınca araç grubu sola
-   düşüyor, menü ise sağa hizalı açıldığı için ekranın solundan taşıyordu —
-   dil adları yarım görünüyordu. Farsça'da aynısı sağdan oluyordu. Dört dili
-   de bir dizi genişlikte açıp kutunun görünür alanın içinde kaldığına
-   bakıyoruz. */
+   Bir kez ters gitti: açılır menü dar ekranda ekranın dışına taşıyor, dil
+   adları yarım görünüyordu. Menü kaldırıldı, yerine dört düğme kondu; yine
+   de başlık çubuğu sardığında düğmelerin görünür alanda kaldığını her
+   genişlikte ve her dilde doğruluyoruz. */
 {
   const WIDTHS = [1280, 1024, 900, 820, 760, 700, 640, 600, 560, 480, 430, 390, 360, 320];
   const LANGS = ["tr", "en", "de", "fa"];
@@ -146,12 +143,11 @@ const browser = await chromium.launch();
     await page.goto(BASE, { waitUntil: "domcontentloaded" });
     await page.evaluate((l) => localStorage.setItem("ad-lang", l), lang);
     await page.reload({ waitUntil: "domcontentloaded" });
-    await page.waitForSelector(".langpick > summary");
+    await page.waitForSelector(".langs");
 
     for (const width of WIDTHS) {
       await page.setViewportSize({ width, height: 800 });
-      await page.evaluate(() => { document.querySelector(".langpick").open = true; });
-      const box = await page.locator(".langpick-menu").boundingBox();
+      const box = await page.locator(".langs").boundingBox();
 
       if (box.x < -0.5) spills.push(`${lang} ${width}px: soldan ${Math.round(-box.x)}px`);
       else if (box.x + box.width > width + 0.5) spills.push(`${lang} ${width}px: sağdan ${Math.round(box.x + box.width - width)}px`);
@@ -162,7 +158,7 @@ const browser = await chromium.launch();
 
   ok(
     spills.length === 0,
-    `dil menüsü 4 dil × ${WIDTHS.length} genişlikte ekranda kalıyor` +
+    `dil seçici 4 dil × ${WIDTHS.length} genişlikte ekranda kalıyor` +
       (spills.length ? ` — taşanlar: ${spills.slice(0, 4).join(", ")}` : "")
   );
 }

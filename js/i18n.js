@@ -51,6 +51,16 @@ const translations = {
     home_notes_title: "Son notlar",
     see_all: "Tümü",
 
+    /* ana sayfa kartı */
+    hero_quote: "Öğren, yap, yaz. Sırası bu.",
+    stat_projects: "Proje",
+    stat_notes: "Not",
+    stat_langs: "Dil",
+    stat_since: "Başlangıç",
+    stat_since_v: "Ağu 2026",
+    home_notes_all: "Tüm notlar",
+    home_projects_all: "Tüm projeler",
+
     /* projeler */
     projects_lead: "Hepsi öğrenmek için başladı, hepsi çalışıyor. Kaynakları açık.",
     proj_learned: "Öğrendiklerim",
@@ -288,6 +298,16 @@ const translations = {
     home_notes_title: "Latest notes",
     see_all: "All",
 
+    /* home card */
+    hero_quote: "Learn it, build it, write it down. In that order.",
+    stat_projects: "Projects",
+    stat_notes: "Notes",
+    stat_langs: "Languages",
+    stat_since: "Since",
+    stat_since_v: "Aug 2026",
+    home_notes_all: "All notes",
+    home_projects_all: "All projects",
+
     projects_lead: "Each one started as a way to learn something. All of them run, and all of them are open source.",
     proj_learned: "What I learned",
     link_source: "Source",
@@ -521,6 +541,16 @@ const translations = {
     home_notes_title: "Neueste Notizen",
     see_all: "Alle",
 
+    /* Startseiten-Karte */
+    hero_quote: "Lernen, bauen, aufschreiben. In dieser Reihenfolge.",
+    stat_projects: "Projekte",
+    stat_notes: "Notizen",
+    stat_langs: "Sprachen",
+    stat_since: "Seit",
+    stat_since_v: "Aug. 2026",
+    home_notes_all: "Alle Notizen",
+    home_projects_all: "Alle Projekte",
+
     projects_lead: "Jedes davon hat als Lernprojekt angefangen. Alle laufen, und der Quellcode ist offen.",
     proj_learned: "Was ich gelernt habe",
     link_source: "Quellcode",
@@ -753,6 +783,16 @@ const translations = {
     home_work_title: "چیزهایی که ساخته‌ام",
     home_notes_title: "آخرین یادداشت‌ها",
     see_all: "همه",
+
+    /* کارت صفحه‌ی خانه */
+    hero_quote: "یاد بگیر، بساز، بنویس. به همین ترتیب.",
+    stat_projects: "پروژه",
+    stat_notes: "یادداشت",
+    stat_langs: "زبان",
+    stat_since: "آغاز",
+    stat_since_v: "اوت ۲۰۲۶",
+    home_notes_all: "همه‌ی یادداشت‌ها",
+    home_projects_all: "همه‌ی پروژه‌ها",
 
     projects_lead: "همه‌شان برای یادگیری شروع شدند، همه‌شان کار می‌کنند و کدشان باز است.",
     proj_learned: "چه یاد گرفتم",

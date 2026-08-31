@@ -14,8 +14,8 @@ d.lang=l;d.dir=(l==="fa")?"rtl":"ltr";
 <meta name="description" content="NetStore, reply-bot, botflow-mcp ve bu site: kaynağı açık, çalışan projeler.">
 <link rel="canonical" href="https://ferhat-yasinoglu.github.io/acik-defter/projeler.html">
 <meta name="author" content="Farhad Yaqoobi">
-<meta name="theme-color" content="#fbfaf7" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#131211" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f6f5fb" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0a0a12" media="(prefers-color-scheme: dark)">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Açık Defter">
 <meta property="og:locale" content="tr_TR">
@@ -40,7 +40,7 @@ d.lang=l;d.dir=(l==="fa")?"rtl":"ltr";
 
   <header class="masthead">
     <div class="wrap masthead-inner">
-      <a class="wordmark" href="index.html">Farhad Yaqoobi<span class="dot">.</span></a>
+      <a class="wordmark" href="index.html"><svg viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="gm" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8b5cf6"/><stop offset="1" stop-color="#3b82f6"/></linearGradient></defs><rect width="32" height="32" rx="8" fill="url(#gm)"/><g fill="#fff"><rect x="8" y="8.7" width="16" height="2.6" rx="1.3"/><rect x="8" y="14.7" width="16" height="2.6" rx="1.3"/><rect x="8" y="20.7" width="9.5" height="2.6" rx="1.3"/></g></svg><span>Açık Defter</span></a>
 
       <nav class="nav">
         <a href="index.html" data-i18n="nav_home">Ana Sayfa</a>
@@ -51,20 +51,19 @@ d.lang=l;d.dir=(l==="fa")?"rtl":"ltr";
       </nav>
 
       <div class="tools">
+        <div class="langs" data-i18n-aria-label="aria_lang" aria-label="Dili değiştir" role="group">
+          <button type="button" data-lang="tr" aria-current="true">TR</button>
+          <span class="sep" aria-hidden="true">|</span>
+          <button type="button" data-lang="en" aria-current="false">EN</button>
+          <span class="sep" aria-hidden="true">|</span>
+          <button type="button" data-lang="de" aria-current="false">DE</button>
+          <span class="sep" aria-hidden="true">|</span>
+          <button type="button" data-lang="fa" aria-current="false">FA</button>
+        </div>
         <button type="button" class="tool theme-toggle" aria-pressed="false" data-i18n-aria-label="aria_theme" aria-label="Temayı değiştir">
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="i-moon"><path d="M13.5 9.6A5.7 5.7 0 0 1 6.4 2.5a5.8 5.8 0 1 0 7.1 7.1Z"/></svg>
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="i-sun" hidden><circle cx="8" cy="8" r="3"/><path d="M8 1v1.4M8 13.6V15M15 8h-1.4M2.4 8H1M12.9 3.1l-1 1M4.1 11.9l-1 1M12.9 12.9l-1-1M4.1 4.1l-1-1"/></svg>
         </button>
-
-        <details class="langpick">
-          <summary class="tool" data-i18n-aria-label="aria_lang" aria-label="Dili değiştir"><span data-lang-short>TR</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 6.5 4 4 4-4"/></svg></summary>
-          <div class="langpick-menu">
-          <button type="button" data-lang="tr" aria-current="true"><span data-i18n="lang_tr">Türkçe</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="tick"><path d="m3 8.5 3.2 3.2L13 4.9"/></svg></button>
-          <button type="button" data-lang="en" aria-current="false"><span data-i18n="lang_en">English</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="tick"><path d="m3 8.5 3.2 3.2L13 4.9"/></svg></button>
-          <button type="button" data-lang="de" aria-current="false"><span data-i18n="lang_de">Deutsch</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="tick"><path d="m3 8.5 3.2 3.2L13 4.9"/></svg></button>
-          <button type="button" data-lang="fa" aria-current="false"><span data-i18n="lang_fa">فارسی</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="tick"><path d="m3 8.5 3.2 3.2L13 4.9"/></svg></button>
-          </div>
-        </details>
       </div>
     </div>
   </header>
@@ -176,7 +175,7 @@ d.lang=l;d.dir=(l==="fa")?"rtl":"ltr";
   <footer class="site-footer">
     <div class="wrap footer-inner">
       <div class="footer-mark">
-        <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="7" fill="#a4382a"/><g fill="#fbfaf7"><rect x="8" y="8.7" width="16" height="2.6" rx="1.3"/><rect x="8" y="14.7" width="16" height="2.6" rx="1.3"/><rect x="8" y="20.7" width="9.5" height="2.6" rx="1.3"/></g></svg>
+        <svg viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="gf" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8b5cf6"/><stop offset="1" stop-color="#3b82f6"/></linearGradient></defs><rect width="32" height="32" rx="8" fill="url(#gf)"/><g fill="#fff"><rect x="8" y="8.7" width="16" height="2.6" rx="1.3"/><rect x="8" y="14.7" width="16" height="2.6" rx="1.3"/><rect x="8" y="20.7" width="9.5" height="2.6" rx="1.3"/></g></svg>
         <div>
           <p data-i18n="footer_tagline">Bir IT öğrencisinin açık defteri.</p>
           <p class="footer-note" data-i18n="footer_built">Çerçevesiz, derleme adımsız. Kaynağı açık.</p>
@@ -195,6 +194,7 @@ d.lang=l;d.dir=(l==="fa")?"rtl":"ltr";
 
   <script src="js/i18n.js"></script>
   <script src="js/site.js"></script>
+  <script src="js/reveal.js"></script>
   <script>if("serviceWorker" in navigator)addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})});</script>
 </body>
 </html>

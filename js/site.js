@@ -53,10 +53,6 @@
     var page = document.body.getAttribute("data-page");
     if (page && dict["title_" + page]) document.title = dict["title_" + page];
 
-    document.querySelectorAll("[data-lang-short]").forEach(function (el) {
-      el.textContent = LANG_META[lang].short;
-    });
-
     document.querySelectorAll("[data-lang]").forEach(function (btn) {
       btn.setAttribute("aria-current", String(btn.getAttribute("data-lang") === lang));
     });
@@ -64,27 +60,13 @@
     document.dispatchEvent(new CustomEvent("site:lang", { detail: { lang: lang, dict: dict } }));
   }
 
+  /* Dil seçici dört düğmeden ibaret: açılır menü yok, dolayısıyla dışarı
+     tıklama, Escape ve dar ekranda taşma sorunları da yok. */
   function initLangPicker() {
-    var picker = document.querySelector(".langpick");
-    if (!picker) return;
-
-    picker.querySelectorAll("[data-lang]").forEach(function (btn) {
+    document.querySelectorAll(".langs [data-lang]").forEach(function (btn) {
       btn.addEventListener("click", function () {
         applyLanguage(btn.getAttribute("data-lang"), true);
-        picker.open = false;
       });
-    });
-
-    /* <details> dışarı tıklamayla kapanmaz; kendimiz kapatıyoruz. */
-    document.addEventListener("click", function (e) {
-      if (picker.open && !picker.contains(e.target)) picker.open = false;
-    });
-
-    document.addEventListener("keydown", function (e) {
-      if (e.key === "Escape" && picker.open) {
-        picker.open = false;
-        picker.querySelector("summary").focus();
-      }
     });
   }
 
