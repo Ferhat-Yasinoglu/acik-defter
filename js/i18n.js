@@ -58,6 +58,12 @@ const translations = {
     stat_langs: "Dil",
     stat_since: "Başlangıç",
     stat_since_v: "Ağu 2026",
+
+    aria_scroll: "Aşağı kaydır",
+    band1_t: "Dört dilde", band1_s: "Türkçe, Almanca, İngilizce, Farsça",
+    band2_t: "Çevrimdışı okunur", band2_s: "Service worker sayfaları önbelleğe alıyor",
+    band3_t: "Kaynağı açık", band3_s: "MIT lisansı, GitHub'da",
+    band4_t: "Çerçevesiz", band4_s: "Düz HTML, CSS ve JavaScript",
     home_notes_all: "Tüm notlar",
     home_projects_all: "Tüm projeler",
 
@@ -305,6 +311,12 @@ const translations = {
     stat_langs: "Languages",
     stat_since: "Since",
     stat_since_v: "Aug 2026",
+
+    aria_scroll: "Scroll down",
+    band1_t: "Four languages", band1_s: "Turkish, German, English, Persian",
+    band2_t: "Reads offline", band2_s: "A service worker caches the pages",
+    band3_t: "Open source", band3_s: "MIT licensed, on GitHub",
+    band4_t: "No framework", band4_s: "Plain HTML, CSS and JavaScript",
     home_notes_all: "All notes",
     home_projects_all: "All projects",
 
@@ -548,6 +560,12 @@ const translations = {
     stat_langs: "Sprachen",
     stat_since: "Seit",
     stat_since_v: "Aug. 2026",
+
+    aria_scroll: "Nach unten scrollen",
+    band1_t: "Vier Sprachen", band1_s: "Türkisch, Deutsch, Englisch, Persisch",
+    band2_t: "Offline lesbar", band2_s: "Ein Service Worker legt die Seiten ab",
+    band3_t: "Quelloffen", band3_s: "MIT-Lizenz, auf GitHub",
+    band4_t: "Kein Framework", band4_s: "Schlichtes HTML, CSS und JavaScript",
     home_notes_all: "Alle Notizen",
     home_projects_all: "Alle Projekte",
 
@@ -791,6 +809,12 @@ const translations = {
     stat_langs: "زبان",
     stat_since: "آغاز",
     stat_since_v: "اوت ۲۰۲۶",
+
+    aria_scroll: "به پایین برو",
+    band1_t: "چهار زبان", band1_s: "ترکی، آلمانی، انگلیسی، فارسی",
+    band2_t: "آفلاین خوانده می‌شود", band2_s: "سرویس‌ورکر صفحه‌ها را نگه می‌دارد",
+    band3_t: "کدِ باز", band3_s: "با مجوز MIT، روی گیت‌هاب",
+    band4_t: "بدون فریم‌ورک", band4_s: "HTML و CSS و JavaScript ساده",
     home_notes_all: "همه‌ی یادداشت‌ها",
     home_projects_all: "همه‌ی پروژه‌ها",
 

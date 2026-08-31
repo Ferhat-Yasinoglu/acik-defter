@@ -273,7 +273,49 @@ main { flex: 1 0 auto; }
    Ana sayfa — giriş
    ========================================================================== */
 
+/* Giriş bölümü tam genişlikte: dalga .wrap'in iç boşluğuna hapsolmasın. */
+.hero-wrap { position: relative; isolation: isolate; }
+
+/* Nokta dalgası — tools/make-wave.mjs üretiyor. Süs olduğu için
+   pointer-events yok ve ekran okuyucudan gizli. */
+.hero-wrap::after {
+  content: '';
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline: 0;
+  height: clamp(11rem, 26vw, 22rem);
+  z-index: -1;
+  pointer-events: none;
+  background: url('../img/wave.svg') no-repeat center bottom / cover;
+  opacity: 1;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 22%, #000 78%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, #000 22%, #000 78%, transparent);
+}
+:root[data-theme='light'] .hero-wrap::after { opacity: 0.4; }
+
 .hero { padding-block: clamp(2.5rem, 6vw, 4.5rem) clamp(2rem, 4vw, 3rem); }
+
+/* Aşağı ok */
+.scroll-cue {
+  display: none;
+  width: 2.6rem;
+  height: 2.6rem;
+  margin: 0 auto clamp(1.5rem, 3vw, 2.5rem);
+  border-radius: 999px;
+  background: var(--panel);
+  border: 1px solid var(--stroke);
+  color: var(--ink-2);
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s var(--ease), color 0.2s ease, border-color 0.2s ease;
+}
+.scroll-cue svg { width: 15px; height: 15px; }
+.scroll-cue:hover { color: var(--ink); border-color: var(--stroke-2); transform: translateY(3px); }
+@media (min-width: 940px) { .scroll-cue { display: flex; } }
+@media (prefers-reduced-motion: no-preference) {
+  .scroll-cue { animation: cue 2.6s var(--ease) infinite; }
+  @keyframes cue { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(5px); } }
+}
 
 .hero-grid {
   display: grid;
@@ -503,6 +545,24 @@ main { flex: 1 0 auto; }
 }
 .now-band .label { flex: none; padding-block-start: 0.15rem; }
 .now-band p { color: var(--ink-2); }
+
+/* Alt şerit — sitenin kendisi hakkında dört doğrulanabilir bilgi. */
+.band {
+  display: grid;
+  gap: 0.85rem;
+  margin-block-start: 1rem;
+  padding: 1.15rem 1.3rem;
+  border-radius: var(--r);
+  background: var(--panel);
+  border: 1px solid var(--stroke);
+}
+@media (min-width: 620px) { .band { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 1000px) { .band { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1.5rem; } }
+
+.band-item { display: flex; align-items: flex-start; gap: 0.8rem; }
+.band-item .txt { display: flex; flex-direction: column; min-width: 0; }
+.band-item .t { font-size: 0.95rem; font-weight: 500; }
+.band-item .s { font-size: 0.83rem; color: var(--ink-3); }
 
 /* ==========================================================================
    İç sayfalar
