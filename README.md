@@ -40,19 +40,38 @@ Sayfaların üst ve alt kısmı (başlık, gezinme, altbilgi) her dosyada elle
 duruyor. Derleme adımı olmamasının bedeli bu; karşılığında yayınlamak için
 hiçbir araca ihtiyaç yok.
 
+## Gereken araçlar
+
+**Siteyi yayınlamak için hiçbir şey gerekmiyor.** Depoda çalışma zamanı
+bağımlılığı yok: sayfalar dört kendi JavaScript dosyasını ve Google
+Fonts'tan yazı tiplerini yüklüyor, başka kütüphane çağırmıyor. Dosyaları
+`main` dalına itmek yayınlamak demek.
+
+Aşağıdakiler yalnızca **geliştirme** araçları:
+
+| Araç | Ne için | Zorunlu mu |
+| --- | --- | --- |
+| Metin düzenleyici (VS Code) | Kod yazmak | Evet |
+| Git + GitHub hesabı | Sürüm ve yayın (GitHub Pages) | Evet |
+| Tarayıcı | Bakmak ve geliştirici araçları | Evet |
+| Node.js 20+ | `tools/` altındaki script'ler | Denetim ve test için |
+| `http-server` | Yerel önizleme | Service worker'ı denemek için |
+| Playwright + Chromium | Tarayıcı testleri, ikon ve görsel üretimi | Test ve görsel üretimi için |
+
 ## Geliştirme
 
-Sunucuya gerek yok, `index.html` doğrudan açılabilir — ama service worker
-ve `fetch` yalnızca `http://` üzerinden çalışır:
-
 ```sh
-npx http-server -p 8080 .
+npm install        # yalnızca geliştirme araçları
+npm run dev        # http://localhost:8080
 ```
+
+`index.html` doğrudan çift tıklayarak da açılır, ama service worker ve
+`fetch` yalnızca `http://` üzerinden çalışır — o yüzden yerel sunucu.
 
 Bir şey değiştirdikten sonra:
 
 ```sh
-node tools/check.mjs
+npm run check
 ```
 
 Bu script, elle bakınca gözden kaçan tutarsızlıkları arıyor:
@@ -67,8 +86,8 @@ Bu script, elle bakınca gözden kaçan tutarsızlıkları arıyor:
 Bir de siteyi gerçekten bir tarayıcıda açan testler var:
 
 ```sh
-npm i -D playwright && npx playwright install chromium
-node tools/test.mjs
+npx playwright install chromium   # bir kez
+npm test
 ```
 
 Süzgeci, açılır bölümleri, tema ve dilin sayfa geçişinde korunmasını,
@@ -78,18 +97,20 @@ sunucusunu açar, ayrıca bir şey çalıştırmak gerekmez.
 
 Her iki script de her push'ta GitHub Actions'ta çalışıyor.
 
-### İkonları yeniden üretmek
+### Görselleri yeniden üretmek
 
 Ambleme ya da renklere dokunduysan:
 
 ```sh
-npm i -D playwright && npx playwright install chromium
-node tools/make-images.mjs
+npm run images     # icon-*.png, apple-touch-icon.png, og.png
+npm run wave       # img/wave.svg — giriş bölümünün arkasındaki nokta dalgası
 ```
 
-`icon-192.png`, `icon-512.png`, `icon-512-maskable.png`,
-`apple-touch-icon.png` ve `og.png` dosyalarını yeniden yazar. Çıktılar
-depoya commit'lenir; siteyi yayınlamak için bu adım gerekmez.
+`images` Playwright'a ihtiyaç duyar; `wave` yalnızca Node ile çalışır.
+Çıktılar depoya commit'lenir, siteyi yayınlamak için bu adım gerekmez.
+
+Dalganın yoğunluğunu, rengini ve eğrilerini `tools/make-wave.mjs`
+başındaki birkaç sayı belirliyor.
 
 ### Bir şey değiştirince
 

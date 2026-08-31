@@ -1,0 +1,26 @@
+{
+  "name": "acik-defter",
+  "version": "1.0.0",
+  "description": "Kişisel site ve öğrenme günlüğü. Sitenin kendisinin bağımlılığı yoktur; buradakiler yalnızca geliştirme araçlarıdır.",
+  "private": true,
+  "license": "MIT",
+  "homepage": "https://ferhat-yasinoglu.github.io/acik-defter/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Ferhat-Yasinoglu/acik-defter.git"
+  },
+  "scripts": {
+    "dev": "http-server -p 8080 -c-1 .",
+    "check": "node tools/check.mjs",
+    "test": "node tools/test.mjs",
+    "images": "node tools/make-images.mjs",
+    "wave": "node tools/make-wave.mjs"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1",
+    "playwright": "^1.56.1"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
