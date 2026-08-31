@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="tr" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,follow">
+<title>NetStore taşındı</title>
+
+<!-- ==========================================================================
+     NetStore bu adresten kendi deposuna taşındı; klasör 28 Ağustos 2026'da
+     silindi (commit "Delete netstore directory").
+
+     Bu sayfa neden duruyor: 22 Ağustos'ta yayınlanan Android uygulaması
+     (NetStore.apk, v1.0.4) bir TWA'dır — siteyi içine gömmez, bu adresi
+     açar. Adres gömülü olduğu için uygulamadan değiştirilemez; klasör
+     silinince telefonlardaki kurulu uygulama 404 almaya başladı.
+
+     Buradaki yönlendirme o uygulamaları yeniden çalışır hâle getirir:
+     kimsenin yeniden kurulum yapması, APK'nın yeniden derlenmesi
+     gerekmez. Kod tek yerde — Ferhat-Yasinoglu/NetStore deposunda —
+     kalır, buraya kopya konmaz.
+
+     Hedef aynı kaynakta (ferhat-yasinoglu.github.io) olduğu için TWA'nın
+     güven doğrulaması yönlendirmeden sonra da geçerlidir.
+
+     Uygulamanın açtığı adres #/dashboard ile biter; çapa korunuyor ki
+     yönlendirme sonrası doğru sayfada açılsın.
+     ========================================================================== -->
+
+<link rel="canonical" href="https://ferhat-yasinoglu.github.io/NetStore/">
+
+<!-- Betik gövdeden önce çalışır ve çapayı koruyarak yönlendirir.
+     Aşağıdaki meta yalnızca JavaScript kapalıyken devreye girsin diye
+     gecikmeli: sıfır saniye verilseydi betiği geçebilir ve "#/dashboard"
+     düşerdi. Bir saniye, JS'li tarayıcıda hiç görülmeyecek kadar kısa,
+     yarışı kaybetmeyecek kadar uzun. -->
+<script>
+(function () {
+  var HEDEF = 'https://ferhat-yasinoglu.github.io/NetStore/';
+
+  /* Uygulama "#/dashboard" gibi bir çapayla geliyor; onu koruyoruz.
+     replace(): geri tuşu bu ara sayfaya dönüp döngü kurmasın diye. */
+  location.replace(HEDEF + (location.hash || ''));
+})();
+</script>
+<meta http-equiv="refresh" content="1; url=https://ferhat-yasinoglu.github.io/NetStore/">
+
+<style>
+  :root { color-scheme: light dark; }
+  body {
+    margin: 0; min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    padding: 24px; text-align: center;
+    font: 15px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: #fbfaf7; color: #131211;
+  }
+  @media (prefers-color-scheme: dark) {
+    body { background: #131211; color: #f2f0eb; }
+  }
+  a { color: inherit; }
+</style>
+</head>
+<body>
+  <main>
+    <p>NetStore yeni adresine taşınıyor…</p>
+    <p><a href="https://ferhat-yasinoglu.github.io/NetStore/">Kendiliğinden açılmazsa buraya dokunun</a></p>
+  </main>
+</body>
+</html>
