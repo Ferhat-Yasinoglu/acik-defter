@@ -14,8 +14,8 @@ d.lang=l;d.dir=(l==="fa")?"rtl":"ltr";
 <meta name="description" content="Farhad Yaqoobi'nin açık defteri: Almanya'da IT okuyan bir öğrencinin projeleri, notları ve öğrenme günlüğü.">
 <link rel="canonical" href="https://ferhat-yasinoglu.github.io/acik-defter/">
 <meta name="author" content="Farhad Yaqoobi">
-<meta name="theme-color" content="#fbfaf7" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#131211" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#f6f5fb" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0a0a12" media="(prefers-color-scheme: dark)">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Açık Defter">
 <meta property="og:locale" content="tr_TR">
@@ -40,7 +40,7 @@ d.lang=l;d.dir=(l==="fa")?"rtl":"ltr";
 
   <header class="masthead">
     <div class="wrap masthead-inner">
-      <a class="wordmark" href="index.html">Farhad Yaqoobi<span class="dot">.</span></a>
+      <a class="wordmark" href="index.html"><svg viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="gm" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8b5cf6"/><stop offset="1" stop-color="#3b82f6"/></linearGradient></defs><rect width="32" height="32" rx="8" fill="url(#gm)"/><g fill="#fff"><rect x="8" y="8.7" width="16" height="2.6" rx="1.3"/><rect x="8" y="14.7" width="16" height="2.6" rx="1.3"/><rect x="8" y="20.7" width="9.5" height="2.6" rx="1.3"/></g></svg><span>Açık Defter</span></a>
 
       <nav class="nav">
         <a href="index.html" aria-current="page" data-i18n="nav_home">Ana Sayfa</a>
@@ -51,115 +51,208 @@ d.lang=l;d.dir=(l==="fa")?"rtl":"ltr";
       </nav>
 
       <div class="tools">
+        <div class="langs" data-i18n-aria-label="aria_lang" aria-label="Dili değiştir" role="group">
+          <button type="button" data-lang="tr" aria-current="true">TR</button>
+          <span class="sep" aria-hidden="true">|</span>
+          <button type="button" data-lang="en" aria-current="false">EN</button>
+          <span class="sep" aria-hidden="true">|</span>
+          <button type="button" data-lang="de" aria-current="false">DE</button>
+          <span class="sep" aria-hidden="true">|</span>
+          <button type="button" data-lang="fa" aria-current="false">FA</button>
+        </div>
         <button type="button" class="tool theme-toggle" aria-pressed="false" data-i18n-aria-label="aria_theme" aria-label="Temayı değiştir">
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="i-moon"><path d="M13.5 9.6A5.7 5.7 0 0 1 6.4 2.5a5.8 5.8 0 1 0 7.1 7.1Z"/></svg>
           <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="i-sun" hidden><circle cx="8" cy="8" r="3"/><path d="M8 1v1.4M8 13.6V15M15 8h-1.4M2.4 8H1M12.9 3.1l-1 1M4.1 11.9l-1 1M12.9 12.9l-1-1M4.1 4.1l-1-1"/></svg>
         </button>
-
-        <details class="langpick">
-          <summary class="tool" data-i18n-aria-label="aria_lang" aria-label="Dili değiştir"><span data-lang-short>TR</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 6.5 4 4 4-4"/></svg></summary>
-          <div class="langpick-menu">
-          <button type="button" data-lang="tr" aria-current="true"><span data-i18n="lang_tr">Türkçe</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="tick"><path d="m3 8.5 3.2 3.2L13 4.9"/></svg></button>
-          <button type="button" data-lang="en" aria-current="false"><span data-i18n="lang_en">English</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="tick"><path d="m3 8.5 3.2 3.2L13 4.9"/></svg></button>
-          <button type="button" data-lang="de" aria-current="false"><span data-i18n="lang_de">Deutsch</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="tick"><path d="m3 8.5 3.2 3.2L13 4.9"/></svg></button>
-          <button type="button" data-lang="fa" aria-current="false"><span data-i18n="lang_fa">فارسی</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="tick"><path d="m3 8.5 3.2 3.2L13 4.9"/></svg></button>
-          </div>
-        </details>
       </div>
     </div>
   </header>
 
   <main id="main">
-    <section class="wrap intro">
-      <span class="label" data-i18n="home_eyebrow">NRW, Almanya</span>
-      <h1 data-i18n="home_h1">Öğrendiğimi unutmadan buraya yazıyorum.</h1>
-      <p class="lead" data-i18n="home_lead">Almanya'da IT okuyorum. Bu defteri Ağustos 2026'da açtım — o günden beri ne yaptıysam, nerede tökezlediysem burada duruyor.</p>
+    <section class="hero-wrap">
+      <div class="wrap hero">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <span class="label" data-i18n="home_eyebrow">NRW, Almanya</span>
+          <h1 class="grad" data-i18n="home_h1">Öğrendiğimi unutmadan buraya yazıyorum.</h1>
+          <p class="lead" data-i18n="home_lead">Almanya'da IT okuyorum. Bu defteri Ağustos 2026'da açtım — o günden beri ne yaptıysam, nerede tökezlediysem burada duruyor.</p>
 
-      <div class="intro-actions">
-        <a class="btn" href="projeler.html"><span data-i18n="home_cta_projects">Projelere bak</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="icon-flip"><path d="M2.5 8h11m-4.5-4.5L13.5 8 9 12.5"/></svg></a>
-        <a class="btn btn-quiet" href="notlar.html"><span data-i18n="home_cta_notes">Notları oku</span></a>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="projeler.html"><span data-i18n="home_cta_projects">Projelere bak</span><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" class="icon-flip"><path d="M2.5 8h11m-4.5-4.5L13.5 8 9 12.5"/></svg></a>
+            <a class="btn btn-ghost" href="notlar.html"><span data-i18n="home_cta_notes">Notları oku</span></a>
+          </div>
+
+          <div class="social-row">
+            <a href="https://github.com/Ferhat-Yasinoglu" target="_blank" rel="me noopener" aria-label="GitHub" title="GitHub"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.7-.3-5.5-1.4-5.5-6 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.4 4.6 18.4 5 18.4 5c.6 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3Z"/></svg></a>
+            <a href="https://www.linkedin.com/in/ferhat-yasinoglu" target="_blank" rel="me noopener" aria-label="LinkedIn" title="LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5ZM2.9 21h4.2V9.9H2.9V21Zm7.3 0h4.2v-6c0-1.6.3-3.1 2.3-3.1 1.9 0 2 1.8 2 3.2V21h4.2v-6.7c0-3.6-.8-6.4-5-6.4-2 0-3.4 1.1-4 2.2h-.06V9.9H10.2c.06 1.2 0 11.1 0 11.1Z"/></svg></a>
+            <a href="https://www.instagram.com/farhad___yaqoobi" target="_blank" rel="me noopener" aria-label="Instagram" title="Instagram"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 1.2.05 1.8.25 2.2.42.6.22 1 .48 1.4.9.43.42.7.83.9 1.4.18.4.38 1 .43 2.2.06 1.3.07 1.7.07 4.9s0 3.6-.07 4.9c-.05 1.2-.25 1.8-.42 2.2-.22.6-.48 1-.9 1.4-.42.43-.83.7-1.4.9-.4.18-1 .38-2.2.43-1.3.06-1.7.07-4.9.07s-3.6 0-4.9-.07c-1.2-.05-1.8-.25-2.2-.42-.6-.22-1-.48-1.4-.9-.43-.42-.7-.83-.9-1.4-.18-.4-.38-1-.43-2.2C2.2 15.6 2.2 15.2 2.2 12s0-3.6.07-4.9c.05-1.2.25-1.8.42-2.2.22-.6.48-1 .9-1.4.42-.43.83-.7 1.4-.9.4-.18 1-.38 2.2-.43C8.4 2.2 8.8 2.2 12 2.2Zm0 1.8c-3.1 0-3.5 0-4.7.07-1.1.05-1.7.24-2.1.4-.5.2-.9.44-1.3.83-.4.4-.63.8-.83 1.3-.16.4-.35 1-.4 2.1C2.6 9.9 2.6 10.3 2.6 12s0 2.1.07 3.3c.05 1.1.24 1.7.4 2.1.2.5.44.9.83 1.3.4.4.8.63 1.3.83.4.16 1 .35 2.1.4 1.2.06 1.6.07 4.7.07s3.5 0 4.7-.07c1.1-.05 1.7-.24 2.1-.4.5-.2.9-.44 1.3-.83.4-.4.63-.8.83-1.3.16-.4.35-1 .4-2.1.06-1.2.07-1.6.07-3.3s0-2.1-.07-3.3c-.05-1.1-.24-1.7-.4-2.1-.2-.5-.44-.9-.83-1.3-.4-.4-.8-.63-1.3-.83-.4-.16-1-.35-2.1-.4C15.5 4 15.1 4 12 4Zm0 3.1a4.9 4.9 0 1 1 0 9.8 4.9 4.9 0 0 1 0-9.8Zm0 1.8a3.1 3.1 0 1 0 0 6.2 3.1 3.1 0 0 0 0-6.2Zm5.1-.4a1.15 1.15 0 1 1 0-2.3 1.15 1.15 0 0 1 0 2.3Z"/></svg></a>
+            <a href="mailto:farhadyaqoobi.kunduz@gmail.com" aria-label="E-posta" title="E-posta"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="1.8" y="3.3" width="12.4" height="9.4" rx="1.6"/><path d="m2.4 4.6 5.6 4 5.6-4"/></svg></a>
+          </div>
+        </div>
+
+        <aside class="hero-card glass">
+          <div class="quote-mark" aria-hidden="true">&ldquo;</div>
+          <blockquote data-i18n="hero_quote">Öğren, yap, yaz. Sırası bu.</blockquote>
+          <div class="divider"></div>
+          <div class="stats">
+            <div class="stat">
+              <span class="tile tile-v"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1.8 4.2a1.4 1.4 0 0 1 1.4-1.4h2.6l1.5 1.8h5.5a1.4 1.4 0 0 1 1.4 1.4v6.2a1.4 1.4 0 0 1-1.4 1.4H3.2a1.4 1.4 0 0 1-1.4-1.4Z"/></svg></span>
+              <span>
+                <span class="k" data-i18n="stat_projects">Proje</span>
+                <span class="v">5</span>
+              </span>
+            </div>
+            <div class="stat">
+              <span class="tile tile-b"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 3.2A1.4 1.4 0 0 1 3.9 1.8H13v10.4H3.9a1.4 1.4 0 0 0-1.4 1.4Z"/><path d="M2.5 13.6a1.4 1.4 0 0 1 1.4-1.4H13"/></svg></span>
+              <span>
+                <span class="k" data-i18n="stat_notes">Not</span>
+                <span class="v">9</span>
+              </span>
+            </div>
+            <div class="stat">
+              <span class="tile tile-c"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="6.2"/><path d="M1.9 8h12.2M8 1.8c1.7 1.9 2.6 4 2.6 6.2S9.7 12.3 8 14.2C6.3 12.3 5.4 10.2 5.4 8s.9-4.3 2.6-6.2Z"/></svg></span>
+              <span>
+                <span class="k" data-i18n="stat_langs">Dil</span>
+                <span class="v">4</span>
+              </span>
+            </div>
+            <div class="stat">
+              <span class="tile tile-g"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 1.6 9.6 6l4.4 1.6L9.6 9.2 8 13.6 6.4 9.2 2 7.6 6.4 6Z"/></svg></span>
+              <span>
+                <span class="k" data-i18n="stat_since">Başlangıç</span>
+                <span class="v" data-i18n="stat_since_v">Ağu 2026</span>
+              </span>
+            </div>
+          </div>
+        </aside>
+        </div>
       </div>
 
-      <p class="now">
-        <span class="label" data-i18n="now_label">Şu sıralar</span>
-        <span data-i18n="now_text">reply-bot'un WhatsApp tarafını ayağa kaldırdım. Sırada Node.js ile backend temellerini düzgün öğrenmek var: veritabanı, kimlik doğrulama, test.</span>
-      </p>
+      <a class="scroll-cue" href="#work" data-i18n-aria-label="aria_scroll" aria-label="Aşağı kaydır"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m4 6.5 4 4 4-4"/></svg></a>
     </section>
 
-    <section class="wrap section">
-      <div class="section-head">
-        <h2 data-i18n="home_work_title">Yaptıklarım</h2>
-        <a href="projeler.html" data-i18n="see_all">Tümü</a>
-      </div>
-      <article class="rail-item">
-        <div class="rail-meta" data-i18n="p1_when">19–28 Ağu 2026</div>
+    <section class="wrap section" id="work">
+      <div class="home-cols">
         <div>
+          <div class="section-head">
+            <h2 data-i18n="home_work_title">Yaptıklarım</h2>
+            <a href="projeler.html" data-i18n="home_projects_all">Tüm projeler</a>
+          </div>
+          <div class="pcards">
+        <article class="pcard">
+          <span class="tile tile-v"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1.8 4.2a1.4 1.4 0 0 1 1.4-1.4h2.6l1.5 1.8h5.5a1.4 1.4 0 0 1 1.4 1.4v6.2a1.4 1.4 0 0 1-1.4 1.4H3.2a1.4 1.4 0 0 1-1.4-1.4Z"/></svg></span>
           <h3>NetStore</h3>
           <p data-i18n="p1_tag">Çevrimdışı çalışan mağaza paneli</p>
-          <p class="meta-line">Firestore<span class="sep">·</span>PWA<span class="sep">·</span>Service Worker<span class="sep">·</span>JavaScript</p>
-          <div class="links-line">
-          <a href="https://github.com/Ferhat-Yasinoglu/NetStore" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.7-.3-5.5-1.4-5.5-6 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.4 4.6 18.4 5 18.4 5c.6 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3Z"/></svg><span data-i18n="link_source">Kaynak</span></a>
-          </div>
-        </div>
-      </article>
-      <article class="rail-item">
-        <div class="rail-meta" data-i18n="p2_when">29 Ağu 2026</div>
-        <div>
+          <div class="chips"><span>Firestore</span><span>PWA</span><span>Service Worker</span><span>JavaScript</span></div>
+          <div class="card-links"><a href="https://github.com/Ferhat-Yasinoglu/NetStore" target="_blank" rel="noopener" aria-label="Kaynak" title="Kaynak"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.7-.3-5.5-1.4-5.5-6 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.4 4.6 18.4 5 18.4 5c.6 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3Z"/></svg></a></div>
+        </article>
+        <article class="pcard">
+          <span class="tile tile-b"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 1.6 9.6 6l4.4 1.6L9.6 9.2 8 13.6 6.4 9.2 2 7.6 6.4 6Z"/></svg></span>
           <h3>reply-bot</h3>
           <p data-i18n="p2_tag">Instagram yorumlarına ve WhatsApp mesajlarına kendi başına cevap veriyor</p>
-          <p class="meta-line">TypeScript<span class="sep">·</span>Node.js<span class="sep">·</span>Express<span class="sep">·</span>Claude API</p>
-          <div class="links-line">
-          <a href="https://github.com/Ferhat-Yasinoglu/ferhat-yasinoglu/tree/main/reply-bot" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.7-.3-5.5-1.4-5.5-6 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.4 4.6 18.4 5 18.4 5c.6 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3Z"/></svg><span data-i18n="link_source">Kaynak</span></a>
-          </div>
-        </div>
-      </article>
-      <article class="rail-item">
-        <div class="rail-meta" data-i18n="p3_when">23–29 Ağu 2026</div>
-        <div>
+          <div class="chips"><span>TypeScript</span><span>Node.js</span><span>Express</span><span>Claude API</span></div>
+          <div class="card-links"><a href="https://github.com/Ferhat-Yasinoglu/ferhat-yasinoglu/tree/main/reply-bot" target="_blank" rel="noopener" aria-label="Kaynak" title="Kaynak"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.7-.3-5.5-1.4-5.5-6 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.4 4.6 18.4 5 18.4 5c.6 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3Z"/></svg></a></div>
+        </article>
+        <article class="pcard">
+          <span class="tile tile-c"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="6.2"/><path d="M1.9 8h12.2M8 1.8c1.7 1.9 2.6 4 2.6 6.2S9.7 12.3 8 14.2C6.3 12.3 5.4 10.2 5.4 8s.9-4.3 2.6-6.2Z"/></svg></span>
           <h3>botflow-mcp</h3>
           <p data-i18n="p3_tag">Telegram akışlarını panelden değil, modele anlatarak kuruyorsun</p>
-          <p class="meta-line">TypeScript<span class="sep">·</span>MCP<span class="sep">·</span>SQLite<span class="sep">·</span>Telegram Bot API</p>
-          <div class="links-line">
-          <a href="https://github.com/Ferhat-Yasinoglu/ferhat-yasinoglu/tree/main/botflow-mcp" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.7-.3-5.5-1.4-5.5-6 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.4 4.6 18.4 5 18.4 5c.6 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3Z"/></svg><span data-i18n="link_source">Kaynak</span></a>
+          <div class="chips"><span>TypeScript</span><span>MCP</span><span>SQLite</span><span>Telegram Bot API</span></div>
+          <div class="card-links"><a href="https://github.com/Ferhat-Yasinoglu/ferhat-yasinoglu/tree/main/botflow-mcp" target="_blank" rel="noopener" aria-label="Kaynak" title="Kaynak"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.7-.3-5.5-1.4-5.5-6 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.4 4.6 18.4 5 18.4 5c.6 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3Z"/></svg></a></div>
+        </article>
           </div>
         </div>
-      </article>
+
+        <div>
+          <div class="section-head">
+            <h2 data-i18n="home_notes_title">Son notlar</h2>
+            <a href="notlar.html" data-i18n="home_notes_all">Tüm notlar</a>
+          </div>
+          <div class="notelist">
+        <a class="noteitem" href="notlar.html">
+          <span class="tile tile-b"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 3.2A1.4 1.4 0 0 1 3.9 1.8H13v10.4H3.9a1.4 1.4 0 0 0-1.4 1.4Z"/><path d="M2.5 13.6a1.4 1.4 0 0 1 1.4-1.4H13"/></svg></span>
+          <span class="txt">
+            <span class="t" data-i18n="n1_title">Webhook'a önce cevap ver, işi sonra yap</span>
+            <span class="s" data-i18n="n1_sum">Meta'nın webhook'u yanıt bekliyor. Claude'a sorup beklersen aynı olay tekrar tekrar geliyor.</span>
+          </span>
+          <time datetime="2026-08-29" data-i18n="n1_date">29 Ağu 2026</time>
+        </a>
+        <a class="noteitem" href="notlar.html">
+          <span class="tile tile-v"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 3.2A1.4 1.4 0 0 1 3.9 1.8H13v10.4H3.9a1.4 1.4 0 0 0-1.4 1.4Z"/><path d="M2.5 13.6a1.4 1.4 0 0 1 1.4-1.4H13"/></svg></span>
+          <span class="txt">
+            <span class="t" data-i18n="n3_title">HMAC imzasını ham gövde üzerinden doğrula</span>
+            <span class="s" data-i18n="n3_sum">Ayrıştırılmış JSON'u tekrar metne çevirip imzalarsan imza hiçbir zaman tutmaz.</span>
+          </span>
+          <time datetime="2026-08-29" data-i18n="n3_date">29 Ağu 2026</time>
+        </a>
+        <a class="noteitem" href="notlar.html">
+          <span class="tile tile-g"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 3.2A1.4 1.4 0 0 1 3.9 1.8H13v10.4H3.9a1.4 1.4 0 0 0-1.4 1.4Z"/><path d="M2.5 13.6a1.4 1.4 0 0 1 1.4-1.4H13"/></svg></span>
+          <span class="txt">
+            <span class="t" data-i18n="n2_title">İzin listesi istemcide durmaz</span>
+            <span class="s" data-i18n="n2_sum">Kimin girebileceğini tarayıcıdaki bir dizide tutuyordum. Kaynağa bakan herkes listeyi görüyor.</span>
+          </span>
+          <time datetime="2026-08-28" data-i18n="n2_date">28 Ağu 2026</time>
+        </a>
+        <a class="noteitem" href="notlar.html">
+          <span class="tile tile-c"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 3.2A1.4 1.4 0 0 1 3.9 1.8H13v10.4H3.9a1.4 1.4 0 0 0-1.4 1.4Z"/><path d="M2.5 13.6a1.4 1.4 0 0 1 1.4-1.4H13"/></svg></span>
+          <span class="txt">
+            <span class="t" data-i18n="n4_title">Bir MCP sunucusu başka bir sunucunun istemcisi olabiliyor</span>
+            <span class="s" data-i18n="n4_sum">botflow-mcp'ye dışarıdaki bir sunucunun araçlarını devraldırdım.</span>
+          </span>
+          <time datetime="2026-08-25" data-i18n="n4_date">25 Ağu 2026</time>
+        </a>
+          </div>
+        </div>
+      </div>
     </section>
 
     <section class="wrap section">
-      <div class="section-head">
-        <h2 data-i18n="home_notes_title">Son notlar</h2>
-        <a href="notlar.html" data-i18n="see_all">Tümü</a>
+      <div class="now-band glass">
+        <span class="label" data-i18n="now_label">Şu sıralar</span>
+        <p data-i18n="now_text">reply-bot'un WhatsApp tarafını ayağa kaldırdım. Sırada Node.js ile backend temellerini düzgün öğrenmek var: veritabanı, kimlik doğrulama, test.</p>
       </div>
-      <article class="rail-item" data-cat="bot">
-        <div class="rail-meta"><time datetime="2026-08-29" data-i18n="n1_date">29 Ağu 2026</time></div>
-        <div>
-          <h3 data-i18n="n1_title">Webhook'a önce cevap ver, işi sonra yap</h3>
-          <p data-i18n="n1_sum">Meta'nın webhook'u yanıt bekliyor. Claude'a sorup beklersen aynı olay tekrar tekrar geliyor.</p>
+
+      <div class="band">
+        <div class="band-item">
+          <span class="tile tile-v"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="8" cy="8" r="6.2"/><path d="M1.9 8h12.2M8 1.8c1.7 1.9 2.6 4 2.6 6.2S9.7 12.3 8 14.2C6.3 12.3 5.4 10.2 5.4 8s.9-4.3 2.6-6.2Z"/></svg></span>
+          <span class="txt">
+            <span class="t" data-i18n="band1_t">Dört dilde</span>
+            <span class="s" data-i18n="band1_s">Türkçe, Almanca, İngilizce, Farsça</span>
+          </span>
         </div>
-      </article>
-      <article class="rail-item" data-cat="bot">
-        <div class="rail-meta"><time datetime="2026-08-29" data-i18n="n3_date">29 Ağu 2026</time></div>
-        <div>
-          <h3 data-i18n="n3_title">HMAC imzasını ham gövde üzerinden doğrula</h3>
-          <p data-i18n="n3_sum">Ayrıştırılmış JSON'u tekrar metne çevirip imzalarsan imza hiçbir zaman tutmaz.</p>
+        <div class="band-item">
+          <span class="tile tile-b"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2.5 3.2A1.4 1.4 0 0 1 3.9 1.8H13v10.4H3.9a1.4 1.4 0 0 0-1.4 1.4Z"/><path d="M2.5 13.6a1.4 1.4 0 0 1 1.4-1.4H13"/></svg></span>
+          <span class="txt">
+            <span class="t" data-i18n="band2_t">Çevrimdışı okunur</span>
+            <span class="s" data-i18n="band2_s">Service worker sayfaları önbelleğe alıyor</span>
+          </span>
         </div>
-      </article>
-      <article class="rail-item" data-cat="data">
-        <div class="rail-meta"><time datetime="2026-08-28" data-i18n="n2_date">28 Ağu 2026</time></div>
-        <div>
-          <h3 data-i18n="n2_title">İzin listesi istemcide durmaz</h3>
-          <p data-i18n="n2_sum">Kimin girebileceğini tarayıcıdaki bir dizide tutuyordum. Kaynağa bakan herkes listeyi görüyor.</p>
+        <div class="band-item">
+          <span class="tile tile-g"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.7-.3-5.5-1.4-5.5-6 0-1.3.5-2.4 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.4 4.6 18.4 5 18.4 5c.6 1.7.2 2.9.1 3.2.8.8 1.2 1.9 1.2 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3Z"/></svg></span>
+          <span class="txt">
+            <span class="t" data-i18n="band3_t">Kaynağı açık</span>
+            <span class="s" data-i18n="band3_s">MIT lisansı, GitHub'da</span>
+          </span>
         </div>
-      </article>
+        <div class="band-item">
+          <span class="tile tile-c"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 1.6 9.6 6l4.4 1.6L9.6 9.2 8 13.6 6.4 9.2 2 7.6 6.4 6Z"/></svg></span>
+          <span class="txt">
+            <span class="t" data-i18n="band4_t">Çerçevesiz</span>
+            <span class="s" data-i18n="band4_s">Düz HTML, CSS ve JavaScript</span>
+          </span>
+        </div>
+      </div>
     </section>
   </main>
 
   <footer class="site-footer">
     <div class="wrap footer-inner">
-      <div>
-        <p data-i18n="footer_tagline">Bir IT öğrencisinin açık defteri.</p>
-        <p class="footer-note" data-i18n="footer_built">Çerçevesiz, derleme adımsız. Kaynağı açık.</p>
+      <div class="footer-mark">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="gf" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#8b5cf6"/><stop offset="1" stop-color="#3b82f6"/></linearGradient></defs><rect width="32" height="32" rx="8" fill="url(#gf)"/><g fill="#fff"><rect x="8" y="8.7" width="16" height="2.6" rx="1.3"/><rect x="8" y="14.7" width="16" height="2.6" rx="1.3"/><rect x="8" y="20.7" width="9.5" height="2.6" rx="1.3"/></g></svg>
+        <div>
+          <p data-i18n="footer_tagline">Bir IT öğrencisinin açık defteri.</p>
+          <p class="footer-note" data-i18n="footer_built">Çerçevesiz, derleme adımsız. Kaynağı açık.</p>
+        </div>
       </div>
       <div class="footer-links">
         <a href="https://github.com/Ferhat-Yasinoglu" rel="me noopener" target="_blank">GitHub</a>
@@ -174,6 +267,7 @@ d.lang=l;d.dir=(l==="fa")?"rtl":"ltr";
 
   <script src="js/i18n.js"></script>
   <script src="js/site.js"></script>
+  <script src="js/reveal.js"></script>
   <script>if("serviceWorker" in navigator)addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){})});</script>
 </body>
 </html>

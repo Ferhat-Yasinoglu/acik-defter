@@ -179,6 +179,29 @@ for (const p of PAGES) {
   if (!listed.includes(expected)) fail(`sitemap.xml: ${p} listede yok`);
 }
 
+/* ------------------------------------- ana sayfadaki sayılar gerçek mi
+
+   Ana sayfadaki "5 proje / 9 not" kutuları elle yazılmıyor, üretici
+   listelerden alıyor — ama HTML depoya girdiği için sonradan ayrı düşebilir.
+   Sayılar sayfalardaki gerçek girdi sayısıyla karşılaştırılıyor: yeni bir
+   not eklenip kutu güncellenmezse burada yakalanır. Siteye uydurma rakam
+   yazılmasın diye var. */
+{
+  const count = (file, re) => (read(file).match(re) || []).length;
+  const projects = count("projeler.html", /<article class="rail-item"/g);
+  const notes = count("notlar.html", /<article class="rail-item" data-cat=/g);
+
+  const home = read("index.html");
+  const stats = [...home.matchAll(/<span class="k" data-i18n="(stat_\w+)">[^<]*<\/span>\s*<span class="v"[^>]*>([^<]*)<\/span>/g)]
+    .reduce((acc, m) => ({ ...acc, [m[1]]: m[2].trim() }), {});
+
+  const expect = { stat_projects: String(projects), stat_notes: String(notes), stat_langs: String(langs.length) };
+  for (const [key, want] of Object.entries(expect)) {
+    if (stats[key] === undefined) fail(`index.html: "${key}" kutusu bulunamadı`);
+    else if (stats[key] !== want) fail(`index.html: "${key}" kutusunda ${stats[key]} yazıyor, gerçek sayı ${want}`);
+  }
+}
+
 /* --------------------------------------------------- service worker kabuğu */
 
 const sw = read("sw.js");

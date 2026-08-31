@@ -51,6 +51,22 @@ const translations = {
     home_notes_title: "Son notlar",
     see_all: "Tümü",
 
+    /* ana sayfa kartı */
+    hero_quote: "Öğren, yap, yaz. Sırası bu.",
+    stat_projects: "Proje",
+    stat_notes: "Not",
+    stat_langs: "Dil",
+    stat_since: "Başlangıç",
+    stat_since_v: "Ağu 2026",
+
+    aria_scroll: "Aşağı kaydır",
+    band1_t: "Dört dilde", band1_s: "Türkçe, Almanca, İngilizce, Farsça",
+    band2_t: "Çevrimdışı okunur", band2_s: "Service worker sayfaları önbelleğe alıyor",
+    band3_t: "Kaynağı açık", band3_s: "MIT lisansı, GitHub'da",
+    band4_t: "Çerçevesiz", band4_s: "Düz HTML, CSS ve JavaScript",
+    home_notes_all: "Tüm notlar",
+    home_projects_all: "Tüm projeler",
+
     /* projeler */
     projects_lead: "Hepsi öğrenmek için başladı, hepsi çalışıyor. Kaynakları açık.",
     proj_learned: "Öğrendiklerim",
@@ -288,6 +304,22 @@ const translations = {
     home_notes_title: "Latest notes",
     see_all: "All",
 
+    /* home card */
+    hero_quote: "Learn it, build it, write it down. In that order.",
+    stat_projects: "Projects",
+    stat_notes: "Notes",
+    stat_langs: "Languages",
+    stat_since: "Since",
+    stat_since_v: "Aug 2026",
+
+    aria_scroll: "Scroll down",
+    band1_t: "Four languages", band1_s: "Turkish, German, English, Persian",
+    band2_t: "Reads offline", band2_s: "A service worker caches the pages",
+    band3_t: "Open source", band3_s: "MIT licensed, on GitHub",
+    band4_t: "No framework", band4_s: "Plain HTML, CSS and JavaScript",
+    home_notes_all: "All notes",
+    home_projects_all: "All projects",
+
     projects_lead: "Each one started as a way to learn something. All of them run, and all of them are open source.",
     proj_learned: "What I learned",
     link_source: "Source",
@@ -521,6 +553,22 @@ const translations = {
     home_notes_title: "Neueste Notizen",
     see_all: "Alle",
 
+    /* Startseiten-Karte */
+    hero_quote: "Lernen, bauen, aufschreiben. In dieser Reihenfolge.",
+    stat_projects: "Projekte",
+    stat_notes: "Notizen",
+    stat_langs: "Sprachen",
+    stat_since: "Seit",
+    stat_since_v: "Aug. 2026",
+
+    aria_scroll: "Nach unten scrollen",
+    band1_t: "Vier Sprachen", band1_s: "Türkisch, Deutsch, Englisch, Persisch",
+    band2_t: "Offline lesbar", band2_s: "Ein Service Worker legt die Seiten ab",
+    band3_t: "Quelloffen", band3_s: "MIT-Lizenz, auf GitHub",
+    band4_t: "Kein Framework", band4_s: "Schlichtes HTML, CSS und JavaScript",
+    home_notes_all: "Alle Notizen",
+    home_projects_all: "Alle Projekte",
+
     projects_lead: "Jedes davon hat als Lernprojekt angefangen. Alle laufen, und der Quellcode ist offen.",
     proj_learned: "Was ich gelernt habe",
     link_source: "Quellcode",
@@ -753,6 +801,22 @@ const translations = {
     home_work_title: "چیزهایی که ساخته‌ام",
     home_notes_title: "آخرین یادداشت‌ها",
     see_all: "همه",
+
+    /* کارت صفحه‌ی خانه */
+    hero_quote: "یاد بگیر، بساز، بنویس. به همین ترتیب.",
+    stat_projects: "پروژه",
+    stat_notes: "یادداشت",
+    stat_langs: "زبان",
+    stat_since: "آغاز",
+    stat_since_v: "اوت ۲۰۲۶",
+
+    aria_scroll: "به پایین برو",
+    band1_t: "چهار زبان", band1_s: "ترکی، آلمانی، انگلیسی، فارسی",
+    band2_t: "آفلاین خوانده می‌شود", band2_s: "سرویس‌ورکر صفحه‌ها را نگه می‌دارد",
+    band3_t: "کدِ باز", band3_s: "با مجوز MIT، روی گیت‌هاب",
+    band4_t: "بدون فریم‌ورک", band4_s: "HTML و CSS و JavaScript ساده",
+    home_notes_all: "همه‌ی یادداشت‌ها",
+    home_projects_all: "همه‌ی پروژه‌ها",
 
     projects_lead: "همه‌شان برای یادگیری شروع شدند، همه‌شان کار می‌کنند و کدشان باز است.",
     proj_learned: "چه یاد گرفتم",

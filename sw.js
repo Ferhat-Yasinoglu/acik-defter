@@ -9,7 +9,7 @@
    activate sırasında silinir, yoksa kullanıcıda iki sürüm birden birikir.
    ========================================================================== */
 
-const CACHE = "acik-defter-v3";
+const CACHE = "acik-defter-v6";
 
 const SHELL = [
   "./",
@@ -24,6 +24,8 @@ const SHELL = [
   "js/i18n.js",
   "js/site.js",
   "js/notes.js",
+  "js/reveal.js",
+  "img/wave.svg",
   "favicon.svg",
   "manifest.webmanifest"
 ];
