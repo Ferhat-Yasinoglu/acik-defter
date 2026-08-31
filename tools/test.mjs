@@ -163,6 +163,90 @@ const browser = await chromium.launch();
   );
 }
 
+/* --------------------------------- etkin sayfa çizgisi doğru satırda mı
+
+   Bir kez ters gitti: menü dar ekranda iki satıra sarınca "Ana Sayfa"nın
+   altındaki çizgi alt satıra düşüyor, "Notlar"ı işaretliyor gibi
+   görünüyordu. Sarma noktası dile göre 390px ile 520px arasında değiştiği
+   için kırılma noktasına bakmıyoruz; çizginin altıyla bir sonraki satırın
+   üstü arasında boşluk kaldığını ölçüyoruz. */
+{
+  const WIDTHS = [1280, 900, 700, 600, 520, 480, 430, 390, 360, 320];
+  const LANGS = ["tr", "en", "de", "fa"];
+  const collisions = [];
+
+  for (const lang of LANGS) {
+    const ctx = await browser.newContext({ viewport: { width: WIDTHS[0], height: 800 } });
+    const page = await ctx.newPage();
+    await page.goto(BASE, { waitUntil: "domcontentloaded" });
+    await page.evaluate((l) => localStorage.setItem("ad-lang", l), lang);
+    await page.reload({ waitUntil: "domcontentloaded" });
+    await page.waitForSelector(".nav a[aria-current='page']");
+
+    for (const width of WIDTHS) {
+      await page.setViewportSize({ width, height: 800 });
+      const gap = await page.evaluate(() => {
+        const cur = document.querySelector(".nav a[aria-current='page']");
+        const tops = [...document.querySelectorAll(".nav a")]
+          .map((a) => Math.round(a.getBoundingClientRect().top))
+          .sort((a, b) => a - b);
+        const next = tops.find((t) => t > Math.round(cur.getBoundingClientRect().top));
+        if (next === undefined) return null; /* menü tek satır, çizginin altında satır yok */
+
+        const line = getComputedStyle(cur, "::after");
+        const lineBottom =
+          cur.getBoundingClientRect().bottom +
+          Math.abs(parseFloat(line.bottom)) +
+          parseFloat(line.height);
+        return Math.round(next - lineBottom);
+      });
+
+      if (gap !== null && gap < 2) collisions.push(`${lang} ${width}px: ${gap}px`);
+    }
+
+    await ctx.close();
+  }
+
+  ok(
+    collisions.length === 0,
+    `etkin sayfa çizgisi 4 dil × ${WIDTHS.length} genişlikte kendi satırında kalıyor` +
+      (collisions.length ? ` — çakışanlar: ${collisions.slice(0, 4).join(", ")}` : "")
+  );
+}
+
+/* ----------------------------- başlık çubuğu dar ekranda yol açıyor mu
+
+   Çubuk telefonda üç satıra çıkıp 200 pikseli geçiyor; yapışık kalsaydı
+   ekranın dörtte biri kaydırma boyunca kaybolurdu. Dar ekranda sayfayla
+   akıp gitmesi, geniş ekranda yapışık kalması gerekiyor. */
+{
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 800 } });
+  const page = await ctx.newPage();
+  await page.goto(BASE, { waitUntil: "domcontentloaded" });
+
+  const bottomAfterScroll = async () => {
+    await page.evaluate(() => window.scrollTo({ top: 1400, behavior: "instant" }));
+    return page.evaluate(() => document.querySelector(".masthead").getBoundingClientRect().bottom);
+  };
+
+  ok((await bottomAfterScroll()) <= 0, "telefonda çubuk kaydırınca ekranı bırakıyor");
+
+  await page.setViewportSize({ width: 1280, height: 800 });
+  ok((await bottomAfterScroll()) > 0, "geniş ekranda çubuk yapışık kalıyor");
+
+  /* "Şu sıralar" şeridi dar ekranda etiketin altına geçiyor mu: yan yana
+     kalırsa etiket genişliğin neredeyse yarısını alıyordu. */
+  await page.setViewportSize({ width: 390, height: 800 });
+  const share = await page.evaluate(() => {
+    const band = document.querySelector(".now-band");
+    const text = band.querySelector("p");
+    return Math.round((text.getBoundingClientRect().width / band.getBoundingClientRect().width) * 100);
+  });
+  ok(share >= 75, `telefonda "şu sıralar" metni şeridin %${share}'ini kullanıyor`);
+
+  await ctx.close();
+}
+
 /* ----------------------------------------------------------- klavye */
 {
   const ctx = await browser.newContext();
