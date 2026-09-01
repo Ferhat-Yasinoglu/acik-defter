@@ -163,6 +163,63 @@ const browser = await chromium.launch();
   );
 }
 
+/* --------------------------- başlık sırası ve dokunma hedefleri
+
+   Kayıt başlıkları h1'in hemen altında h3'tü: ekran okuyucuda arada bir
+   seviye eksik görünüyordu. Bölüm başlıklarındaki "tümü" bağlantısı da 22
+   piksel yüksekliğindeydi, WCAG'ın 24×24 alt sınırının altında; altbilgi ve
+   proje bağlantıları da eşiğe değip geçmiyordu.
+
+   İkisi de gözle fark edilmiyor, o yüzden ölçüyoruz. */
+{
+  const PAGES = ["index.html", "yolculugum.html", "projeler.html", "notlar.html", "hakkimda.html", "gizlilik.html"];
+  const headingIssues = [];
+  const smallTargets = [];
+
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 800 } });
+  const page = await ctx.newPage();
+
+  for (const path of PAGES) {
+    await page.goto(BASE + path, { waitUntil: "domcontentloaded" });
+
+    const m = await page.evaluate(() => {
+      const levels = [...document.querySelectorAll("h1,h2,h3,h4,h5,h6")].map((h) => +h.tagName[1]);
+      const bad = [];
+      const h1s = levels.filter((l) => l === 1).length;
+      if (h1s !== 1) bad.push(`${h1s} adet h1`);
+      for (let i = 1; i < levels.length; i++) {
+        if (levels[i] - levels[i - 1] > 1) bad.push(`h${levels[i - 1]} -> h${levels[i]}`);
+      }
+
+      const tiny = [];
+      for (const el of document.querySelectorAll("a, button")) {
+        const r = el.getBoundingClientRect();
+        if (!r.width || !r.height) continue;
+        if (r.width < 24 || r.height < 24) {
+          tiny.push(`${el.textContent.trim().slice(0, 14)} ${Math.round(r.width)}x${Math.round(r.height)}`);
+        }
+      }
+      return { bad, tiny: [...new Set(tiny)] };
+    });
+
+    if (m.bad.length) headingIssues.push(`${path}: ${m.bad.join(", ")}`);
+    if (m.tiny.length) smallTargets.push(`${path}: ${m.tiny.slice(0, 3).join(", ")}`);
+  }
+
+  await ctx.close();
+
+  ok(
+    headingIssues.length === 0,
+    `başlık seviyeleri ${PAGES.length} sayfada da atlamasız` +
+      (headingIssues.length ? ` — bozuklar: ${headingIssues.join("; ")}` : "")
+  );
+  ok(
+    smallTargets.length === 0,
+    "bütün bağlantı ve düğmeler en az 24×24 piksel" +
+      (smallTargets.length ? ` — küçükler: ${smallTargets.slice(0, 3).join("; ")}` : "")
+  );
+}
+
 /* ----------------------------------------- metin kontrastı AA'yı geçiyor mu
 
    İkincil metinler (--ink-3) iki temada da eşiğin hemen altındaydı: açık
