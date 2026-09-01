@@ -505,11 +505,14 @@ main { flex: 1 0 auto; }
   flex: none;
 }
 .section-head::after { content: ''; order: 2; flex: 1 1 auto; height: 1px; background: var(--stroke); }
+/* Dokunma alanı: yazı 22 piksel yüksekliğindeydi, WCAG'ın 24×24 alt sınırının
+   altında. Dikey iç boşluk kutuyu büyütüyor; yazı yerinden oynamıyor. */
 .section-head a {
   order: 3;
   flex: none;
   display: inline-flex;
   align-items: center;
+  padding-block: 0.25rem;
   gap: 0.4rem;
   font-size: 0.85rem;
   color: var(--ink-3);
@@ -685,7 +688,10 @@ main { flex: 1 0 auto; }
   background-clip: text;
   color: transparent;
 }
-.rail-item h3 { margin-block-end: 0.3rem; }
+/* Kayıt başlıkları h1'in hemen altındaki ilk seviye: h3 iken ekran okuyucuda
+   arada bir seviye eksik görünüyordu. h2 oldular; boyutları değişmesin diye
+   eski ölçü burada duruyor. */
+.rail-item h2 { margin-block-end: 0.3rem; font-size: 1.15rem; }
 .rail-item > div > p { color: var(--ink-2); font-size: 0.95rem; }
 .rail-item > div > p + p { margin-block-start: 0.5rem; }
 
@@ -701,6 +707,7 @@ main { flex: 1 0 auto; }
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
+  padding-block: 0.15rem;
   font-size: 0.875rem;
   color: var(--ink-2);
   text-decoration: none;
@@ -810,7 +817,10 @@ main { flex: 1 0 auto; }
 .footer-mark svg { width: 26px; height: 26px; border-radius: 8px; flex: none; }
 .footer-note { font-family: var(--mono); font-size: 0.72rem; }
 .footer-links { display: flex; flex-wrap: wrap; gap: 0.4rem 1.2rem; }
-.footer-links a { text-decoration: none; transition: color 0.18s ease; }
+/* Dokunma alanı 24 pikseli bulsun — bkz. .section-head a. Altbilgi
+   bağlantıları satır içinde bir cümlenin parçası değil, kendi başlarına
+   birer hedef; WCAG'ın "satır içi" istisnası onlara işlemiyor. */
+.footer-links a { text-decoration: none; padding-block: 0.15rem; transition: color 0.18s ease; }
 .footer-links a:hover { color: var(--accent-2); }
 
 /* ==========================================================================
