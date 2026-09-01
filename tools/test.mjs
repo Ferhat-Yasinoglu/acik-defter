@@ -247,6 +247,114 @@ const browser = await chromium.launch();
   await ctx.close();
 }
 
+/* ------------------------------- dar ekranda başlık çubuğu iki satır kalıyor
+
+   Çubuk telefonda üç satırdı: ad, iki satıra sarmış menü, düğmeler — 205px.
+   Düğmeler adın yanına alındı, menü kendi satırında yatay kayan tek sıraya
+   indi. Üçüncü satır geri gelirse yükseklik yeniden yüz elliyi aşar; sınırı
+   oradan koyuyoruz. */
+{
+  const WIDTHS = [320, 360, 390, 430, 520, 660];
+  const LANGS = ["tr", "en", "de", "fa"];
+  const tall = [];
+  const split = [];
+
+  for (const lang of LANGS) {
+    const ctx = await browser.newContext({ viewport: { width: WIDTHS[0], height: 800 } });
+    const page = await ctx.newPage();
+    await page.goto(BASE, { waitUntil: "domcontentloaded" });
+    await page.evaluate((l) => localStorage.setItem("ad-lang", l), lang);
+    await page.reload({ waitUntil: "domcontentloaded" });
+    await page.waitForSelector(".masthead");
+
+    for (const width of WIDTHS) {
+      await page.setViewportSize({ width, height: 800 });
+      const m = await page.evaluate(() => {
+        const box = (sel) => document.querySelector(sel).getBoundingClientRect();
+        const wordmark = box(".wordmark");
+        const tools = box(".tools");
+        return {
+          height: Math.round(box(".masthead").height),
+          /* Ad ile düğmeler aynı satırda mı: ayrılırlarsa üçüncü satır demek */
+          together: Math.abs(wordmark.top - tools.top) < 6,
+        };
+      });
+
+      if (m.height > 130) tall.push(`${lang} ${width}px: ${m.height}px`);
+      if (!m.together) split.push(`${lang} ${width}px`);
+    }
+
+    await ctx.close();
+  }
+
+  ok(
+    tall.length === 0,
+    `çubuk 4 dil × ${WIDTHS.length} genişlikte iki satırda kalıyor` +
+      (tall.length ? ` — taşanlar: ${tall.slice(0, 4).join(", ")}` : "")
+  );
+  ok(
+    split.length === 0,
+    "ad ile dil/tema düğmeleri aynı satırda" +
+      (split.length ? ` — ayrılanlar: ${split.slice(0, 4).join(", ")}` : "")
+  );
+}
+
+/* ------------------------ etkin sekme dar ekranda görünür kalıyor mu
+
+   Menü dar ekranda sığmadığı için yatay kayıyor; sondaki sayfalardayken
+   etkin bağlantı ekranın dışında başlıyor ve "hangi sayfadayım" işareti hiç
+   görünmüyordu. site.js menüyü o bağlantı görünecek kadar kaydırıyor.
+
+   Altındaki çizgi de taşma kutusunun içinde kalmalı: menüye alt boşluk
+   verilmeseydi kırpılıp yok olurdu. */
+{
+  const PAGES = ["index.html", "yolculugum.html", "projeler.html", "notlar.html", "hakkimda.html"];
+  const hidden = [];
+  const clipped = [];
+
+  const ctx = await browser.newContext({ viewport: { width: 390, height: 800 } });
+  const page = await ctx.newPage();
+
+  for (const path of PAGES) {
+    await page.goto(BASE + path, { waitUntil: "domcontentloaded" });
+    await page.waitForSelector(".nav [aria-current='page']");
+
+    const m = await page.evaluate(() => {
+      const nav = document.querySelector(".nav");
+      const current = nav.querySelector("[aria-current='page']");
+      const navBox = nav.getBoundingClientRect();
+      const itemBox = current.getBoundingClientRect();
+
+      const line = getComputedStyle(current, "::after");
+      const lineBottom =
+        itemBox.bottom + Math.abs(parseFloat(line.bottom)) + parseFloat(line.height);
+
+      return {
+        name: current.textContent.trim(),
+        visible: itemBox.left >= navBox.left - 1 && itemBox.right <= navBox.right + 1,
+        /* Kırpma dolgu kenarında olur: clientHeight dolgu kutusunun boyu */
+        lineInside: lineBottom <= navBox.top + nav.clientHeight + 1,
+      };
+    });
+
+    if (!m.visible) hidden.push(`${path} (${m.name})`);
+    if (!m.lineInside) clipped.push(`${path} (${m.name})`);
+  }
+
+  await ctx.close();
+
+  ok(
+    hidden.length === 0,
+    `etkin sekme ${PAGES.length} sayfanın hepsinde telefonda görünüyor` +
+      (hidden.length ? ` — görünmeyenler: ${hidden.join(", ")}` : "")
+  );
+  ok(
+    clipped.length === 0,
+    "etkin sekmenin çizgisi kırpılmıyor" +
+      (clipped.length ? ` — kırpılanlar: ${clipped.join(", ")}` : "")
+  );
+}
+
 /* ----------------------------------------------------------- klavye */
 {
   const ctx = await browser.newContext();

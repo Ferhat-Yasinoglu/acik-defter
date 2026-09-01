@@ -66,6 +66,9 @@
     document.querySelectorAll(".langs [data-lang]").forEach(function (btn) {
       btn.addEventListener("click", function () {
         applyLanguage(btn.getAttribute("data-lang"), true);
+        /* Bağlantı metinleri değişti, genişlikleri de: etkin sekme yine
+           görünsün. */
+        revealCurrentNavItem();
       });
     });
   }
@@ -107,12 +110,42 @@
     }
   }
 
+  /* --------------------------------------------------- etkin sekmeyi göster
+
+     Dar ekranda menü tek satırda yatay kayıyor ve hepsi sığmıyor; sondaki
+     sayfalardayken etkin bağlantı ekranın dışında başlıyordu, yani "hangi
+     sayfadayım" işareti hiç görünmüyordu. Menüyü o bağlantı görünecek kadar
+     kaydırıyoruz.
+
+     Süs değil ama zorunlu da değil: JavaScript çalışmazsa menü yine tam,
+     kullanıcı elle kaydırıp her sayfaya gidebiliyor. Menü sığıyorsa
+     (geniş ekran) kaydıracak bir şey olmadığı için hiçbir şey yapmıyor. */
+  function revealCurrentNavItem() {
+    var nav = document.querySelector(".nav");
+    if (!nav) return;
+
+    var current = nav.querySelector("[aria-current='page']");
+    if (!current || nav.scrollWidth <= nav.clientWidth) return;
+
+    var navBox = nav.getBoundingClientRect();
+    var itemBox = current.getBoundingClientRect();
+    /* Bağlantı kenara yapışmasın diye bir tutam pay. */
+    var margin = 12;
+
+    if (itemBox.right > navBox.right - margin) {
+      nav.scrollLeft += itemBox.right - navBox.right + margin;
+    } else if (itemBox.left < navBox.left + margin) {
+      nav.scrollLeft -= navBox.left - itemBox.left + margin;
+    }
+  }
+
   /* ---------------------------------------------------------------- açılış */
 
   function init() {
     applyLanguage(currentLang(), false);
     initLangPicker();
     initTheme();
+    revealCurrentNavItem();
   }
 
   if (document.readyState === "loading") {
