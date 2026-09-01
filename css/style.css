@@ -65,7 +65,7 @@
 *, *::before, *::after { box-sizing: border-box; }
 * { margin: 0; }
 
-html { -webkit-text-size-adjust: 100%; scroll-padding-block-start: 6rem; }
+html { -webkit-text-size-adjust: 100%; }
 @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
 
 body {
@@ -181,13 +181,20 @@ main { flex: 1 0 auto; }
    ========================================================================== */
 
 .masthead {
-  position: sticky;
-  inset-block-start: 0;
   z-index: 50;
   background: color-mix(in srgb, var(--bg) 72%, transparent);
   backdrop-filter: blur(18px) saturate(150%);
   -webkit-backdrop-filter: blur(18px) saturate(150%);
   border-block-end: 1px solid var(--stroke);
+}
+
+/* Dar ekranda çubuk üç satıra çıkıyor — telefonda 190px, yani ekranın dörtte
+   biri. Yapışık kalırsa o kadarı kaydırma boyunca kayboluyor; bu yüzden ancak
+   en çok iki satıra sığdığı genişlikten sonra yapışıyor. Bağlantı hedeflerine
+   ayrılan boşluk da yalnızca çubuk yapışıkken gerekiyor. */
+@media (min-width: 700px) {
+  .masthead { position: sticky; inset-block-start: 0; }
+  html { scroll-padding-block-start: 6rem; }
 }
 
 .masthead-inner {
@@ -210,7 +217,11 @@ main { flex: 1 0 auto; }
 }
 .wordmark svg { width: 30px; height: 30px; border-radius: 9px; flex: none; }
 
-.nav { display: flex; gap: 0.25rem 0.4rem; flex-wrap: wrap; }
+/* Satır aralığı, etkin sayfanın altındaki çizginin (aşağıda, -0.72rem) boyundan
+   geniş: menü dar ekranda sarınca çizgi alt satırdaki bağlantının üstüne düşüp
+   yanlış sayfayı işaretlemesin. Menü tek satırdayken bu aralık işlemiyor, o
+   yüzden geniş ekranda hiçbir şey değişmiyor. */
+.nav { display: flex; gap: 1.15rem 0.4rem; flex-wrap: wrap; }
 .nav a {
   position: relative;
   padding: 0.4rem 0.75rem;
@@ -536,14 +547,20 @@ main { flex: 1 0 auto; }
 .noteitem time { margin-inline-start: auto; font-family: var(--mono); font-size: 0.7rem; color: var(--ink-3); white-space: nowrap; padding-block-start: 0.2rem; }
 
 /* Şu sıralar bandı */
+/* Dar ekranda etiket ile metin alt alta: yan yana kalırsa etiket genişliğin
+   neredeyse yarısını alıyor ve metin altı satıra iniyor. */
 .now-band {
   display: flex;
-  align-items: flex-start;
-  gap: 1rem;
+  flex-direction: column;
+  gap: 0.45rem;
   padding: 1.2rem 1.4rem;
   border-radius: var(--r);
 }
-.now-band .label { flex: none; padding-block-start: 0.15rem; }
+.now-band .label { flex: none; }
+@media (min-width: 560px) {
+  .now-band { flex-direction: row; align-items: flex-start; gap: 1rem; }
+  .now-band .label { padding-block-start: 0.15rem; }
+}
 .now-band p { color: var(--ink-2); }
 
 /* Alt şerit — sitenin kendisi hakkında dört doğrulanabilir bilgi. */
