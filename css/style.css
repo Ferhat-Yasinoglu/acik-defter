@@ -188,22 +188,24 @@ main { flex: 1 0 auto; }
   border-block-end: 1px solid var(--stroke);
 }
 
-/* Dar ekranda çubuk üç satıra çıkıyor — telefonda 190px, yani ekranın dörtte
-   biri. Yapışık kalırsa o kadarı kaydırma boyunca kayboluyor; bu yüzden ancak
-   en çok iki satıra sığdığı genişlikten sonra yapışıyor. Bağlantı hedeflerine
-   ayrılan boşluk da yalnızca çubuk yapışıkken gerekiyor. */
-@media (min-width: 700px) {
-  .masthead { position: sticky; inset-block-start: 0; }
-  html { scroll-padding-block-start: 6rem; }
-}
-
+/* Dar ekranda çubuk üç satırdı: ad, menü (iki satıra sarmış), düğmeler.
+   Düğmeler adın yanına alındı, menü kendi satırında tek sıra kaldı — iki
+   satır. Menü hiçbir dilde sığmıyor (tek satır 385–466px istiyor, 390px'lik
+   telefonda 318px yer var), o yüzden kendi içinde yatay kayıyor; sondaki
+   bağlantının yarısı görünüp kaydırılabildiğini kendisi söylüyor. */
 .masthead-inner {
-  display: flex;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-areas:
+    'ad araclar'
+    'menu menu';
   align-items: center;
-  gap: 0.75rem 1.5rem;
-  flex-wrap: wrap;
+  gap: 0.5rem;
   padding-block: 0.7rem;
 }
+.masthead-inner > .wordmark { grid-area: ad; }
+.masthead-inner > .nav { grid-area: menu; }
+.masthead-inner > .tools { grid-area: araclar; }
 
 .wordmark {
   display: inline-flex;
@@ -218,11 +220,25 @@ main { flex: 1 0 auto; }
 .wordmark svg { width: 30px; height: 30px; border-radius: 9px; flex: none; }
 
 /* Satır aralığı, etkin sayfanın altındaki çizginin (aşağıda, -0.72rem) boyundan
-   geniş: menü dar ekranda sarınca çizgi alt satırdaki bağlantının üstüne düşüp
-   yanlış sayfayı işaretlemesin. Menü tek satırdayken bu aralık işlemiyor, o
-   yüzden geniş ekranda hiçbir şey değişmiyor. */
-.nav { display: flex; gap: 1.15rem 0.4rem; flex-wrap: wrap; }
+   geniş: menü sarmak zorunda kalırsa çizgi alt satırdaki bağlantının üstüne
+   düşüp yanlış sayfayı işaretlemesin. Menü tek satırdayken bu aralık
+   işlemiyor, o yüzden görünen bir bedeli yok.
+
+   Alttaki iç boşluk çizgiye yer açıyor: taşma kutusu dolgu kenarında kırpıyor,
+   boşluk olmasa dar ekranda çizgi görünmezdi. Eksi kenar boşluğu da o yeri
+   çubuğun yüksekliğinden geri alıyor. */
+.nav {
+  display: flex;
+  gap: 1.15rem 0.4rem;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-block-end: 0.95rem;
+  margin-block-end: -0.75rem;
+}
+.nav::-webkit-scrollbar { display: none; }
 .nav a {
+  flex: none;
   position: relative;
   padding: 0.4rem 0.75rem;
   border-radius: 9px;
@@ -244,6 +260,31 @@ main { flex: 1 0 auto; }
 }
 
 .tools { display: flex; align-items: center; gap: 0.5rem; margin-inline-start: auto; }
+
+/* Geniş ekranda çubuk zaten tek satıra sığıyor: eski esnek düzen geri geliyor,
+   menüde kaydırma olmuyor. Çubuk da ancak burada yapışıyor — dar ekranda üç
+   satır 190px ediyordu ve 844px'lik bir ekranın dörtte biri kaydırma boyunca
+   kayboluyordu. Bağlantı hedeflerine ayrılan boşluk da yalnızca çubuk
+   yapışıkken gerekiyor.
+
+   Bu blok temel kuralların arkasında durmalı: aynı özgüllükte olduğu için
+   önüne alınırsa sonraki kurallar onu eziyor. */
+@media (min-width: 700px) {
+  .masthead { position: sticky; inset-block-start: 0; }
+  html { scroll-padding-block-start: 6rem; }
+
+  .masthead-inner {
+    display: flex;
+    gap: 0.75rem 1.5rem;
+    flex-wrap: wrap;
+  }
+  .nav {
+    flex-wrap: wrap;
+    overflow-x: visible;
+    padding-block-end: 0;
+    margin-block-end: 0;
+  }
+}
 
 /* Dil seçici: açılır menü değil, doğrudan dört düğme. Menü olmadığı için
    dar ekranda taşacak bir kutu da yok. */
