@@ -163,6 +163,133 @@ const browser = await chromium.launch();
   );
 }
 
+/* ----------------------------------------- metin kontrastı AA'yı geçiyor mu
+
+   İkincil metinler (--ink-3) iki temada da eşiğin hemen altındaydı: açık
+   temada 4.20:1, koyuda 3.58:1 ile 4.29:1 arası. Bir belirteç kaydırmak
+   bütün siteyi etkilediği için sessizce geri kayabilir; ölçüp bağlıyoruz.
+
+   Ölçüm gradyanla boyanmış yazıyı ve gradyan zeminleri atlıyor: onların
+   oranı tek bir renk çiftinden çıkmıyor, göze bakmak gerekiyor. */
+{
+  const PAGES = ["index.html", "yolculugum.html", "projeler.html", "notlar.html", "hakkimda.html", "gizlilik.html"];
+  const fails = [];
+
+  const srgb = (c) => { c /= 255; return c <= 0.03928 ? c / 12.92 : Math.pow((c + 0.055) / 1.055, 2.4); };
+  const lum = ([r, g, b]) => 0.2126 * srgb(r) + 0.7152 * srgb(g) + 0.0722 * srgb(b);
+  const ratio = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((p, q) => q - p); return (x + 0.05) / (y + 0.05); };
+
+  for (const scheme of ["light", "dark"]) {
+    const ctx = await browser.newContext({ viewport: { width: 390, height: 800 }, colorScheme: scheme });
+    const page = await ctx.newPage();
+
+    for (const path of PAGES) {
+      await page.goto(BASE + path, { waitUntil: "domcontentloaded" });
+
+      const rows = await page.evaluate(() => {
+        /* rgb() 0-255 verir, color(srgb ...) 0-1 — ikincisini ölçeklendir */
+        const rgba = (s) => {
+          if (!s) return null;
+          const n = (s.match(/[\d.]+/g) || []).map(Number);
+          if (!n.length) return null;
+          const k = /^color\(\s*srgb/i.test(s) ? 255 : 1;
+          return [n[0] * k, n[1] * k, n[2] * k, n.length > 3 ? n[3] : 1];
+        };
+        const out = [];
+        for (const el of document.querySelectorAll("body *")) {
+          const cs = getComputedStyle(el);
+          if (cs.visibility === "hidden" || cs.display === "none") continue;
+          if (![...el.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim())) continue;
+
+          const fg = rgba(cs.color);
+          if (!fg || fg[3] === 0) continue; /* gradyanla boyanmış yazı */
+
+          /* zemin: html'den elemana kadar bütün katmanları alfa ile bindir */
+          const chain = [];
+          for (let n = el; n; n = n.parentElement) chain.push(n);
+          chain.reverse();
+          let bg = [255, 255, 255], gradient = false;
+          for (const n of chain) {
+            const s = getComputedStyle(n);
+            if (s.backgroundImage && s.backgroundImage !== "none") gradient = true;
+            const c = rgba(s.backgroundColor);
+            if (!c || c[3] === 0) continue;
+            bg = [0, 1, 2].map((i) => c[i] * c[3] + bg[i] * (1 - c[3]));
+          }
+          if (gradient) continue;
+
+          const a = fg[3];
+          out.push({
+            tag: el.tagName.toLowerCase() + (el.className ? "." + String(el.className).split(" ")[0] : ""),
+            fg: [0, 1, 2].map((i) => fg[i] * a + bg[i] * (1 - a)),
+            bg, size: parseFloat(cs.fontSize), weight: +cs.fontWeight,
+          });
+        }
+        return out;
+      });
+
+      for (const t of rows) {
+        const large = t.size >= 24 || (t.size >= 18.66 && t.weight >= 700);
+        const need = large ? 3 : 4.5;
+        const r = ratio(t.fg, t.bg);
+        if (r < need) fails.push(`${scheme} ${path} ${t.tag} ${t.size}px: ${r.toFixed(2)}:1`);
+      }
+    }
+
+    await ctx.close();
+  }
+
+  ok(
+    fails.length === 0,
+    `metin kontrastı iki temada da AA eşiğini geçiyor` +
+      (fails.length ? ` — kalanlar: ${[...new Set(fails)].slice(0, 4).join(", ")}` : "")
+  );
+}
+
+/* ------------------------------------- sayfa yatay kaymıyor mu
+
+   Bir kez ters gitti ve testler kaçırdı: başlık çubuğu iki satıra
+   indirilirken dil/tema düğmeleri en dar ekranda grid hücresine sığmayıp
+   sağa taştı, sayfa 320px'de 332 piksele çıktı. O sıradaki testler yalnızca
+   tek tek öğelerin yerine bakıyordu; sayfanın kendi genişliğini kimse
+   ölçmüyordu. Ayrıca bölüm başlıkları uzun dillerde ve boşluksuz etiket
+   dizileri ("TypeScript·Node.js·...") dar ekranda taşıyordu.
+
+   Burada tek bir şey soruluyor: gövde, görünen alandan geniş mi. */
+{
+  const PAGES = ["index.html", "yolculugum.html", "projeler.html", "notlar.html", "hakkimda.html", "gizlilik.html"];
+  const WIDTHS = [320, 375, 430];
+  const LANGS = ["tr", "en", "de", "fa"];
+  const spills = [];
+
+  for (const lang of LANGS) {
+    const ctx = await browser.newContext({ viewport: { width: WIDTHS[0], height: 800 } });
+    const page = await ctx.newPage();
+    await page.goto(BASE, { waitUntil: "domcontentloaded" });
+    await page.evaluate((l) => localStorage.setItem("ad-lang", l), lang);
+
+    for (const path of PAGES) {
+      await page.goto(BASE + path, { waitUntil: "domcontentloaded" });
+      for (const width of WIDTHS) {
+        await page.setViewportSize({ width, height: 800 });
+        const over = await page.evaluate(() => {
+          const de = document.documentElement;
+          return de.scrollWidth - de.clientWidth;
+        });
+        if (over > 1) spills.push(`${lang} ${path} ${width}px: ${over}px`);
+      }
+    }
+
+    await ctx.close();
+  }
+
+  ok(
+    spills.length === 0,
+    `${LANGS.length} dil × ${PAGES.length} sayfa × ${WIDTHS.length} genişlikte yatay kayma yok` +
+      (spills.length ? ` — taşanlar: ${spills.slice(0, 4).join(", ")}` : "")
+  );
+}
+
 /* --------------------------------- etkin sayfa çizgisi doğru satırda mı
 
    Bir kez ters gitti: menü dar ekranda iki satıra sarınca "Ana Sayfa"nın
@@ -252,12 +379,19 @@ const browser = await chromium.launch();
    Çubuk telefonda üç satırdı: ad, iki satıra sarmış menü, düğmeler — 205px.
    Düğmeler adın yanına alındı, menü kendi satırında yatay kayan tek sıraya
    indi. Üçüncü satır geri gelirse yükseklik yeniden yüz elliyi aşar; sınırı
-   oradan koyuyoruz. */
+   oradan koyuyoruz.
+
+   380px'in altı bunun dışında: orada düğmeler adın yanına sığmıyor (177px
+   istiyorlar, 320px'lik ekranda 112px kalıyor) ve zorlanınca sayfayı yatay
+   kaydırıyorlardı. O genişlikte üçüncü satır bilinçli bir seçim; yine de
+   başıboş değil, aşağıda ayrı bir sınırla ölçülüyor. */
 {
-  const WIDTHS = [320, 360, 390, 430, 520, 660];
+  const WIDTHS = [380, 390, 430, 520, 660];
+  const NARROW = [320, 360, 375];
   const LANGS = ["tr", "en", "de", "fa"];
   const tall = [];
   const split = [];
+  const tooTall = [];
 
   for (const lang of LANGS) {
     const ctx = await browser.newContext({ viewport: { width: WIDTHS[0], height: 800 } });
@@ -284,18 +418,31 @@ const browser = await chromium.launch();
       if (!m.together) split.push(`${lang} ${width}px`);
     }
 
+    /* 380px altı: üç satıra izin var ama dördüncüsüne yok. Menü hâlâ tek
+       sıra olduğu sürece çubuk 160 pikseli aşmamalı. */
+    for (const width of NARROW) {
+      await page.setViewportSize({ width, height: 800 });
+      const h = await page.evaluate(() => Math.round(document.querySelector(".masthead").getBoundingClientRect().height));
+      if (h > 160) tooTall.push(`${lang} ${width}px: ${h}px`);
+    }
+
     await ctx.close();
   }
 
   ok(
     tall.length === 0,
-    `çubuk 4 dil × ${WIDTHS.length} genişlikte iki satırda kalıyor` +
+    `çubuk 380px üstünde 4 dil × ${WIDTHS.length} genişlikte iki satırda kalıyor` +
       (tall.length ? ` — taşanlar: ${tall.slice(0, 4).join(", ")}` : "")
   );
   ok(
     split.length === 0,
-    "ad ile dil/tema düğmeleri aynı satırda" +
+    "380px üstünde ad ile dil/tema düğmeleri aynı satırda" +
       (split.length ? ` — ayrılanlar: ${split.slice(0, 4).join(", ")}` : "")
+  );
+  ok(
+    tooTall.length === 0,
+    `380px altında çubuk üç satırı aşmıyor (4 dil × ${NARROW.length} genişlik)` +
+      (tooTall.length ? ` — taşanlar: ${tooTall.slice(0, 4).join(", ")}` : "")
   );
 }
 

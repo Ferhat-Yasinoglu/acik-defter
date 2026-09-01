@@ -14,7 +14,7 @@
 
   --ink:       #eae8f4;
   --ink-2:     #a3a0bb;
-  --ink-3:     #757291;
+  --ink-3:     #87849f;
 
   --violet:    #8b5cf6;
   --indigo:    #6366f1;
@@ -49,7 +49,7 @@
 
   --ink:      #171528;
   --ink-2:    #4e4a68;
-  --ink-3:    #767296;
+  --ink-3:    #706c8f;
 
   --accent:   #6d3ee6;
   --accent-2: #5a2fd0;
@@ -206,6 +206,23 @@ main { flex: 1 0 auto; }
 .masthead-inner > .wordmark { grid-area: ad; }
 .masthead-inner > .nav { grid-area: menu; }
 .masthead-inner > .tools { grid-area: araclar; }
+
+/* En dar ekranlarda ad ile düğmeler yan yana sığmıyor: düğmeler 177px yer
+   istiyor, 320px'lik ekranda addan ve boşluklardan sonra 112px kalıyor. Grid
+   onları kırpmıyor, sağa taşırıyordu; sayfa 332 piksele çıkıp yatay kayıyordu.
+   Düğmeleri okunacak kadar küçültmek mümkün değil (yazı zaten 11.5px), o yüzden
+   burada üçüncü satıra iniyorlar. Çubuk uzuyor ama bu genişlikte yapışık
+   olmadığı için bedeli yalnızca sayfanın başında. */
+@media (max-width: 379px) {
+  .masthead-inner {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'ad'
+      'araclar'
+      'menu';
+  }
+  .masthead-inner > .tools { margin-inline-start: 0; }
+}
 
 .wordmark {
   display: inline-flex;
@@ -476,7 +493,10 @@ main { flex: 1 0 auto; }
    ========================================================================== */
 
 .section-head { display: flex; align-items: center; gap: 0.9rem; margin-block-end: 1.5rem; }
-.section-head h2 { flex: none; display: inline-flex; align-items: center; gap: 0.6rem; }
+/* Başlık daralabilsin: hem başlık hem "tümü" bağlantısı sabit genişlikteyken
+   uzun dillerde (Almanca, Farsça) ikisi 360px'lik ekrana sığmıyor ve satır
+   dışarı taşıyordu. Başlık artık sarıyor, bağlantı yerinde kalıyor. */
+.section-head h2 { flex: 0 1 auto; min-width: 0; display: inline-flex; align-items: center; gap: 0.6rem; }
 .section-head h2::before {
   content: '';
   width: 7px; height: 7px;
@@ -631,8 +651,11 @@ main { flex: 1 0 auto; }
 .page-head h1 { margin-block-end: 0.9rem; }
 .page-head .lead { max-width: 62ch; }
 
+/* Sütun minmax(0, ...): örtük "auto" sütun min-content'in altına inmediği için
+   içerideki uzun bir parça kutuyu dışarı taşırabiliyordu. */
 .rail-item {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 0.35rem 1.5rem;
   padding: 1.35rem 1.5rem;
   margin-block-end: 0.85rem;
@@ -668,6 +691,10 @@ main { flex: 1 0 auto; }
 
 .meta-line { margin-block-start: 0.6rem; font-family: var(--mono); font-size: 0.72rem; color: var(--ink-3); }
 .meta-line .sep { opacity: 0.4; padding-inline: 0.4em; }
+/* Ayraçlardan sonra satır sonu fırsatı. Etiketlerin arasında boşluk yok
+   ("TypeScript·Node.js·Express·Claude API"), tarayıcı da bunu tek bir
+   bölünemez parça sayıp dar ekranda kutunun dışına taşırıyordu. */
+.meta-line .sep::after { content: '\200B'; }
 
 .links-line { display: flex; flex-wrap: wrap; gap: 0.35rem 1.1rem; margin-block-start: 0.8rem; }
 .links-line a {
