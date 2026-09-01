@@ -22,10 +22,6 @@ const translations = {
     nav_about: "Hakkımda",
     aria_theme: "Temayı değiştir",
     aria_lang: "Dili değiştir",
-    lang_tr: "Türkçe",
-    lang_en: "English",
-    lang_de: "Deutsch",
-    lang_fa: "فارسی",
 
     title_home: "Farhad Yaqoobi — Açık Defter",
     title_journey: "Yolculuğum — Açık Defter",
@@ -49,7 +45,6 @@ const translations = {
     now_text: "reply-bot'un WhatsApp tarafını ayağa kaldırdım. Sırada Node.js ile backend temellerini düzgün öğrenmek var: veritabanı, kimlik doğrulama, test.",
     home_work_title: "Yaptıklarım",
     home_notes_title: "Son notlar",
-    see_all: "Tümü",
 
     /* ana sayfa kartı */
     hero_quote: "Öğren, yap, yaz. Sırası bu.",
@@ -276,10 +271,6 @@ const translations = {
     nav_about: "About",
     aria_theme: "Switch theme",
     aria_lang: "Change language",
-    lang_tr: "Türkçe",
-    lang_en: "English",
-    lang_de: "Deutsch",
-    lang_fa: "فارسی",
 
     title_home: "Farhad Yaqoobi — Open Notebook",
     title_journey: "Journey — Open Notebook",
@@ -302,7 +293,6 @@ const translations = {
     now_text: "I just got the WhatsApp side of reply-bot running. Next up: learning backend properly with Node.js — databases, auth, tests.",
     home_work_title: "What I've built",
     home_notes_title: "Latest notes",
-    see_all: "All",
 
     /* home card */
     hero_quote: "Learn it, build it, write it down. In that order.",
@@ -525,10 +515,6 @@ const translations = {
     nav_about: "Über mich",
     aria_theme: "Design wechseln",
     aria_lang: "Sprache wechseln",
-    lang_tr: "Türkçe",
-    lang_en: "English",
-    lang_de: "Deutsch",
-    lang_fa: "فارسی",
 
     title_home: "Farhad Yaqoobi — Offenes Heft",
     title_journey: "Mein Weg — Offenes Heft",
@@ -551,7 +537,6 @@ const translations = {
     now_text: "Die WhatsApp-Seite von reply-bot läuft seit Kurzem. Als Nächstes will ich das Backend mit Node.js richtig lernen: Datenbanken, Authentifizierung, Tests.",
     home_work_title: "Was ich gebaut habe",
     home_notes_title: "Neueste Notizen",
-    see_all: "Alle",
 
     /* Startseiten-Karte */
     hero_quote: "Lernen, bauen, aufschreiben. In dieser Reihenfolge.",
@@ -774,10 +759,6 @@ const translations = {
     nav_about: "درباره من",
     aria_theme: "تغییر پوسته",
     aria_lang: "تغییر زبان",
-    lang_tr: "Türkçe",
-    lang_en: "English",
-    lang_de: "Deutsch",
-    lang_fa: "فارسی",
 
     title_home: "فرهاد یعقوبی — دفتر باز",
     title_journey: "مسیر من — دفتر باز",
@@ -800,7 +781,6 @@ const translations = {
     now_text: "بخش واتس‌اپِ reply-bot را راه انداختم. قدم بعدی یادگیری درست‌وحسابی بک‌اند با Node.js است: پایگاه داده، احراز هویت، تست.",
     home_work_title: "چیزهایی که ساخته‌ام",
     home_notes_title: "آخرین یادداشت‌ها",
-    see_all: "همه",
 
     /* کارت صفحه‌ی خانه */
     hero_quote: "یاد بگیر، بساز، بنویس. به همین ترتیب.",
