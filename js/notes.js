@@ -33,9 +33,11 @@
         b.setAttribute("aria-pressed", String(b.getAttribute("data-filter") === active));
       });
 
-      if (countEl) countEl.textContent = String(visible);
+      var lang = document.documentElement.getAttribute("lang");
+      /* Sayı da dilin bir parçası: Farsça'da tarihlerle aynı rakamlar. */
+      if (countEl) countEl.textContent = localizeDigits(String(visible), lang);
       if (countLabel) {
-        var dict = translations[document.documentElement.getAttribute("lang")] || {};
+        var dict = translations[lang] || {};
         var key = visible === 1 ? "notes_count_one" : "notes_count_many";
         if (dict[key]) countLabel.textContent = dict[key];
       }
