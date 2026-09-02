@@ -1002,6 +1002,20 @@ const LANG_META = {
   fa: { dir: "rtl", short: "FA" }
 };
 
+/* Rakamlar — Farsça'da tarihler sözlükten ۰۱۲ ile geliyor, ama sıra
+   numaraları ve sayaçlar HTML'de elle yazılı olduğu için Latin kalıyordu:
+   aynı ekranda iki rakam sistemi görünüyordu. Çeviriye tabi olmayan
+   sayıları da diğer dillerde olduğu gibi bırakıp yalnız Farsça'da
+   dönüştürüyoruz. */
+const FA_DIGITS = "۰۱۲۳۴۵۶۷۸۹";
+
+function localizeDigits(text, lang) {
+  if (lang !== "fa") return String(text);
+  return String(text).replace(/[0-9]/g, function (d) {
+    return FA_DIGITS.charAt(Number(d));
+  });
+}
+
 if (typeof module !== "undefined") {
-  module.exports = { translations, LANG_META };
+  module.exports = { translations, LANG_META, localizeDigits };
 }

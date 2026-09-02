@@ -30,6 +30,22 @@
 
   /* ------------------------------------------------------------------ dil */
 
+  /* Sözlükten gelmeyen sayılar: sıra numaraları ve ana sayfadaki sayaçlar.
+     Ham hali bir kez data-num'a saklanıyor, yoksa Farsça'dan çıkarken geri
+     dönecek bir kaynak kalmıyor. Süzgeç sayacı notes.js'in işi: değeri
+     zaten orada hesaplanıyor. */
+  function localizeNumbers(lang) {
+    document.querySelectorAll(".entry-num, .stat .v").forEach(function (el) {
+      /* data-i18n olanların metnini çeviri döngüsü her seferinde tazeliyor;
+         elle yazılmış olanları ise saklamak gerekiyor. */
+      if (!el.hasAttribute("data-i18n")) {
+        if (!el.hasAttribute("data-num")) el.setAttribute("data-num", el.textContent);
+        el.textContent = el.getAttribute("data-num");
+      }
+      el.textContent = localizeDigits(el.textContent, lang);
+    });
+  }
+
   function applyLanguage(lang, persist) {
     var dict = translations[lang];
     if (!dict) return;
@@ -49,6 +65,8 @@
       var v = dict[el.getAttribute("data-i18n-aria-label")];
       if (v !== undefined) el.setAttribute("aria-label", v);
     });
+
+    localizeNumbers(lang);
 
     var page = document.body.getAttribute("data-page");
     if (page && dict["title_" + page]) document.title = dict["title_" + page];
