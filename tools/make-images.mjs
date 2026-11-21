@@ -123,7 +123,7 @@ function ogPage() {
   <div class="hand">no. 1</div>
   <div class="foot">
     <span><b>Farhad Yaqoobi</b> — Açık Defter</span>
-    <span>ferhat-yasinoglu.github.io/acik-defter</span>
+    <span>acik-defter.fyajan.com</span>
   </div>
 </div>`;
 }

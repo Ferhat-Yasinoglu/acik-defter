@@ -4,7 +4,7 @@
   "description": "Kişisel site ve öğrenme günlüğü. Sitenin kendisinin bağımlılığı yoktur; buradakiler yalnızca geliştirme araçlarıdır.",
   "private": true,
   "license": "MIT",
-  "homepage": "https://ferhat-yasinoglu.github.io/acik-defter/",
+  "homepage": "https://acik-defter.fyajan.com/",
   "repository": {
     "type": "git",
     "url": "https://github.com/Ferhat-Yasinoglu/acik-defter.git"

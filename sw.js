@@ -9,7 +9,7 @@
    activate sırasında silinir, yoksa kullanıcıda iki sürüm birden birikir.
    ========================================================================== */
 
-const CACHE = "acik-defter-v14";
+const CACHE = "acik-defter-v15";
 
 const SHELL = [
   "./",
