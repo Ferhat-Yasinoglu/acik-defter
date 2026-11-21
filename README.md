@@ -1,6 +1,6 @@
 # Açık Defter
 
-Kişisel sitem ve öğrenme günlüğüm — <https://ferhat-yasinoglu.github.io/acik-defter/>
+Kişisel sitem ve öğrenme günlüğüm — <https://acik-defter.fyajan.com/>
 
 Çerçeve yok, derleme adımı yok, paket bağımlılığı yok. Düz HTML, CSS ve
 JavaScript; GitHub Pages dosyaları olduğu gibi yayınlıyor.

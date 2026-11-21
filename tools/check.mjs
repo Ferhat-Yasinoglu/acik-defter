@@ -165,7 +165,7 @@ for (const file of ALL_HTML) {
 /* -------------------------------------------------------- 6. sitemap.xml */
 
 const sitemap = read("sitemap.xml");
-const BASE = "https://ferhat-yasinoglu.github.io/acik-defter/";
+const BASE = "https://acik-defter.fyajan.com/";
 const listed = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
 
 for (const loc of listed) {

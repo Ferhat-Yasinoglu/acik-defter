@@ -20,14 +20,17 @@
      gerekmez. Kod tek yerde — Ferhat-Yasinoglu/NetStore deposunda —
      kalır, buraya kopya konmaz.
 
-     Hedef aynı kaynakta (ferhat-yasinoglu.github.io) olduğu için TWA'nın
-     güven doğrulaması yönlendirmeden sonra da geçerlidir.
+     Kasım 2026: eski hedef (ferhat-yasinoglu.github.io/NetStore/) artık 404
+     veriyordu; yönlendirme NetStore'un yayında olduğu adrese
+     (fy-netstore.pages.dev) çevrildi. Hedef artık başka bir kaynakta olduğu
+     için TWA'nın güven doğrulaması geçmez: uygulama siteyi adres çubuklu
+     bir tarayıcı sekmesinde açar, ama açar.
 
      Uygulamanın açtığı adres #/dashboard ile biter; çapa korunuyor ki
      yönlendirme sonrası doğru sayfada açılsın.
      ========================================================================== -->
 
-<link rel="canonical" href="https://ferhat-yasinoglu.github.io/NetStore/">
+<link rel="canonical" href="https://fy-netstore.pages.dev/">
 
 <!-- Betik gövdeden önce çalışır ve çapayı koruyarak yönlendirir.
      Aşağıdaki meta yalnızca JavaScript kapalıyken devreye girsin diye
@@ -36,14 +39,14 @@
      yarışı kaybetmeyecek kadar uzun. -->
 <script>
 (function () {
-  var HEDEF = 'https://ferhat-yasinoglu.github.io/NetStore/';
+  var HEDEF = 'https://fy-netstore.pages.dev/';
 
   /* Uygulama "#/dashboard" gibi bir çapayla geliyor; onu koruyoruz.
      replace(): geri tuşu bu ara sayfaya dönüp döngü kurmasın diye. */
   location.replace(HEDEF + (location.hash || ''));
 })();
 </script>
-<meta http-equiv="refresh" content="1; url=https://ferhat-yasinoglu.github.io/NetStore/">
+<meta http-equiv="refresh" content="1; url=https://fy-netstore.pages.dev/">
 
 <style>
   :root { color-scheme: light dark; }
@@ -63,7 +66,7 @@
 <body>
   <main>
     <p>NetStore yeni adresine taşınıyor…</p>
-    <p><a href="https://ferhat-yasinoglu.github.io/NetStore/">Kendiliğinden açılmazsa buraya dokunun</a></p>
+    <p><a href="https://fy-netstore.pages.dev/">Kendiliğinden açılmazsa buraya dokunun</a></p>
   </main>
 </body>
 </html>
